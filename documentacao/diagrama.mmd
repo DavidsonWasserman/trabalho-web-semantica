@@ -1,0 +1,86 @@
+classDiagram
+    direction TB
+
+    class Pessoa {
+        +xsd:string nome
+        +xsd:string email
+        +xsd:string cargoOuFuncao
+        +xsd:string apresentacao
+        +xsd:anyURI paginaPessoal
+        +xsd:anyURI orcid
+        +xsd:anyURI lattes
+    }
+
+    class Docente
+    class Discente {
+        +xsd:integer anoIngresso
+        +xsd:string periodoAtual
+    }
+    class DiscenteGraduacao
+    class DiscentePosGraduacao
+
+    class OrganizacaoAcademica {
+        +xsd:string nomeOrganizacao
+        +xsd:string sigla
+    }
+    class InstituicaoEnsino
+    class UnidadeAcademica
+    class Departamento
+    class GrupoPesquisa
+
+    class Curso {
+        +xsd:string nomeCurso
+        +xsd:string modalidadeCurso
+    }
+    class AreaConhecimento {
+        +xsd:string nomeArea
+    }
+    class Disciplina {
+        +xsd:string nomeDisciplina
+        +xsd:string codigoDisciplina
+    }
+    class ProjetoPesquisa {
+        +xsd:string tituloProjeto
+        +xsd:string descricaoProjeto
+    }
+    class Publicacao {
+        +xsd:string tituloPublicacao
+        +xsd:string citacaoBibliografica
+        +xsd:integer anoPublicacao
+        +xsd:string doi
+    }
+    class FormacaoAcademica {
+        +xsd:string grauFormacao
+        +xsd:string cursoFormacao
+        +xsd:integer anoConclusao
+    }
+    class RedeAcademica {
+        +xsd:string nomeRede
+        +xsd:anyURI urlRede
+    }
+
+    Pessoa <|-- Docente
+    Pessoa <|-- Discente
+    Discente <|-- DiscenteGraduacao
+    Discente <|-- DiscentePosGraduacao
+
+    OrganizacaoAcademica <|-- InstituicaoEnsino
+    OrganizacaoAcademica <|-- UnidadeAcademica
+    OrganizacaoAcademica <|-- Departamento
+    OrganizacaoAcademica <|-- GrupoPesquisa
+
+    Docente "*" --> "1..*" Departamento : lotadoEm
+    Discente "*" --> "1..*" Curso : matriculadoEm
+    Departamento "*" --> "1" UnidadeAcademica : parteDeUnidade
+    Curso "*" --> "1" UnidadeAcademica : oferecidoPorUnidade
+    UnidadeAcademica "*" --> "1" InstituicaoEnsino : pertenceAInstituicao
+    Docente "*" --> "*" AreaConhecimento : atuaEmArea
+    Pessoa "*" --> "*" AreaConhecimento : temInteresseEm
+    Docente "*" --> "*" Disciplina : leciona
+    Pessoa "*" --> "*" ProjetoPesquisa : participaDeProjeto
+    ProjetoPesquisa "*" --> "*" Docente : coordenadoPor
+    Pessoa "*" --> "*" GrupoPesquisa : membroDeGrupo
+    Publicacao "*" --> "1..*" Pessoa : temAutor
+    Pessoa "1" --> "*" FormacaoAcademica : possuiFormacao
+    FormacaoAcademica "*" --> "1" InstituicaoEnsino : realizadaEmInstituicao
+    Pessoa "1" --> "*" RedeAcademica : possuiPerfilRede

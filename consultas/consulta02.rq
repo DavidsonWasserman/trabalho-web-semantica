@@ -1,0 +1,19 @@
+# Consulta 02 — Quais discentes pertencem a determinado curso?
+# Recupera discentes matriculados em um curso específico (ex.: Bacharelado em Sistemas de Informação),
+# demonstrando também o vínculo do curso com a Unidade Acadêmica (ICEx).
+
+PREFIX acad: <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#>
+
+SELECT ?discente ?nomeDiscente ?nomeCurso ?anoIngresso ?periodoAtual ?nomeUnidade
+WHERE {
+  ?discente a acad:Discente ;
+            acad:nome ?nomeDiscente ;
+            acad:matriculadoEm ?curso .
+  ?curso acad:nomeCurso ?nomeCurso ;
+         acad:oferecidoPorUnidade ?unidade .
+  ?unidade acad:nomeOrganizacao ?nomeUnidade .
+  OPTIONAL { ?discente acad:anoIngresso ?anoIngresso . }
+  OPTIONAL { ?discente acad:periodoAtual ?periodoAtual . }
+  FILTER(CONTAINS(LCASE(?nomeCurso), "sistemas de informação"))
+}
+ORDER BY ?nomeDiscente

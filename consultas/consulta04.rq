@@ -1,0 +1,19 @@
+# Consulta 04 — Quais docentes e discentes participam de um mesmo projeto de pesquisa?
+# Consulta multi-entidade conectando três tipos distintos (Docente, Discente e ProjetoPesquisa).
+
+PREFIX acad: <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#>
+
+SELECT ?tituloProjeto ?nomeDocente ?nomeDiscente ?nomeCursoDiscente
+WHERE {
+  ?projeto a acad:ProjetoPesquisa ;
+           acad:tituloProjeto ?tituloProjeto .
+  ?docente a acad:Docente ;
+           acad:nome ?nomeDocente ;
+           acad:participaDeProjeto ?projeto .
+  ?discente a acad:Discente ;
+            acad:nome ?nomeDiscente ;
+            acad:participaDeProjeto ?projeto ;
+            acad:matriculadoEm ?curso .
+  ?curso acad:nomeCurso ?nomeCursoDiscente .
+}
+ORDER BY ?tituloProjeto ?nomeDocente ?nomeDiscente

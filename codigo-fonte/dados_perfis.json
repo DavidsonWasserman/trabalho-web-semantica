@@ -1,0 +1,578 @@
+{
+  "projeto": {
+    "titulo": "Diretório Semântico de Perfis Acadêmicos — UFRRJ",
+    "subtitulo": "Universidade Federal Rural do Rio de Janeiro · Instituto de Ciências Exatas (ICEx)",
+    "base_url": "https://davidsonwasserman.github.io/trabalho-web-semantica",
+    "namespace_ontologia": "https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#",
+    "namespace_skos": "https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl#",
+    "namespace_dados": "https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/dados.ttl#",
+    "licenca": "https://creativecommons.org/licenses/by/4.0/",
+    "licenca_nome": "Creative Commons Atribuição 4.0 Internacional (CC BY 4.0)",
+    "data_atualizacao": "2026-11-15",
+    "fonte": "Perfis demonstrativos baseados nos modelos da disciplina Web Semântica e Linked Open Data (DCC/ICEx/UFRRJ) + dados acadêmicos fictícios complementares."
+  },
+  "instituicoes": [
+    {
+      "id": "UFRRJ",
+      "nome": "Universidade Federal Rural do Rio de Janeiro",
+      "sigla": "UFRRJ",
+      "url": "https://portal.ufrrj.br/",
+      "same_as": [
+        "http://www.wikidata.org/entity/Q7894375",
+        "http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro"
+      ],
+      "see_also": [
+        "https://pt.wikipedia.org/wiki/Universidade_Federal_Rural_do_Rio_de_Janeiro"
+      ]
+    }
+  ],
+  "unidades_academicas": [
+    {
+      "id": "ICEx",
+      "nome": "Instituto de Ciências Exatas",
+      "sigla": "ICEx",
+      "instituicao_id": "UFRRJ",
+      "see_also": [
+        "https://portal.ufrrj.br/instituto-de-ciencias-exatas/"
+      ]
+    }
+  ],
+  "departamentos": [
+    {
+      "id": "DeptoComputacao",
+      "nome": "Departamento de Computação",
+      "sigla": "DComp/ICEx",
+      "unidade_id": "ICEx",
+      "instituicao_id": "UFRRJ",
+      "see_also": [
+        "https://dcc.ufrrj.br/"
+      ]
+    }
+  ],
+  "cursos": [
+    {
+      "id": "CursoSistemasInformacao",
+      "nome": "Bacharelado em Sistemas de Informação",
+      "nome_curto": "Sistemas de Informação",
+      "modalidade": "Graduação — Bacharelado",
+      "unidade_id": "ICEx",
+      "close_match": [
+        "http://www.wikidata.org/entity/Q16387"
+      ]
+    },
+    {
+      "id": "CursoCienciaComputacao",
+      "nome": "Bacharelado em Ciência da Computação",
+      "nome_curto": "Ciência da Computação",
+      "modalidade": "Graduação — Bacharelado",
+      "unidade_id": "ICEx",
+      "close_match": [
+        "http://www.wikidata.org/entity/Q21198"
+      ]
+    }
+  ],
+  "areas_conhecimento": [
+    {
+      "id": "AreaWebSemantica",
+      "nome": "Web Semântica",
+      "exact_match": [
+        "http://www.wikidata.org/entity/Q54837",
+        "http://dbpedia.org/resource/Semantic_Web"
+      ]
+    },
+    {
+      "id": "AreaEngenhariaConhecimento",
+      "nome": "Engenharia de Conhecimento",
+      "exact_match": [
+        "http://www.wikidata.org/entity/Q1166070",
+        "http://dbpedia.org/resource/Knowledge_engineering"
+      ]
+    },
+    {
+      "id": "AreaDadosAbertos",
+      "nome": "Dados Abertos",
+      "exact_match": [
+        "http://www.wikidata.org/entity/Q309901",
+        "http://dbpedia.org/resource/Open_data"
+      ]
+    },
+    {
+      "id": "AreaLinkedOpenData",
+      "nome": "Linked Open Data",
+      "exact_match": [
+        "http://www.wikidata.org/entity/Q18692990",
+        "http://dbpedia.org/resource/Linked_data"
+      ]
+    },
+    {
+      "id": "AreaInteligenciaArtificial",
+      "nome": "Inteligência Artificial",
+      "exact_match": [
+        "http://www.wikidata.org/entity/Q11660",
+        "http://dbpedia.org/resource/Artificial_intelligence"
+      ]
+    },
+    {
+      "id": "AreaDesenvolvimentoWeb",
+      "nome": "Desenvolvimento Web",
+      "exact_match": [
+        "http://www.wikidata.org/entity/Q386275"
+      ]
+    },
+    {
+      "id": "AreaBancoDeDados",
+      "nome": "Banco de Dados",
+      "exact_match": [
+        "http://www.wikidata.org/entity/Q8513",
+        "http://dbpedia.org/resource/Database"
+      ]
+    }
+  ],
+  "disciplinas": [
+    {
+      "id": "DiscWebSemantica",
+      "nome": "Web Semântica",
+      "codigo": "IC801"
+    },
+    {
+      "id": "DiscBancoDados",
+      "nome": "Banco de Dados",
+      "codigo": "IC402"
+    },
+    {
+      "id": "DiscEngSoftware",
+      "nome": "Engenharia de Software",
+      "codigo": "IC501"
+    },
+    {
+      "id": "DiscInteligenciaArtificial",
+      "nome": "Inteligência Artificial",
+      "codigo": "IC603"
+    }
+  ],
+  "projetos_pesquisa": [
+    {
+      "id": "ProjDadosAbertosUFRRJ",
+      "titulo": "Projeto Exemplo de Dados Abertos",
+      "descricao": "Integração e publicação de dados acadêmicos em Linked Open Data e ontologias OWL.",
+      "coordenador_id": "DocenteAnaSilva",
+      "see_also": [
+        "https://dados.gov.br/"
+      ]
+    },
+    {
+      "id": "ProjGrafosConhecimentoIA",
+      "titulo": "Grafos de Conhecimento e IA Explicável no Ensino Superior",
+      "descricao": "Aplicação de ontologias e modelos de linguagem para consulta e recomendação acadêmica.",
+      "coordenador_id": "DocenteCarlosMendes",
+      "see_also": []
+    }
+  ],
+  "grupos_pesquisa": [
+    {
+      "id": "GrupoSistemasInteligentes",
+      "nome": "Grupo de Pesquisa em Sistemas Inteligentes",
+      "descricao": "Pesquisa em Web Semântica, Engenharia de Conhecimento e Inteligência Artificial.",
+      "instituicao_id": "UFRRJ"
+    },
+    {
+      "id": "GrupoDadosWeb",
+      "nome": "Núcleo de Estudos em Dados Abertos e Engenharia Web",
+      "descricao": "Desenvolvimento de aplicações web semânticas e interoperabilidade de catálogos.",
+      "instituicao_id": "UFRRJ"
+    }
+  ],
+  "publicacoes": [
+    {
+      "id": "PubDadosConectados2024",
+      "titulo": "Exemplo de publicação sobre dados conectados no ensino superior",
+      "citacao": "Silva, A. E.; Mendes, C. E.; Pereira, J. E. (2024). Exemplo de publicação sobre dados conectados no ensino superior.",
+      "ano": 2024,
+      "doi": "10.1000/ufrrj.lod.2024.001",
+      "see_also": [
+        "https://openalex.org/W2741809807"
+      ],
+      "autores": [
+        "DocenteAnaSilva",
+        "DocenteCarlosMendes",
+        "DiscenteJoaoPereira"
+      ]
+    },
+    {
+      "id": "PubRepresentacaoConhecimento2022",
+      "titulo": "Exemplo de estudo em representação do conhecimento e ontologias OWL",
+      "citacao": "Silva, A. E.; Mendes, C. E. (2022). Exemplo de estudo em representação do conhecimento e ontologias OWL.",
+      "ano": 2022,
+      "doi": "10.1000/ufrrj.owl.2022.015",
+      "see_also": [],
+      "autores": [
+        "DocenteAnaSilva",
+        "DocenteCarlosMendes"
+      ]
+    },
+    {
+      "id": "PubGrafosAprendizado2025",
+      "titulo": "Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica",
+      "citacao": "Mendes, C. E.; Souza, M. C.; Silva, A. E. (2025). Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica.",
+      "ano": 2025,
+      "doi": "10.1000/ufrrj.kg.2025.008",
+      "see_also": [],
+      "autores": [
+        "DocenteCarlosMendes",
+        "DiscenteMarianaSouza",
+        "DocenteAnaSilva"
+      ]
+    },
+    {
+      "id": "PubPrototipoDados2025",
+      "titulo": "Protótipo de aplicação para organização semântica de dados acadêmicos",
+      "citacao": "Pereira, J. E.; Silva, A. E. (2025). Protótipo de aplicação para organização semântica de dados acadêmicos (Evento Universitário).",
+      "ano": 2025,
+      "doi": "10.1000/ufrrj.web.2025.003",
+      "see_also": [],
+      "autores": [
+        "DiscenteJoaoPereira",
+        "DocenteAnaSilva"
+      ]
+    }
+  ],
+  "perfis": [
+    {
+      "id": "DocenteAnaSilva",
+      "slug": "ana-silva",
+      "tipo_perfil": "docente",
+      "classe_owl": "acad:Docente",
+      "classificacoes_skos": [
+        "pes:Docente",
+        "pes:Pesquisador",
+        "pes:Orientador"
+      ],
+      "nome": "Profa. Dra. Ana Exemplo da Silva",
+      "cargo": "Professora Associada",
+      "resumo_topo": "Departamento de Computação · Instituto de Ciências Exatas (UFRRJ)",
+      "email": "ana.silva@example.ufrrj.br",
+      "pagina_pessoal": "https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/ana-silva.html",
+      "orcid": "https://orcid.org/0000-0002-1825-0097",
+      "lattes": "http://lattes.cnpq.br/1234567890123456",
+      "instituicao_id": "UFRRJ",
+      "unidade_id": "ICEx",
+      "departamento_id": "DeptoComputacao",
+      "apresentacao": "Sou professora da área de Computação, com formação em Sistemas de Informação, mestrado em Informática e doutorado em Ciência da Computação. Minha trajetória acadêmica inclui atividades de ensino, pesquisa e orientação de estudantes em temas relacionados à Web Semântica, à Engenharia de Conhecimento e aos Dados Abertos. Tenho experiência em projetos de modelagem e integração de dados, desenvolvimento de aplicações e representação de conhecimento. Atualmente, meus interesses de trabalho envolvem a publicação e o interligamento de dados acadêmicos, a construção de soluções baseadas em conhecimento e o uso de tecnologias da Web para ampliar o acesso à informação científica.",
+      "formacoes": [
+        {
+          "id": "FormAnaDoutorado",
+          "grau": "Doutorado",
+          "curso": "Ciência da Computação",
+          "instituicao_id": "UFRRJ",
+          "instituicao_nome": "Universidade Federal Rural do Rio de Janeiro",
+          "ano_conclusao": 2018,
+          "descricao": "Doutorado em Ciência da Computação — Universidade Federal Rural do Rio de Janeiro (2018)."
+        },
+        {
+          "id": "FormAnaMestrado",
+          "grau": "Mestrado",
+          "curso": "Informática",
+          "instituicao_id": "UFRRJ",
+          "instituicao_nome": "Universidade Federal Rural do Rio de Janeiro",
+          "ano_conclusao": 2012,
+          "descricao": "Mestrado em Informática — Universidade Federal Rural do Rio de Janeiro (2012)."
+        },
+        {
+          "id": "FormAnaGraduacao",
+          "grau": "Graduação",
+          "curso": "Sistemas de Informação",
+          "instituicao_id": "UFRRJ",
+          "instituicao_nome": "Universidade Federal Rural do Rio de Janeiro",
+          "ano_conclusao": 2009,
+          "descricao": "Graduação em Sistemas de Informação — Universidade Federal Rural do Rio de Janeiro (2009)."
+        }
+      ],
+      "areas_atuacao": [
+        "AreaWebSemantica",
+        "AreaEngenhariaConhecimento",
+        "AreaDadosAbertos"
+      ],
+      "areas_interesse": [
+        "AreaWebSemantica",
+        "AreaEngenhariaConhecimento",
+        "AreaDadosAbertos",
+        "AreaLinkedOpenData"
+      ],
+      "disciplinas": [
+        "DiscWebSemantica",
+        "DiscBancoDados",
+        "DiscEngSoftware"
+      ],
+      "projetos": [
+        "ProjDadosAbertosUFRRJ"
+      ],
+      "grupos": [
+        {
+          "grupo_id": "GrupoSistemasInteligentes",
+          "papel": "Membro pesquisador e líder de linha"
+        },
+        {
+          "grupo_id": "GrupoDadosWeb",
+          "papel": "Pesquisadora colaboradora"
+        }
+      ],
+      "redes": [
+        {
+          "id": "RedeAnaLinkedIn",
+          "nome": "LinkedIn",
+          "url": "https://www.linkedin.com/"
+        },
+        {
+          "id": "RedeAnaWebOfScience",
+          "nome": "Publons / Web of Science",
+          "url": "https://www.webofscience.com/"
+        },
+        {
+          "id": "RedeAnaResearchGate",
+          "nome": "ResearchGate",
+          "url": "https://www.researchgate.net/"
+        },
+        {
+          "id": "RedeAnaORCID",
+          "nome": "ORCID",
+          "url": "https://orcid.org/0000-0002-1825-0097"
+        },
+        {
+          "id": "RedeAnaLattes",
+          "nome": "Currículo Lattes",
+          "url": "http://lattes.cnpq.br/1234567890123456"
+        }
+      ]
+    },
+    {
+      "id": "DocenteCarlosMendes",
+      "slug": "carlos-mendes",
+      "tipo_perfil": "docente",
+      "classe_owl": "acad:Docente",
+      "classificacoes_skos": [
+        "pes:Docente",
+        "pes:Pesquisador",
+        "pes:Orientador"
+      ],
+      "nome": "Prof. Dr. Carlos Eduardo Mendes",
+      "cargo": "Professor Adjunto",
+      "resumo_topo": "Departamento de Computação · Instituto de Ciências Exatas (UFRRJ)",
+      "email": "carlos.mendes@example.ufrrj.br",
+      "pagina_pessoal": "https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/carlos-mendes.html",
+      "orcid": "https://orcid.org/0000-0003-2190-4412",
+      "lattes": "http://lattes.cnpq.br/2345678901234567",
+      "instituicao_id": "UFRRJ",
+      "unidade_id": "ICEx",
+      "departamento_id": "DeptoComputacao",
+      "apresentacao": "Sou professor adjunto do Departamento de Computação da UFRRJ, atuando com foco em Inteligência Artificial, Bancos de Dados e Dados Abertos Conectados. Coordeno projetos de iniciação científica voltados à integração entre grafos de conhecimento RDF/OWL e arquiteturas modernas de recuperação de informação, em colaboração estreita com docentes e discentes do Instituto de Ciências Exatas.",
+      "formacoes": [
+        {
+          "id": "FormCarlosDoutorado",
+          "grau": "Doutorado",
+          "curso": "Engenharia de Sistemas e Computação",
+          "instituicao_id": "UFRRJ",
+          "instituicao_nome": "Universidade Federal Rural do Rio de Janeiro",
+          "ano_conclusao": 2020,
+          "descricao": "Doutorado em Engenharia de Sistemas e Computação (2020)."
+        },
+        {
+          "id": "FormCarlosMestrado",
+          "grau": "Mestrado",
+          "curso": "Ciência da Computação",
+          "instituicao_id": "UFRRJ",
+          "instituicao_nome": "Universidade Federal Rural do Rio de Janeiro",
+          "ano_conclusao": 2015,
+          "descricao": "Mestrado em Ciência da Computação (2015)."
+        }
+      ],
+      "areas_atuacao": [
+        "AreaInteligenciaArtificial",
+        "AreaBancoDeDados",
+        "AreaDadosAbertos",
+        "AreaLinkedOpenData"
+      ],
+      "areas_interesse": [
+        "AreaInteligenciaArtificial",
+        "AreaBancoDeDados",
+        "AreaDadosAbertos",
+        "AreaLinkedOpenData"
+      ],
+      "disciplinas": [
+        "DiscBancoDados",
+        "DiscInteligenciaArtificial"
+      ],
+      "projetos": [
+        "ProjDadosAbertosUFRRJ",
+        "ProjGrafosConhecimentoIA"
+      ],
+      "grupos": [
+        {
+          "grupo_id": "GrupoSistemasInteligentes",
+          "papel": "Membro pesquisador"
+        }
+      ],
+      "redes": [
+        {
+          "id": "RedeCarlosLinkedIn",
+          "nome": "LinkedIn",
+          "url": "https://www.linkedin.com/"
+        },
+        {
+          "id": "RedeCarlosResearchGate",
+          "nome": "ResearchGate",
+          "url": "https://www.researchgate.net/"
+        },
+        {
+          "id": "RedeCarlosORCID",
+          "nome": "ORCID",
+          "url": "https://orcid.org/0000-0003-2190-4412"
+        },
+        {
+          "id": "RedeCarlosLattes",
+          "nome": "Currículo Lattes",
+          "url": "http://lattes.cnpq.br/2345678901234567"
+        }
+      ]
+    },
+    {
+      "id": "DiscenteJoaoPereira",
+      "slug": "joao-pereira",
+      "tipo_perfil": "discente",
+      "classe_owl": "acad:DiscenteGraduacao",
+      "classificacoes_skos": [
+        "pes:Discente",
+        "pes:Graduando",
+        "pes:Extensionista"
+      ],
+      "nome": "João Exemplo Pereira",
+      "cargo": "Discente de Sistemas de Informação",
+      "resumo_topo": "Instituto de Ciências Exatas (UFRRJ) · Ingresso: 2024",
+      "email": "joao.pereira@example.ufrrj.br",
+      "pagina_pessoal": "https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/joao-pereira.html",
+      "orcid": "https://orcid.org/0009-0001-3344-5566",
+      "lattes": "http://lattes.cnpq.br/9876543210987654",
+      "instituicao_id": "UFRRJ",
+      "unidade_id": "ICEx",
+      "curso_id": "CursoSistemasInformacao",
+      "ano_ingresso": 2024,
+      "periodo_atual": "5º período",
+      "apresentacao": "Sou estudante de Sistemas de Informação e tenho interesse em desenvolvimento de aplicações web, tecnologias para organização e compartilhamento de dados e inteligência artificial. Durante a graduação, venho buscando oportunidades para relacionar os conhecimentos das disciplinas a projetos práticos, trabalhos em grupo e atividades acadêmicas. Tenho experiência introdutória com programação e bancos de dados e pretendo aprofundar minha formação em engenharia de software e ciência de dados.",
+      "formacoes": [
+        {
+          "id": "FormJoaoGraduacao",
+          "grau": "Graduação (em andamento)",
+          "curso": "Bacharelado em Sistemas de Informação",
+          "instituicao_id": "UFRRJ",
+          "instituicao_nome": "Universidade Federal Rural do Rio de Janeiro",
+          "ano_conclusao": 2027,
+          "descricao": "Bacharelado em Sistemas de Informação — Universidade Federal Rural do Rio de Janeiro (Ingresso: 2024 · 5º período)."
+        }
+      ],
+      "areas_interesse": [
+        "AreaDesenvolvimentoWeb",
+        "AreaDadosAbertos",
+        "AreaInteligenciaArtificial"
+      ],
+      "projetos": [
+        "ProjDadosAbertosUFRRJ"
+      ],
+      "atividades_extra": [
+        "Monitoria de Banco de Dados — atividade acadêmica no ICEx/UFRRJ."
+      ],
+      "grupos": [
+        {
+          "grupo_id": "GrupoDadosWeb",
+          "papel": "Discente participante"
+        }
+      ],
+      "redes": [
+        {
+          "id": "RedeJoaoLinkedIn",
+          "nome": "LinkedIn",
+          "url": "https://www.linkedin.com/"
+        },
+        {
+          "id": "RedeJoaoORCID",
+          "nome": "ORCID",
+          "url": "https://orcid.org/0009-0001-3344-5566"
+        },
+        {
+          "id": "RedeJoaoLattes",
+          "nome": "Currículo Lattes",
+          "url": "http://lattes.cnpq.br/9876543210987654"
+        }
+      ]
+    },
+    {
+      "id": "DiscenteMarianaSouza",
+      "slug": "mariana-souza",
+      "tipo_perfil": "discente",
+      "classe_owl": "acad:DiscenteGraduacao",
+      "classificacoes_skos": [
+        "pes:Discente",
+        "pes:Graduando",
+        "pes:Pesquisador",
+        "pes:Bolsista"
+      ],
+      "nome": "Mariana Costa Souza",
+      "cargo": "Discente de Ciência da Computação",
+      "resumo_topo": "Instituto de Ciências Exatas (UFRRJ) · Ingresso: 2023",
+      "email": "mariana.souza@example.ufrrj.br",
+      "pagina_pessoal": "https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/mariana-souza.html",
+      "orcid": "https://orcid.org/0009-0004-7788-9900",
+      "lattes": "http://lattes.cnpq.br/5566778899001122",
+      "instituicao_id": "UFRRJ",
+      "unidade_id": "ICEx",
+      "curso_id": "CursoCienciaComputacao",
+      "ano_ingresso": 2023,
+      "periodo_atual": "7º período",
+      "apresentacao": "Sou graduanda em Ciência da Computação na UFRRJ e bolsista de Iniciação Científica (PIBIC/CNPq) junto ao Grupo de Pesquisa em Sistemas Inteligentes. Meu foco atual envolve ontologias OWL, consultas federadas SPARQL sobre bases de Linked Open Data (Wikidata/DBpedia) e métodos híbridos combinando grafos de conhecimento e inteligência artificial.",
+      "formacoes": [
+        {
+          "id": "FormMarianaGraduacao",
+          "grau": "Graduação (em andamento)",
+          "curso": "Bacharelado em Ciência da Computação",
+          "instituicao_id": "UFRRJ",
+          "instituicao_nome": "Universidade Federal Rural do Rio de Janeiro",
+          "ano_conclusao": 2026,
+          "descricao": "Bacharelado em Ciência da Computação — Universidade Federal Rural do Rio de Janeiro (Ingresso: 2023 · 7º período)."
+        }
+      ],
+      "areas_interesse": [
+        "AreaWebSemantica",
+        "AreaLinkedOpenData",
+        "AreaInteligenciaArtificial"
+      ],
+      "projetos": [
+        "ProjDadosAbertosUFRRJ",
+        "ProjGrafosConhecimentoIA"
+      ],
+      "atividades_extra": [
+        "Bolsista de Iniciação Científica (PIBIC/CNPq) em Grafos de Conhecimento e Web Semântica."
+      ],
+      "grupos": [
+        {
+          "grupo_id": "GrupoSistemasInteligentes",
+          "papel": "Discente bolsista de iniciação científica"
+        }
+      ],
+      "redes": [
+        {
+          "id": "RedeMarianaLinkedIn",
+          "nome": "LinkedIn",
+          "url": "https://www.linkedin.com/"
+        },
+        {
+          "id": "RedeMarianaORCID",
+          "nome": "ORCID",
+          "url": "https://orcid.org/0009-0004-7788-9900"
+        },
+        {
+          "id": "RedeMarianaLattes",
+          "nome": "Currículo Lattes",
+          "url": "http://lattes.cnpq.br/5566778899001122"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+# Consulta 05 — Quais publicações estão associadas a determinado docente e quem são seus coautores?
+# Explora a relação de autoria entre Publicacao, o docente alvo (Profa. Dra. Ana Exemplo da Silva)
+# e seus respectivos coautores (docentes ou discentes).
+
+PREFIX acad: <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#>
+
+SELECT ?tituloPublicacao ?anoPublicacao ?doi ?nomeDocente ?nomeCoautor ?papelCoautor
+WHERE {
+  ?docente a acad:Docente ;
+           acad:nome ?nomeDocente .
+  FILTER(CONTAINS(LCASE(?nomeDocente), "ana exemplo da silva"))
+
+  ?publicacao a acad:Publicacao ;
+              acad:tituloPublicacao ?tituloPublicacao ;
+              acad:anoPublicacao ?anoPublicacao ;
+              acad:temAutor ?docente ;
+              acad:temAutor ?coautor .
+
+  ?coautor acad:nome ?nomeCoautor .
+  OPTIONAL { ?coautor acad:cargoOuFuncao ?papelCoautor . }
+  OPTIONAL { ?publicacao acad:doi ?doi . }
+
+  FILTER(?coautor != ?docente)
+}
+ORDER BY DESC(?anoPublicacao) ?tituloPublicacao ?nomeCoautor

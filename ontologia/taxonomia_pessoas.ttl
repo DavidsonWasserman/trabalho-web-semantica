@@ -1,0 +1,199 @@
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema:  <https://schema.org/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix pes:     <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl#> .
+
+# ==============================================================================
+# Esquema de Conceitos / Tesauro (W3C SKOS)
+# ==============================================================================
+<https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl>
+    a owl:Ontology ;
+    dcterms:title "Vocabulário Controlado e Taxonomia Facetada de Perfis Acadêmicos (UFRRJ)"@pt ;
+    dcterms:creator "Davidson Wasserman e Dupla (Disciplina de Web Semântica - UFRRJ)"@pt ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-11-15"^^xsd:date .
+
+pes:EsquemaPessoas a skos:ConceptScheme ;
+    dcterms:title "Taxonomia e Tesauro de Pessoas da Universidade"@pt ;
+    dcterms:description "Classificação facetada e vocabulário controlado para representação de vínculos, atuações e condições de pessoas na universidade."@pt ;
+    dcterms:created "2026-10-14"^^xsd:date ;
+    dcterms:modified "2026-11-15"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    skos:hasTopConcept pes:Vinculo, pes:Atuacao, pes:Condicao .
+
+# ==============================================================================
+# Facetas (Top Concepts)
+# ==============================================================================
+pes:Vinculo a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:topConceptOf pes:EsquemaPessoas ;
+    skos:prefLabel "Vínculo institucional"@pt ;
+    skos:definition "Relação jurídica ou formal primária da pessoa com a universidade."@pt ;
+    skos:scopeNote "Não confundir vínculo formal com atividades transitórias (ex: pesquisa ou gestão)."@pt .
+
+pes:Atuacao a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:topConceptOf pes:EsquemaPessoas ;
+    skos:prefLabel "Atuação"@pt ;
+    skos:definition "Papéis funcionais, acadêmicos ou profissionais desempenhados pela pessoa."@pt .
+
+pes:Condicao a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:topConceptOf pes:EsquemaPessoas ;
+    skos:prefLabel "Condição"@pt ;
+    skos:definition "Condição de fomento, apoio ou modalidade de participação em atividades acadêmicas."@pt .
+
+# ==============================================================================
+# Faceta 1: Vínculo Institucional
+# ==============================================================================
+pes:Docente a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel "Docente"@pt ;
+    skos:altLabel "Professor"@pt, "Corpo docente"@pt ;
+    skos:definition "Servidor integrante do corpo docente com atribuições de ensino, pesquisa e extensão."@pt ;
+    skos:scopeNote "Termo padronizado: 'Docente'. Evitar termos informais ou reduções."@pt ;
+    skos:closeMatch schema:Person ;
+    skos:related pes:Pesquisador, pes:Orientador .
+
+pes:Discente a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:narrower pes:Graduando, pes:Especializando, pes:Mestrando, pes:Doutorando ;
+    skos:prefLabel "Discente"@pt ;
+    skos:altLabel "Aluno"@pt, "Estudante"@pt ;
+    skos:definition "Indivíduo formalmente matriculado em curso ou programa regular da universidade."@pt ;
+    skos:scopeNote "Termo padrão adotado: 'Discente'. Termos como 'aluno' e 'estudante' são aceitos como variantes sinônimas para busca, mas não como rótulo principal."@pt ;
+    skos:closeMatch schema:Student ;
+    skos:related pes:Bolsista, pes:Extensionista .
+
+pes:Graduando a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Discente ;
+    skos:prefLabel "Discente de graduação"@pt ;
+    skos:altLabel "Graduando"@pt, "Aluno de graduação"@pt ;
+    skos:definition "Discente matriculado em curso de graduação (bacharelado, licenciatura ou tecnologia)."@pt .
+
+pes:Especializando a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Discente ;
+    skos:prefLabel "Discente de especialização"@pt ;
+    skos:altLabel "Especializando"@pt, "Pós-graduando lato sensu"@pt ;
+    skos:definition "Discente matriculado em curso de pós-graduação lato sensu."@pt .
+
+pes:Mestrando a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Discente ;
+    skos:prefLabel "Discente de mestrado"@pt ;
+    skos:altLabel "Mestrando"@pt ;
+    skos:definition "Discente matriculado em programa de pós-graduação stricto sensu em nível de mestrado."@pt ;
+    skos:related pes:Pesquisador .
+
+pes:Doutorando a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Discente ;
+    skos:prefLabel "Discente de doutorado"@pt ;
+    skos:altLabel "Doutorando"@pt ;
+    skos:definition "Discente matriculado em programa de pós-graduação stricto sensu em nível de doutorado."@pt ;
+    skos:related pes:Pesquisador .
+
+pes:TecnicoAdministrativo a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel "Servidor técnico-administrativo"@pt ;
+    skos:altLabel "Técnico-administrativo"@pt, "TAE"@pt, "Técnico universitário"@pt ;
+    skos:definition "Servidor público que presta apoio técnico e administrativo às atividades-meio e finalísticas."@pt ;
+    skos:scopeNote "Termo oficial padronizado: 'Servidor técnico-administrativo'. Evitar o uso isolado de 'Funcionário' por ser ambíguo com celetistas/terceirizados."@pt ;
+    skos:related pes:Gestor .
+
+pes:Terceirizado a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel "Funcionário terceirizado"@pt ;
+    skos:altLabel "Terceirizado"@pt, "Prestador de serviços terceirizados"@pt ;
+    skos:definition "Profissional contratado por empresa prestadora de serviços contínuos à universidade."@pt .
+
+pes:ColaboradorExterno a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel "Colaborador externo"@pt ;
+    skos:altLabel "Pesquisador visitante"@pt, "Professor convidado"@pt ;
+    skos:definition "Profissional ou acadêmico sem vínculo funcional estatutário atuando em projetos específicos ou convênios."@pt .
+
+pes:Egresso a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel "Egresso"@pt ;
+    skos:altLabel "Ex-aluno"@pt, "Alumni"@pt ;
+    skos:definition "Pessoa diplomada ou que concluiu integralmente seu ciclo de formação na instituição."@pt ;
+    skos:scopeNote "Termo padronizado: 'Egresso'. O termo em inglês 'Alumni' é tratado como sinônimo para fins de busca e SEO internacional."@pt ;
+    skos:closeMatch schema:alumniOf .
+
+# ==============================================================================
+# Faceta 2: Atuação
+# ==============================================================================
+pes:Pesquisador a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel "Pesquisador"@pt ;
+    skos:altLabel "Cientista"@pt, "Investigador"@pt ;
+    skos:definition "Pessoa que atua formalmente na concepção e execução de projetos de pesquisa científica ou tecnológica."@pt ;
+    skos:related pes:Docente, pes:Mestrando, pes:Doutorando, pes:Bolsista .
+
+pes:Extensionista a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel "Extensionista"@pt ;
+    skos:definition "Pessoa que atua no planejamento e execução de ações de extensão universitária voltadas à sociedade."@pt ;
+    skos:related pes:Docente, pes:Discente .
+
+pes:Orientador a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel "Orientador"@pt ;
+    skos:altLabel "Tutor acadêmico"@pt ;
+    skos:definition "Docente ou pesquisador credenciado responsável pelo direcionamento científico ou acadêmico de discentes."@pt ;
+    skos:related pes:Docente .
+
+pes:Gestor a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel "Gestor"@pt ;
+    skos:altLabel "Coordenador"@pt, "Diretor"@pt, "Chefe de departamento"@pt ;
+    skos:definition "Pessoa investida em função de confiança, chefia, coordenação de curso ou direção acadêmica/administrativa."@pt ;
+    skos:related pes:Docente, pes:TecnicoAdministrativo .
+
+pes:Empreendedor a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel "Empreendedor"@pt ;
+    skos:altLabel "Fundador de startup acadêmica"@pt ;
+    skos:definition "Pessoa vinculada à universidade envolvida na geração de negócios inovadores, empresas juniores ou spin-offs."@pt .
+
+pes:ProfissionalAutonomo a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel "Profissional autônomo"@pt ;
+    skos:altLabel "Consultor autônomo"@pt ;
+    skos:definition "Pessoa com relação técnica com a universidade prestando consultorias ou assessorias individualizadas."@pt .
+
+# ==============================================================================
+# Faceta 3: Condição
+# ==============================================================================
+pes:Bolsista a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Condicao ;
+    skos:prefLabel "Bolsista"@pt ;
+    skos:altLabel "Beneficiário de bolsa"@pt ;
+    skos:definition "Pessoa que recebe benefício financeiro institucional ou de agências de fomento para desenvolver atividades acadêmicas."@pt ;
+    skos:related pes:Discente, pes:Pesquisador .
+
+pes:Voluntario a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Condicao ;
+    skos:prefLabel "Voluntário"@pt ;
+    skos:altLabel "Colaborador voluntário"@pt ;
+    skos:definition "Pessoa participante de programa de extensão, pesquisa ou monitoria sem percepção de bolsa financeira."@pt .

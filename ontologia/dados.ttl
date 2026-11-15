@@ -1,0 +1,382 @@
+@prefix acad:    <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#> .
+@prefix pes:     <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl#> .
+@prefix recurso: <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/dados.ttl#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix schema:  <https://schema.org/> .
+@prefix bibo:    <http://purl.org/ontology/bibo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+#  Metadados do Conjunto de Dados (Linked Open Data)
+#################################################################
+
+<https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/dados.ttl>
+    a owl:Ontology ;
+    owl:imports <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl> , <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl> ;
+    dcterms:title "Diretório Semântico de Perfis Acadêmicos — UFRRJ"@pt ;
+    dcterms:description "Grafo RDF de perfis acadêmicos de docentes e discentes da UFRRJ com ligações LOD externas."@pt ;
+    dcterms:source "Perfis demonstrativos baseados nos modelos da disciplina Web Semântica e Linked Open Data (DCC/ICEx/UFRRJ) + dados acadêmicos fictícios complementares."@pt ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-11-15"^^xsd:date .
+
+#################################################################
+#  Instituições, Unidades Acadêmicas, Departamentos e Cursos
+#################################################################
+
+recurso:UFRRJ a owl:NamedIndividual , acad:InstituicaoEnsino , schema:CollegeOrUniversity ;
+    acad:nomeOrganizacao "Universidade Federal Rural do Rio de Janeiro" ;
+    schema:name "Universidade Federal Rural do Rio de Janeiro" ;
+    acad:sigla "UFRRJ" ;
+    schema:url <https://portal.ufrrj.br/> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q7894375> , <http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro> ;
+    rdfs:seeAlso <https://pt.wikipedia.org/wiki/Universidade_Federal_Rural_do_Rio_de_Janeiro> .
+
+recurso:ICEx a owl:NamedIndividual , acad:UnidadeAcademica ;
+    acad:nomeOrganizacao "Instituto de Ciências Exatas" ;
+    acad:sigla "ICEx" ;
+    acad:pertenceAInstituicao recurso:UFRRJ ;
+    rdfs:seeAlso <https://portal.ufrrj.br/instituto-de-ciencias-exatas/> .
+
+recurso:DeptoComputacao a owl:NamedIndividual , acad:Departamento ;
+    acad:nomeOrganizacao "Departamento de Computação" ;
+    acad:sigla "DComp/ICEx" ;
+    acad:parteDeUnidade recurso:ICEx ;
+    acad:pertenceAInstituicao recurso:UFRRJ ;
+    rdfs:seeAlso <https://dcc.ufrrj.br/> .
+
+recurso:CursoSistemasInformacao a owl:NamedIndividual , acad:Curso ;
+    acad:nomeCurso "Bacharelado em Sistemas de Informação" ;
+    acad:modalidadeCurso "Graduação — Bacharelado" ;
+    acad:oferecidoPorUnidade recurso:ICEx ;
+    skos:closeMatch <http://www.wikidata.org/entity/Q16387> .
+
+recurso:CursoCienciaComputacao a owl:NamedIndividual , acad:Curso ;
+    acad:nomeCurso "Bacharelado em Ciência da Computação" ;
+    acad:modalidadeCurso "Graduação — Bacharelado" ;
+    acad:oferecidoPorUnidade recurso:ICEx ;
+    skos:closeMatch <http://www.wikidata.org/entity/Q21198> .
+
+#################################################################
+#  Áreas de Conhecimento (com links LOD Wikidata / DBpedia)
+#################################################################
+
+recurso:AreaWebSemantica a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea "Web Semântica" ;
+    skos:prefLabel "Web Semântica"@pt ;
+    skos:exactMatch <http://www.wikidata.org/entity/Q54837> , <http://dbpedia.org/resource/Semantic_Web> .
+
+recurso:AreaEngenhariaConhecimento a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea "Engenharia de Conhecimento" ;
+    skos:prefLabel "Engenharia de Conhecimento"@pt ;
+    skos:exactMatch <http://www.wikidata.org/entity/Q1166070> , <http://dbpedia.org/resource/Knowledge_engineering> .
+
+recurso:AreaDadosAbertos a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea "Dados Abertos" ;
+    skos:prefLabel "Dados Abertos"@pt ;
+    skos:exactMatch <http://www.wikidata.org/entity/Q309901> , <http://dbpedia.org/resource/Open_data> .
+
+recurso:AreaLinkedOpenData a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea "Linked Open Data" ;
+    skos:prefLabel "Linked Open Data"@pt ;
+    skos:exactMatch <http://www.wikidata.org/entity/Q18692990> , <http://dbpedia.org/resource/Linked_data> .
+
+recurso:AreaInteligenciaArtificial a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea "Inteligência Artificial" ;
+    skos:prefLabel "Inteligência Artificial"@pt ;
+    skos:exactMatch <http://www.wikidata.org/entity/Q11660> , <http://dbpedia.org/resource/Artificial_intelligence> .
+
+recurso:AreaDesenvolvimentoWeb a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea "Desenvolvimento Web" ;
+    skos:prefLabel "Desenvolvimento Web"@pt ;
+    skos:exactMatch <http://www.wikidata.org/entity/Q386275> .
+
+recurso:AreaBancoDeDados a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea "Banco de Dados" ;
+    skos:prefLabel "Banco de Dados"@pt ;
+    skos:exactMatch <http://www.wikidata.org/entity/Q8513> , <http://dbpedia.org/resource/Database> .
+
+#################################################################
+#  Disciplinas, Projetos de Pesquisa e Grupos de Pesquisa
+#################################################################
+
+recurso:DiscWebSemantica a owl:NamedIndividual , acad:Disciplina ;
+    acad:nomeDisciplina "Web Semântica" ;
+    acad:codigoDisciplina "IC801" .
+
+recurso:DiscBancoDados a owl:NamedIndividual , acad:Disciplina ;
+    acad:nomeDisciplina "Banco de Dados" ;
+    acad:codigoDisciplina "IC402" .
+
+recurso:DiscEngSoftware a owl:NamedIndividual , acad:Disciplina ;
+    acad:nomeDisciplina "Engenharia de Software" ;
+    acad:codigoDisciplina "IC501" .
+
+recurso:DiscInteligenciaArtificial a owl:NamedIndividual , acad:Disciplina ;
+    acad:nomeDisciplina "Inteligência Artificial" ;
+    acad:codigoDisciplina "IC603" .
+
+recurso:ProjDadosAbertosUFRRJ a owl:NamedIndividual , acad:ProjetoPesquisa ;
+    acad:tituloProjeto "Projeto Exemplo de Dados Abertos" ;
+    acad:descricaoProjeto "Integração e publicação de dados acadêmicos em Linked Open Data e ontologias OWL." ;
+    acad:coordenadoPor recurso:DocenteAnaSilva ;
+    rdfs:seeAlso <https://dados.gov.br/> .
+
+recurso:ProjGrafosConhecimentoIA a owl:NamedIndividual , acad:ProjetoPesquisa ;
+    acad:tituloProjeto "Grafos de Conhecimento e IA Explicável no Ensino Superior" ;
+    acad:descricaoProjeto "Aplicação de ontologias e modelos de linguagem para consulta e recomendação acadêmica." ;
+    acad:coordenadoPor recurso:DocenteCarlosMendes .
+
+recurso:GrupoSistemasInteligentes a owl:NamedIndividual , acad:GrupoPesquisa ;
+    acad:nomeOrganizacao "Grupo de Pesquisa em Sistemas Inteligentes" ;
+    acad:pertenceAInstituicao recurso:UFRRJ .
+
+recurso:GrupoDadosWeb a owl:NamedIndividual , acad:GrupoPesquisa ;
+    acad:nomeOrganizacao "Núcleo de Estudos em Dados Abertos e Engenharia Web" ;
+    acad:pertenceAInstituicao recurso:UFRRJ .
+
+#################################################################
+#  Publicações e Trabalhos Acadêmicos (Coautorias)
+#################################################################
+
+recurso:PubDadosConectados2024 a owl:NamedIndividual , acad:Publicacao ;
+    acad:tituloPublicacao "Exemplo de publicação sobre dados conectados no ensino superior" ;
+    acad:citacaoBibliografica "Silva, A. E.; Mendes, C. E.; Pereira, J. E. (2024). Exemplo de publicação sobre dados conectados no ensino superior." ;
+    acad:anoPublicacao 2024 ;
+    acad:doi "10.1000/ufrrj.lod.2024.001" ;
+    bibo:doi "10.1000/ufrrj.lod.2024.001" ;
+    acad:temAutor recurso:DocenteAnaSilva , recurso:DocenteCarlosMendes , recurso:DiscenteJoaoPereira ;
+    rdfs:seeAlso <https://openalex.org/W2741809807> .
+
+recurso:PubRepresentacaoConhecimento2022 a owl:NamedIndividual , acad:Publicacao ;
+    acad:tituloPublicacao "Exemplo de estudo em representação do conhecimento e ontologias OWL" ;
+    acad:citacaoBibliografica "Silva, A. E.; Mendes, C. E. (2022). Exemplo de estudo em representação do conhecimento e ontologias OWL." ;
+    acad:anoPublicacao 2022 ;
+    acad:doi "10.1000/ufrrj.owl.2022.015" ;
+    bibo:doi "10.1000/ufrrj.owl.2022.015" ;
+    acad:temAutor recurso:DocenteAnaSilva , recurso:DocenteCarlosMendes .
+
+recurso:PubGrafosAprendizado2025 a owl:NamedIndividual , acad:Publicacao ;
+    acad:tituloPublicacao "Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica" ;
+    acad:citacaoBibliografica "Mendes, C. E.; Souza, M. C.; Silva, A. E. (2025). Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica." ;
+    acad:anoPublicacao 2025 ;
+    acad:doi "10.1000/ufrrj.kg.2025.008" ;
+    bibo:doi "10.1000/ufrrj.kg.2025.008" ;
+    acad:temAutor recurso:DocenteCarlosMendes , recurso:DiscenteMarianaSouza , recurso:DocenteAnaSilva .
+
+recurso:PubPrototipoDados2025 a owl:NamedIndividual , acad:Publicacao ;
+    acad:tituloPublicacao "Protótipo de aplicação para organização semântica de dados acadêmicos" ;
+    acad:citacaoBibliografica "Pereira, J. E.; Silva, A. E. (2025). Protótipo de aplicação para organização semântica de dados acadêmicos (Evento Universitário)." ;
+    acad:anoPublicacao 2025 ;
+    acad:doi "10.1000/ufrrj.web.2025.003" ;
+    bibo:doi "10.1000/ufrrj.web.2025.003" ;
+    acad:temAutor recurso:DiscenteJoaoPereira , recurso:DocenteAnaSilva .
+
+#################################################################
+#  Perfis de Docentes e Discentes + Formações + Redes Externas
+#################################################################
+
+recurso:DocenteAnaSilva a owl:NamedIndividual , acad:Docente , acad:Pessoa ;
+    acad:nome "Profa. Dra. Ana Exemplo da Silva" ;
+    foaf:name "Profa. Dra. Ana Exemplo da Silva" ;
+    acad:cargoOuFuncao "Professora Associada" ;
+    acad:email "ana.silva@example.ufrrj.br" ;
+    foaf:mbox <mailto:ana.silva@example.ufrrj.br> ;
+    acad:apresentacao "Sou professora da área de Computação, com formação em Sistemas de Informação, mestrado em Informática e doutorado em Ciência da Computação. Minha trajetória acadêmica inclui atividades de ensino, pesquisa e orientação de estudantes em temas relacionados à Web Semântica, à Engenharia de Conhecimento e aos Dados Abertos. Tenho experiência em projetos de modelagem e integração de dados, desenvolvimento de aplicações e representação de conhecimento. Atualmente, meus interesses de trabalho envolvem a publicação e o interligamento de dados acadêmicos, a construção de soluções baseadas em conhecimento e o uso de tecnologias da Web para ampliar o acesso à informação científica." ;
+    acad:paginaPessoal "https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/ana-silva.html"^^xsd:anyURI ;
+    foaf:homepage <https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/ana-silva.html> ;
+    acad:orcid "https://orcid.org/0000-0002-1825-0097"^^xsd:anyURI ;
+    acad:lattes "http://lattes.cnpq.br/1234567890123456"^^xsd:anyURI ;
+    rdfs:seeAlso <https://orcid.org/0000-0002-1825-0097> , <http://lattes.cnpq.br/1234567890123456> ;
+    acad:vinculadoAUnidade recurso:ICEx ;
+    acad:lotadoEm recurso:DeptoComputacao ;
+    acad:atuaEmArea recurso:AreaWebSemantica , recurso:AreaEngenhariaConhecimento , recurso:AreaDadosAbertos ;
+    acad:leciona recurso:DiscWebSemantica , recurso:DiscBancoDados , recurso:DiscEngSoftware ;
+    acad:temInteresseEm recurso:AreaWebSemantica , recurso:AreaEngenhariaConhecimento , recurso:AreaDadosAbertos , recurso:AreaLinkedOpenData ;
+    acad:participaDeProjeto recurso:ProjDadosAbertosUFRRJ ;
+    acad:membroDeGrupo recurso:GrupoSistemasInteligentes , recurso:GrupoDadosWeb ;
+    acad:possuiClassificacaoSKOS pes:Docente , pes:Pesquisador , pes:Orientador ;
+    acad:possuiFormacao recurso:FormAnaDoutorado , recurso:FormAnaMestrado , recurso:FormAnaGraduacao ;
+    acad:possuiPerfilRede recurso:RedeAnaLinkedIn , recurso:RedeAnaWebOfScience , recurso:RedeAnaResearchGate , recurso:RedeAnaORCID , recurso:RedeAnaLattes .
+
+recurso:FormAnaDoutorado a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao "Doutorado" ;
+    acad:cursoFormacao "Ciência da Computação" ;
+    acad:anoConclusao 2018 ;
+    acad:descricaoFormacao "Doutorado em Ciência da Computação — Universidade Federal Rural do Rio de Janeiro (2018)." ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:FormAnaMestrado a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao "Mestrado" ;
+    acad:cursoFormacao "Informática" ;
+    acad:anoConclusao 2012 ;
+    acad:descricaoFormacao "Mestrado em Informática — Universidade Federal Rural do Rio de Janeiro (2012)." ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:FormAnaGraduacao a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao "Graduação" ;
+    acad:cursoFormacao "Sistemas de Informação" ;
+    acad:anoConclusao 2009 ;
+    acad:descricaoFormacao "Graduação em Sistemas de Informação — Universidade Federal Rural do Rio de Janeiro (2009)." ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:RedeAnaLinkedIn a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "LinkedIn" ;
+    acad:urlRede "https://www.linkedin.com/"^^xsd:anyURI .
+
+recurso:RedeAnaWebOfScience a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "Publons / Web of Science" ;
+    acad:urlRede "https://www.webofscience.com/"^^xsd:anyURI .
+
+recurso:RedeAnaResearchGate a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "ResearchGate" ;
+    acad:urlRede "https://www.researchgate.net/"^^xsd:anyURI .
+
+recurso:RedeAnaORCID a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "ORCID" ;
+    acad:urlRede "https://orcid.org/0000-0002-1825-0097"^^xsd:anyURI .
+
+recurso:RedeAnaLattes a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "Currículo Lattes" ;
+    acad:urlRede "http://lattes.cnpq.br/1234567890123456"^^xsd:anyURI .
+
+recurso:DocenteCarlosMendes a owl:NamedIndividual , acad:Docente , acad:Pessoa ;
+    acad:nome "Prof. Dr. Carlos Eduardo Mendes" ;
+    foaf:name "Prof. Dr. Carlos Eduardo Mendes" ;
+    acad:cargoOuFuncao "Professor Adjunto" ;
+    acad:email "carlos.mendes@example.ufrrj.br" ;
+    foaf:mbox <mailto:carlos.mendes@example.ufrrj.br> ;
+    acad:apresentacao "Sou professor adjunto do Departamento de Computação da UFRRJ, atuando com foco em Inteligência Artificial, Bancos de Dados e Dados Abertos Conectados. Coordeno projetos de iniciação científica voltados à integração entre grafos de conhecimento RDF/OWL e arquiteturas modernas de recuperação de informação, em colaboração estreita com docentes e discentes do Instituto de Ciências Exatas." ;
+    acad:paginaPessoal "https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/carlos-mendes.html"^^xsd:anyURI ;
+    foaf:homepage <https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/carlos-mendes.html> ;
+    acad:orcid "https://orcid.org/0000-0003-2190-4412"^^xsd:anyURI ;
+    acad:lattes "http://lattes.cnpq.br/2345678901234567"^^xsd:anyURI ;
+    rdfs:seeAlso <https://orcid.org/0000-0003-2190-4412> , <http://lattes.cnpq.br/2345678901234567> ;
+    acad:vinculadoAUnidade recurso:ICEx ;
+    acad:lotadoEm recurso:DeptoComputacao ;
+    acad:atuaEmArea recurso:AreaInteligenciaArtificial , recurso:AreaBancoDeDados , recurso:AreaDadosAbertos , recurso:AreaLinkedOpenData ;
+    acad:leciona recurso:DiscBancoDados , recurso:DiscInteligenciaArtificial ;
+    acad:temInteresseEm recurso:AreaInteligenciaArtificial , recurso:AreaBancoDeDados , recurso:AreaDadosAbertos , recurso:AreaLinkedOpenData ;
+    acad:participaDeProjeto recurso:ProjDadosAbertosUFRRJ , recurso:ProjGrafosConhecimentoIA ;
+    acad:membroDeGrupo recurso:GrupoSistemasInteligentes ;
+    acad:possuiClassificacaoSKOS pes:Docente , pes:Pesquisador , pes:Orientador ;
+    acad:possuiFormacao recurso:FormCarlosDoutorado , recurso:FormCarlosMestrado ;
+    acad:possuiPerfilRede recurso:RedeCarlosLinkedIn , recurso:RedeCarlosResearchGate , recurso:RedeCarlosORCID , recurso:RedeCarlosLattes .
+
+recurso:FormCarlosDoutorado a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao "Doutorado" ;
+    acad:cursoFormacao "Engenharia de Sistemas e Computação" ;
+    acad:anoConclusao 2020 ;
+    acad:descricaoFormacao "Doutorado em Engenharia de Sistemas e Computação (2020)." ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:FormCarlosMestrado a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao "Mestrado" ;
+    acad:cursoFormacao "Ciência da Computação" ;
+    acad:anoConclusao 2015 ;
+    acad:descricaoFormacao "Mestrado em Ciência da Computação (2015)." ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:RedeCarlosLinkedIn a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "LinkedIn" ;
+    acad:urlRede "https://www.linkedin.com/"^^xsd:anyURI .
+
+recurso:RedeCarlosResearchGate a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "ResearchGate" ;
+    acad:urlRede "https://www.researchgate.net/"^^xsd:anyURI .
+
+recurso:RedeCarlosORCID a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "ORCID" ;
+    acad:urlRede "https://orcid.org/0000-0003-2190-4412"^^xsd:anyURI .
+
+recurso:RedeCarlosLattes a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "Currículo Lattes" ;
+    acad:urlRede "http://lattes.cnpq.br/2345678901234567"^^xsd:anyURI .
+
+recurso:DiscenteJoaoPereira a owl:NamedIndividual , acad:DiscenteGraduacao , acad:Discente , acad:Pessoa ;
+    acad:nome "João Exemplo Pereira" ;
+    foaf:name "João Exemplo Pereira" ;
+    acad:cargoOuFuncao "Discente de Sistemas de Informação" ;
+    acad:email "joao.pereira@example.ufrrj.br" ;
+    foaf:mbox <mailto:joao.pereira@example.ufrrj.br> ;
+    acad:apresentacao "Sou estudante de Sistemas de Informação e tenho interesse em desenvolvimento de aplicações web, tecnologias para organização e compartilhamento de dados e inteligência artificial. Durante a graduação, venho buscando oportunidades para relacionar os conhecimentos das disciplinas a projetos práticos, trabalhos em grupo e atividades acadêmicas. Tenho experiência introdutória com programação e bancos de dados e pretendo aprofundar minha formação em engenharia de software e ciência de dados." ;
+    acad:paginaPessoal "https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/joao-pereira.html"^^xsd:anyURI ;
+    foaf:homepage <https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/joao-pereira.html> ;
+    acad:orcid "https://orcid.org/0009-0001-3344-5566"^^xsd:anyURI ;
+    acad:lattes "http://lattes.cnpq.br/9876543210987654"^^xsd:anyURI ;
+    rdfs:seeAlso <https://orcid.org/0009-0001-3344-5566> , <http://lattes.cnpq.br/9876543210987654> ;
+    acad:vinculadoAUnidade recurso:ICEx ;
+    acad:matriculadoEm recurso:CursoSistemasInformacao ;
+    acad:anoIngresso 2024 ;
+    acad:periodoAtual "5º período" ;
+    acad:temInteresseEm recurso:AreaDesenvolvimentoWeb , recurso:AreaDadosAbertos , recurso:AreaInteligenciaArtificial ;
+    acad:participaDeProjeto recurso:ProjDadosAbertosUFRRJ ;
+    acad:membroDeGrupo recurso:GrupoDadosWeb ;
+    acad:possuiClassificacaoSKOS pes:Discente , pes:Graduando , pes:Extensionista ;
+    acad:possuiFormacao recurso:FormJoaoGraduacao ;
+    acad:possuiPerfilRede recurso:RedeJoaoLinkedIn , recurso:RedeJoaoORCID , recurso:RedeJoaoLattes .
+
+recurso:FormJoaoGraduacao a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao "Graduação (em andamento)" ;
+    acad:cursoFormacao "Bacharelado em Sistemas de Informação" ;
+    acad:anoConclusao 2027 ;
+    acad:descricaoFormacao "Bacharelado em Sistemas de Informação — Universidade Federal Rural do Rio de Janeiro (Ingresso: 2024 · 5º período)." ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:RedeJoaoLinkedIn a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "LinkedIn" ;
+    acad:urlRede "https://www.linkedin.com/"^^xsd:anyURI .
+
+recurso:RedeJoaoORCID a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "ORCID" ;
+    acad:urlRede "https://orcid.org/0009-0001-3344-5566"^^xsd:anyURI .
+
+recurso:RedeJoaoLattes a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "Currículo Lattes" ;
+    acad:urlRede "http://lattes.cnpq.br/9876543210987654"^^xsd:anyURI .
+
+recurso:DiscenteMarianaSouza a owl:NamedIndividual , acad:DiscenteGraduacao , acad:Discente , acad:Pessoa ;
+    acad:nome "Mariana Costa Souza" ;
+    foaf:name "Mariana Costa Souza" ;
+    acad:cargoOuFuncao "Discente de Ciência da Computação" ;
+    acad:email "mariana.souza@example.ufrrj.br" ;
+    foaf:mbox <mailto:mariana.souza@example.ufrrj.br> ;
+    acad:apresentacao "Sou graduanda em Ciência da Computação na UFRRJ e bolsista de Iniciação Científica (PIBIC/CNPq) junto ao Grupo de Pesquisa em Sistemas Inteligentes. Meu foco atual envolve ontologias OWL, consultas federadas SPARQL sobre bases de Linked Open Data (Wikidata/DBpedia) e métodos híbridos combinando grafos de conhecimento e inteligência artificial." ;
+    acad:paginaPessoal "https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/mariana-souza.html"^^xsd:anyURI ;
+    foaf:homepage <https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/mariana-souza.html> ;
+    acad:orcid "https://orcid.org/0009-0004-7788-9900"^^xsd:anyURI ;
+    acad:lattes "http://lattes.cnpq.br/5566778899001122"^^xsd:anyURI ;
+    rdfs:seeAlso <https://orcid.org/0009-0004-7788-9900> , <http://lattes.cnpq.br/5566778899001122> ;
+    acad:vinculadoAUnidade recurso:ICEx ;
+    acad:matriculadoEm recurso:CursoCienciaComputacao ;
+    acad:anoIngresso 2023 ;
+    acad:periodoAtual "7º período" ;
+    acad:temInteresseEm recurso:AreaWebSemantica , recurso:AreaLinkedOpenData , recurso:AreaInteligenciaArtificial ;
+    acad:participaDeProjeto recurso:ProjDadosAbertosUFRRJ , recurso:ProjGrafosConhecimentoIA ;
+    acad:membroDeGrupo recurso:GrupoSistemasInteligentes ;
+    acad:possuiClassificacaoSKOS pes:Discente , pes:Graduando , pes:Pesquisador , pes:Bolsista ;
+    acad:possuiFormacao recurso:FormMarianaGraduacao ;
+    acad:possuiPerfilRede recurso:RedeMarianaLinkedIn , recurso:RedeMarianaORCID , recurso:RedeMarianaLattes .
+
+recurso:FormMarianaGraduacao a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao "Graduação (em andamento)" ;
+    acad:cursoFormacao "Bacharelado em Ciência da Computação" ;
+    acad:anoConclusao 2026 ;
+    acad:descricaoFormacao "Bacharelado em Ciência da Computação — Universidade Federal Rural do Rio de Janeiro (Ingresso: 2023 · 7º período)." ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:RedeMarianaLinkedIn a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "LinkedIn" ;
+    acad:urlRede "https://www.linkedin.com/"^^xsd:anyURI .
+
+recurso:RedeMarianaORCID a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "ORCID" ;
+    acad:urlRede "https://orcid.org/0009-0004-7788-9900"^^xsd:anyURI .
+
+recurso:RedeMarianaLattes a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede "Currículo Lattes" ;
+    acad:urlRede "http://lattes.cnpq.br/5566778899001122"^^xsd:anyURI .

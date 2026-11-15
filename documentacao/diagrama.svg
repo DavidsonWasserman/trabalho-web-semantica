@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 780" width="1180" height="780" font-family="system-ui, -apple-system, Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#174a6e"/>
+    </marker>
+    <marker id="inherit" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#ffffff" stroke="#174a6e" stroke-width="1.6"/>
+    </marker>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#152c3d" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="1180" height="780" fill="#f4f7f9"/>
+  <text x="590" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#174a6e">Ontologia de Perfis Acadêmicos (acad:) — Diagrama Conceitual e OWL 2</text>
+  <text x="590" y="54" text-anchor="middle" font-size="12.5" fill="#5b6573">Alinhada a FOAF, Schema.org, BIBO, DC Terms e W3C SKOS (pes:)</text>
+
+  <!-- Central: Pessoa -->
+  <g filter="url(#shadow)">
+    <rect x="460" y="80" width="260" height="110" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="2"/>
+    <rect x="460" y="80" width="260" height="30" rx="10" fill="#174a6e"/>
+    <text x="590" y="100" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">acad:Pessoa</text>
+    <text x="472" y="128" font-size="11.5" fill="#5b6573">⊑ foaf:Person, schema:Person</text>
+    <text x="472" y="146" font-size="11.5" fill="#202938">• nome, email, cargoOuFuncao</text>
+    <text x="472" y="162" font-size="11.5" fill="#202938">• apresentacao, paginaPessoal</text>
+    <text x="472" y="178" font-size="11.5" fill="#202938">• orcid, lattes, SKOS (pes:)</text>
+  </g>
+
+  <!-- Docente -->
+  <g filter="url(#shadow)">
+    <rect x="190" y="245" width="220" height="76" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.8"/>
+    <rect x="190" y="245" width="220" height="28" rx="10" fill="#25638d"/>
+    <text x="300" y="264" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">acad:Docente</text>
+    <text x="202" y="292" font-size="11.5" fill="#202938">lotadoEm min 1 Departamento</text>
+    <text x="202" y="309" font-size="11" fill="#5b6573">(não disjunto de Discente)</text>
+  </g>
+
+  <!-- Discente -->
+  <g filter="url(#shadow)">
+    <rect x="770" y="245" width="220" height="76" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.8"/>
+    <rect x="770" y="245" width="220" height="28" rx="10" fill="#25638d"/>
+    <text x="880" y="264" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">acad:Discente</text>
+    <text x="782" y="292" font-size="11.5" fill="#202938">• anoIngresso, periodoAtual</text>
+    <text x="782" y="309" font-size="11.5" fill="#202938">matriculadoEm min 1 Curso</text>
+  </g>
+
+  <!-- Herança Pessoa -> Docente / Discente -->
+  <line x1="300" y1="245" x2="510" y2="190" stroke="#174a6e" stroke-width="1.8" marker-end="url(#inherit)"/>
+  <line x1="880" y1="245" x2="670" y2="190" stroke="#174a6e" stroke-width="1.8" marker-end="url(#inherit)"/>
+
+  <!-- Departamento -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="390" width="210" height="72" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.6"/>
+    <rect x="40" y="390" width="210" height="26" rx="10" fill="#eaf2f7"/>
+    <text x="145" y="408" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:Departamento</text>
+    <text x="52" y="434" font-size="11.5" fill="#202938">• nomeOrganizacao, sigla</text>
+    <text x="52" y="451" font-size="11" fill="#5b6573">Ex.: Depto. de Computação</text>
+  </g>
+
+  <!-- Curso -->
+  <g filter="url(#shadow)">
+    <rect x="930" y="390" width="210" height="72" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.6"/>
+    <rect x="930" y="390" width="210" height="26" rx="10" fill="#eaf2f7"/>
+    <text x="1035" y="408" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:Curso</text>
+    <text x="942" y="434" font-size="11.5" fill="#202938">• nomeCurso, modalidadeCurso</text>
+    <text x="942" y="451" font-size="11" fill="#5b6573">⊑ schema:EducationalProgram</text>
+  </g>
+
+  <!-- Unidade Academica -->
+  <g filter="url(#shadow)">
+    <rect x="475" y="390" width="230" height="72" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.8"/>
+    <rect x="475" y="390" width="230" height="26" rx="10" fill="#eaf2f7"/>
+    <text x="590" y="408" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:UnidadeAcademica</text>
+    <text x="487" y="434" font-size="11.5" fill="#202938">• nomeOrganizacao, sigla</text>
+    <text x="487" y="451" font-size="11" fill="#5b6573">Ex.: Instituto de Ciências Exatas (ICEx)</text>
+  </g>
+
+  <!-- InstituicaoEnsino -->
+  <g filter="url(#shadow)">
+    <rect x="475" y="510" width="230" height="74" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.8"/>
+    <rect x="475" y="510" width="230" height="26" rx="10" fill="#eaf2f7"/>
+    <text x="590" y="528" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:InstituicaoEnsino</text>
+    <text x="487" y="553" font-size="11.5" fill="#202938">UFRRJ (owl:sameAs Wikidata Q7894375)</text>
+    <text x="487" y="570" font-size="11" fill="#5b6573">⊑ schema:CollegeOrUniversity</text>
+  </g>
+
+  <!-- AreaConhecimento -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="100" width="235" height="78" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.6"/>
+    <rect x="40" y="100" width="235" height="26" rx="10" fill="#eaf2f7"/>
+    <text x="157" y="118" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:AreaConhecimento</text>
+    <text x="52" y="144" font-size="11.5" fill="#202938">⊑ skos:Concept · nomeArea</text>
+    <text x="52" y="162" font-size="11" fill="#5b6573">skos:exactMatch → Wikidata / DBpedia</text>
+  </g>
+
+  <!-- Disciplina -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="530" width="210" height="68" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.6"/>
+    <rect x="40" y="530" width="210" height="26" rx="10" fill="#eaf2f7"/>
+    <text x="145" y="548" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:Disciplina</text>
+    <text x="52" y="574" font-size="11.5" fill="#202938">• nomeDisciplina, codigo</text>
+    <text x="52" y="590" font-size="11" fill="#5b6573">⊑ schema:Course</text>
+  </g>
+
+  <!-- ProjetoPesquisa -->
+  <g filter="url(#shadow)">
+    <rect x="275" y="650" width="265" height="78" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.8"/>
+    <rect x="275" y="650" width="265" height="26" rx="10" fill="#eaf2f7"/>
+    <text x="407" y="668" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:ProjetoPesquisa</text>
+    <text x="287" y="694" font-size="11.5" fill="#202938">• tituloProjeto, descricaoProjeto</text>
+    <text x="287" y="711" font-size="11" fill="#5b6573">⊑ foaf:Project, schema:ResearchProject</text>
+  </g>
+
+  <!-- Publicacao -->
+  <g filter="url(#shadow)">
+    <rect x="640" y="650" width="275" height="78" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.8"/>
+    <rect x="640" y="650" width="275" height="26" rx="10" fill="#eaf2f7"/>
+    <text x="777" y="668" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:Publicacao</text>
+    <text x="652" y="694" font-size="11.5" fill="#202938">• tituloPublicacao, anoPublicacao, doi</text>
+    <text x="652" y="711" font-size="11" fill="#5b6573">⊑ bibo:AcademicArticle, ScholarlyArticle</text>
+  </g>
+
+  <!-- FormacaoAcademica & GrupoPesquisa -->
+  <g filter="url(#shadow)">
+    <rect x="905" y="100" width="235" height="78" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.6"/>
+    <rect x="905" y="100" width="235" height="26" rx="10" fill="#eaf2f7"/>
+    <text x="1022" y="118" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:Formacao / Grupo / Rede</text>
+    <text x="917" y="144" font-size="11.5" fill="#202938">• FormacaoAcademica (grau, ano)</text>
+    <text x="917" y="162" font-size="11.5" fill="#202938">• GrupoPesquisa &amp; RedeAcademica</text>
+  </g>
+
+  <!-- Setas de Object Properties -->
+  <!-- Docente -> Departamento -->
+  <line x1="250" y1="321" x2="170" y2="390" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <rect x="148" y="343" width="84" height="18" rx="4" fill="#f4f7f9"/>
+  <text x="190" y="356" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">lotadoEm</text>
+
+  <!-- Discente -> Curso -->
+  <line x1="930" y1="321" x2="1010" y2="390" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <rect x="928" y="343" width="94" height="18" rx="4" fill="#f4f7f9"/>
+  <text x="975" y="356" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">matriculadoEm</text>
+
+  <!-- Departamento -> Unidade -->
+  <line x1="250" y1="426" x2="475" y2="426" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="362" y="418" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">parteDeUnidade</text>
+
+  <!-- Curso -> Unidade -->
+  <line x1="930" y1="426" x2="705" y2="426" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="818" y="418" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">oferecidoPorUnidade</text>
+
+  <!-- Unidade -> Instituicao -->
+  <line x1="590" y1="462" x2="590" y2="510" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="665" y="490" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">pertenceAInstituicao</text>
+
+  <!-- Docente -> Area & Pessoa -> Area -->
+  <line x1="460" y1="138" x2="275" y2="138" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="368" y="130" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">temInteresseEm</text>
+
+  <line x1="250" y1="245" x2="180" y2="178" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="165" y="218" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">atuaEmArea</text>
+
+  <!-- Docente -> Disciplina -->
+  <path d="M 300 321 L 300 564 L 250 564" fill="none" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="332" y="505" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">leciona</text>
+
+  <!-- Pessoa -> Formacao / Grupo / Rede -->
+  <line x1="720" y1="138" x2="905" y2="138" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="812" y="128" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">possuiFormacao / membroDeGrupo</text>
+
+  <!-- Pessoa -> Projeto -->
+  <path d="M 480 190 L 407 650" fill="none" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <rect x="370" y="342" width="115" height="18" rx="4" fill="#f4f7f9"/>
+  <text x="427" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">participaDeProjeto</text>
+
+  <!-- Publicacao -> Pessoa -->
+  <path d="M 777 650 L 700 190" fill="none" stroke="#174a6e" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <rect x="695" y="342" width="76" height="18" rx="4" fill="#f4f7f9"/>
+  <text x="733" y="355" text-anchor="middle" font-size="11" font-weight="600" fill="#174a6e">temAutor</text>
+
+  <!-- Legenda rodapé -->
+  <text x="40" y="758" font-size="11.5" fill="#5b6573">Nota: Triângulos brancos indicam subclasse (rdfs:subClassOf); setas sólidas indicam propriedades de objeto (owl:ObjectProperty).</text>
+</svg>

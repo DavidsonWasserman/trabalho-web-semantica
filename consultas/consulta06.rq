@@ -1,0 +1,22 @@
+# Consulta 06 — Quais pessoas estão vinculadas a uma unidade acadêmica específica,
+# independentemente de serem docentes ou discentes?
+# Usa Property Paths combinando (lotadoEm/parteDeUnidade) para docentes e
+# (matriculadoEm/oferecidoPorUnidade) para discentes, unificados pela superclasse acad:Pessoa.
+
+PREFIX acad: <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#>
+
+SELECT DISTINCT ?pessoa ?nomePessoa ?tipoVinculo ?cargo ?nomeUnidade ?siglaUnidade
+WHERE {
+  ?unidade a acad:UnidadeAcademica ;
+           acad:nomeOrganizacao ?nomeUnidade ;
+           acad:sigla ?siglaUnidade .
+  FILTER(?siglaUnidade = "ICEx")
+
+  ?pessoa (acad:lotadoEm/acad:parteDeUnidade)|(acad:matriculadoEm/acad:oferecidoPorUnidade) ?unidade ;
+          acad:nome ?nomePessoa ;
+          a ?tipoVinculo .
+
+  OPTIONAL { ?pessoa acad:cargoOuFuncao ?cargo . }
+  FILTER(?tipoVinculo IN (acad:Docente, acad:Discente))
+}
+ORDER BY ?tipoVinculo ?nomePessoa

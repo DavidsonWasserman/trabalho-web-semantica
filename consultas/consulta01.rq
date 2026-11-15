@@ -1,0 +1,18 @@
+# Consulta 01 — Quais são os docentes cadastrados e seus respectivos departamentos ou unidades acadêmicas?
+# Explora a hierarquia institucional: Docente -> Departamento -> Unidade Acadêmica.
+
+PREFIX acad: <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?docente ?nomeDocente ?cargo ?nomeDepartamento ?nomeUnidade ?siglaUnidade
+WHERE {
+  ?docente a acad:Docente ;
+           acad:nome ?nomeDocente ;
+           acad:lotadoEm ?departamento .
+  OPTIONAL { ?docente acad:cargoOuFuncao ?cargo . }
+  ?departamento acad:nomeOrganizacao ?nomeDepartamento ;
+                acad:parteDeUnidade ?unidade .
+  ?unidade acad:nomeOrganizacao ?nomeUnidade ;
+           acad:sigla ?siglaUnidade .
+}
+ORDER BY ?nomeDocente

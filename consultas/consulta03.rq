@@ -1,0 +1,16 @@
+# Consulta 03 — Quais docentes atuam em determinada área de pesquisa?
+# Filtra docentes que atuam na área "Dados Abertos" e recupera a ligação externa LOD (Wikidata/DBpedia).
+
+PREFIX acad: <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?docente ?nomeDocente ?nomeArea ?linkExternoLOD
+WHERE {
+  ?docente a acad:Docente ;
+           acad:nome ?nomeDocente ;
+           acad:atuaEmArea ?area .
+  ?area acad:nomeArea ?nomeArea .
+  OPTIONAL { ?area skos:exactMatch ?linkExternoLOD . }
+  FILTER(LCASE(?nomeArea) = "dados abertos")
+}
+ORDER BY ?nomeDocente ?linkExternoLOD
