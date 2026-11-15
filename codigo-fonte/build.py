@@ -726,7 +726,7 @@ def generate_resultados_md(sparql_results: list[dict[str, Any]], proj: dict[str,
         lines.append(f"### Resultado obtido ({len(item['rows'])} registro(s))")
         lines.append("")
         if item["rows"]:
-            header = "| " + " | ".join(f"`?{v}`" for v in item["vars"]) + " |"
+            header = "| " + " | ".join(f"`{v}`" for v in item["vars"]) + " |"
             sep = "| " + " | ".join("---" for _ in item["vars"]) + " |"
             lines.append(header)
             lines.append(sep)
@@ -774,7 +774,7 @@ def render_index_html(
 
     sparql_blocks: list[str] = []
     for item in sparql_results:
-        headers = "".join(f"<th>?{esc(v)}</th>" for v in item["vars"])
+        headers = "".join(f"<th>{esc(v)}</th>" for v in item["vars"])
         body_rows = ""
         for r in item["rows"]:
             tds = "".join(f"<td><code>{esc(compact_uri(c, proj))}</code></td>" for c in r)

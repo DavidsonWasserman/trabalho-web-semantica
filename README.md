@@ -48,8 +48,7 @@ TrabalhoWebSemantica/
 │   ├── vocabularios.md               # Pesquisa FOAF, Schema.org, VIVO, BIBO, DCTerms e SKOS
 │   ├── ontologia.md                  # Classes, propriedades, restrições OWL e inferências
 │   ├── diagrama.mmd                  # Fonte Mermaid do diagrama da ontologia
-│   ├── diagrama.svg                  # Diagrama visual da ontologia
-│   └── guia-dupla-e-professor.md     # Guia de estudo para a dupla + pauta de alinhamento (18/11)
+│   └── diagrama.svg                  # Diagrama visual da ontologia
 ├── ontologia/
 │   ├── ontologia.owl                 # Ontologia OWL 2 (Turtle) compatível com Protégé/HermiT
 │   ├── taxonomia_pessoas.ttl         # Taxonomia facetada SKOS (Vínculo, Atuação, Condição)

@@ -39,7 +39,7 @@ ORDER BY ?nomeDocente
 
 ### Resultado obtido (2 registro(s))
 
-| `?docente` | `?nomeDocente` | `?cargo` | `?nomeDepartamento` | `?nomeUnidade` | `?siglaUnidade` |
+| `docente` | `nomeDocente` | `cargo` | `nomeDepartamento` | `nomeUnidade` | `siglaUnidade` |
 | --- | --- | --- | --- | --- | --- |
 | recurso:DocenteCarlosMendes | Prof. Dr. Carlos Eduardo Mendes | Professor Adjunto | Departamento de Computação | Instituto de Ciências Exatas | ICEx |
 | recurso:DocenteAnaSilva | Profa. Dra. Ana Exemplo da Silva | Professora Associada | Departamento de Computação | Instituto de Ciências Exatas | ICEx |
@@ -77,7 +77,7 @@ ORDER BY ?nomeDiscente
 
 ### Resultado obtido (1 registro(s))
 
-| `?discente` | `?nomeDiscente` | `?nomeCurso` | `?anoIngresso` | `?periodoAtual` | `?nomeUnidade` |
+| `discente` | `nomeDiscente` | `nomeCurso` | `anoIngresso` | `periodoAtual` | `nomeUnidade` |
 | --- | --- | --- | --- | --- | --- |
 | recurso:DiscenteJoaoPereira | João Exemplo Pereira | Bacharelado em Sistemas de Informação | 2024 | 5º período | Instituto de Ciências Exatas |
 
@@ -111,7 +111,7 @@ ORDER BY ?nomeDocente ?linkExternoLOD
 
 ### Resultado obtido (4 registro(s))
 
-| `?docente` | `?nomeDocente` | `?nomeArea` | `?linkExternoLOD` |
+| `docente` | `nomeDocente` | `nomeArea` | `linkExternoLOD` |
 | --- | --- | --- | --- |
 | recurso:DocenteCarlosMendes | Prof. Dr. Carlos Eduardo Mendes | Dados Abertos | dbr:Open_data |
 | recurso:DocenteCarlosMendes | Prof. Dr. Carlos Eduardo Mendes | Dados Abertos | wd:Q309901 |
@@ -151,7 +151,7 @@ ORDER BY ?tituloProjeto ?nomeDocente ?nomeDiscente
 
 ### Resultado obtido (5 registro(s))
 
-| `?tituloProjeto` | `?nomeDocente` | `?nomeDiscente` | `?nomeCursoDiscente` |
+| `tituloProjeto` | `nomeDocente` | `nomeDiscente` | `nomeCursoDiscente` |
 | --- | --- | --- | --- |
 | Grafos de Conhecimento e IA Explicável no Ensino Superior | Prof. Dr. Carlos Eduardo Mendes | Mariana Costa Souza | Bacharelado em Ciência da Computação |
 | Projeto Exemplo de Dados Abertos | Prof. Dr. Carlos Eduardo Mendes | João Exemplo Pereira | Bacharelado em Sistemas de Informação |
@@ -198,7 +198,7 @@ ORDER BY DESC(?anoPublicacao) ?tituloPublicacao ?nomeCoautor
 
 ### Resultado obtido (6 registro(s))
 
-| `?tituloPublicacao` | `?anoPublicacao` | `?doi` | `?nomeDocente` | `?nomeCoautor` | `?papelCoautor` |
+| `tituloPublicacao` | `anoPublicacao` | `doi` | `nomeDocente` | `nomeCoautor` | `papelCoautor` |
 | --- | --- | --- | --- | --- | --- |
 | Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica | 2025 | 10.1000/ufrrj.kg.2025.008 | Profa. Dra. Ana Exemplo da Silva | Mariana Costa Souza | Discente de Ciência da Computação |
 | Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica | 2025 | 10.1000/ufrrj.kg.2025.008 | Profa. Dra. Ana Exemplo da Silva | Prof. Dr. Carlos Eduardo Mendes | Professor Adjunto |
@@ -243,7 +243,7 @@ ORDER BY ?tipoVinculo ?nomePessoa
 
 ### Resultado obtido (4 registro(s))
 
-| `?pessoa` | `?nomePessoa` | `?tipoVinculo` | `?cargo` | `?nomeUnidade` | `?siglaUnidade` |
+| `pessoa` | `nomePessoa` | `tipoVinculo` | `cargo` | `nomeUnidade` | `siglaUnidade` |
 | --- | --- | --- | --- | --- | --- |
 | recurso:DiscenteJoaoPereira | João Exemplo Pereira | acad:Discente | Discente de Sistemas de Informação | Instituto de Ciências Exatas | ICEx |
 | recurso:DiscenteMarianaSouza | Mariana Costa Souza | acad:Discente | Discente de Ciência da Computação | Instituto de Ciências Exatas | ICEx |
