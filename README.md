@@ -20,7 +20,8 @@ Trabalho prático da disciplina **Web Semântica e Linked Open Data** (Departame
 | Recurso | URL Pública (GitHub Pages) |
 | :--- | :--- |
 | **Portal Web (Diretório de Perfis)** | `https://davidsonwasserman.github.io/trabalho-web-semantica/` |
-| **Ontologia de Aplicação (OWL 2 / Turtle)** | `https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl` |
+| **Ontologia de Aplicação (OWL 2 / RDF/XML)** | `https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl` |
+| **Ontologia de Aplicação (OWL 2 / Turtle)** | `https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.ttl` |
 | **Vocabulário Controlado (W3C SKOS)** | `https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl` |
 | **Grafo de Dados RDF (Instâncias + LOD)** | `https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/dados.ttl` |
 | **Docente 1 (Profa. Dra. Ana Exemplo da Silva)** | `https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/ana-silva.html` |
@@ -50,7 +51,8 @@ TrabalhoWebSemantica/
 │   ├── diagrama.mmd                  # Fonte Mermaid do diagrama da ontologia
 │   └── diagrama.svg                  # Diagrama visual da ontologia
 ├── ontologia/
-│   ├── ontologia.owl                 # Ontologia OWL 2 (Turtle) compatível com Protégé/HermiT
+│   ├── ontologia.owl                 # Ontologia OWL 2 (RDF/XML) gerada a partir do Turtle
+│   ├── ontologia.ttl                 # Ontologia OWL 2 (Turtle) compatível com Protégé/HermiT
 │   ├── taxonomia_pessoas.ttl         # Taxonomia facetada SKOS (Vínculo, Atuação, Condição)
 │   └── dados.ttl                     # Grafo RDF completo (1.013 triplas no grafo unificado)
 ├── consultas/

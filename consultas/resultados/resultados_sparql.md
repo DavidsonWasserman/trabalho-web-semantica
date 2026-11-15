@@ -1,7 +1,7 @@
 # Resultados das Consultas SPARQL (Perguntas de Competência)
 
 Este documento foi gerado automaticamente por `codigo-fonte/build.py` utilizando `rdflib` sobre a união dos grafos:
-- `ontologia/ontologia.owl`
+- `ontologia/ontologia.ttl` (e sua contraparte RDF/XML em `ontologia/ontologia.owl`)
 - `ontologia/taxonomia_pessoas.ttl`
 - `ontologia/dados.ttl`
 

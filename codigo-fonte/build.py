@@ -23,7 +23,8 @@ import rdflib
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_JSON_PATH = ROOT_DIR / "codigo-fonte" / "dados_perfis.json"
-ONTOLOGIA_PATH = ROOT_DIR / "ontologia" / "ontologia.owl"
+ONTOLOGIA_TTL_PATH = ROOT_DIR / "ontologia" / "ontologia.ttl"
+ONTOLOGIA_OWL_PATH = ROOT_DIR / "ontologia" / "ontologia.owl"
 SKOS_PATH = ROOT_DIR / "ontologia" / "taxonomia_pessoas.ttl"
 DADOS_TTL_PATH = ROOT_DIR / "ontologia" / "dados.ttl"
 PERFIS_DIR = ROOT_DIR / "exemplos" / "perfis"
@@ -626,7 +627,8 @@ def render_profile_html(
           </ul>
           <p class="note" style="margin-top:.75rem;">
             <a href="../../ontologia/dados.ttl">Baixar dados.ttl</a> ·
-            <a href="../../ontologia/ontologia.owl">Ontologia OWL</a>
+            <a href="../../ontologia/ontologia.ttl">Ontologia (Turtle)</a> ·
+            <a href="../../ontologia/ontologia.owl">Ontologia (RDF/XML)</a>
           </p>
         </section>
 
@@ -701,7 +703,7 @@ def generate_resultados_md(sparql_results: list[dict[str, Any]], proj: dict[str,
         "# Resultados das Consultas SPARQL (Perguntas de Competência)",
         "",
         "Este documento foi gerado automaticamente por `codigo-fonte/build.py` utilizando `rdflib` sobre a união dos grafos:",
-        "- `ontologia/ontologia.owl`",
+        "- `ontologia/ontologia.ttl` (e sua contraparte RDF/XML em `ontologia/ontologia.owl`)",
         "- `ontologia/taxonomia_pessoas.ttl`",
         "- `ontologia/dados.ttl`",
         "",
@@ -808,7 +810,8 @@ def render_index_html(
       <a href="index.html" class="site-title">{esc(proj['titulo'])}</a>
       <p class="site-subtitle">{esc(proj['subtitulo'])}</p>
       <nav class="top-nav" aria-label="Recursos semânticos">
-        <a href="ontologia/ontologia.owl">Ontologia OWL</a>
+        <a href="ontologia/ontologia.ttl">Ontologia (Turtle)</a>
+        <a href="ontologia/ontologia.owl">Ontologia (RDF/XML)</a>
         <a href="ontologia/taxonomia_pessoas.ttl">Taxonomia SKOS</a>
         <a href="ontologia/dados.ttl">Dados RDF (Turtle)</a>
         <a href="consultas/resultados/resultados_sparql.md">Resultados SPARQL</a>
@@ -850,7 +853,7 @@ def render_index_html(
     <section class="card">
       <h2>Artefatos Semânticos e Linked Open Data</h2>
       <ul class="clean-list">
-        <li><strong>Ontologia de Aplicação (OWL 2 / Turtle):</strong> <a href="ontologia/ontologia.owl"><code>ontologia/ontologia.owl</code></a></li>
+        <li><strong>Ontologia de Aplicação (OWL 2):</strong> <a href="ontologia/ontologia.ttl"><code>ontologia/ontologia.ttl</code> (Turtle)</a> · <a href="ontologia/ontologia.owl"><code>ontologia/ontologia.owl</code> (RDF/XML)</a></li>
         <li><strong>Taxonomia Facetada e Vocabulário Controlado (SKOS):</strong> <a href="ontologia/taxonomia_pessoas.ttl"><code>ontologia/taxonomia_pessoas.ttl</code></a></li>
         <li><strong>Grafo de Dados e Perfis (RDF / Turtle):</strong> <a href="ontologia/dados.ttl"><code>ontologia/dados.ttl</code></a></li>
         <li><strong>Consultas SPARQL (Perguntas de Competência 01 a 06):</strong> <a href="consultas/resultados/resultados_sparql.md"><code>consultas/resultados/resultados_sparql.md</code></a></li>
@@ -907,9 +910,16 @@ def main() -> int:
         g_jld.parse(data=json.dumps(jsonld_obj), format="json-ld")
         print(f"[OK] Gerado {out_file.relative_to(ROOT_DIR)} (JSON-LD válido: {len(g_jld)} triplas)")
 
-    # 3. Parsear e validar ontologia OWL + SKOS + dados.ttl juntos
+    # 3. Gerar ontologia.owl (RDF/XML) a partir de ontologia.ttl (Turtle) e validar ambos + SKOS + dados.ttl
+    g_ont_ttl = rdflib.Graph().parse(str(ONTOLOGIA_TTL_PATH), format="turtle")
+    g_ont_ttl.serialize(destination=str(ONTOLOGIA_OWL_PATH), format="xml", encoding="utf-8")
+    print(f"[OK] Gerado {ONTOLOGIA_OWL_PATH.relative_to(ROOT_DIR)} (RDF/XML)")
+
+    g_ont_xml = rdflib.Graph().parse(str(ONTOLOGIA_OWL_PATH), format="xml")
+    print(f"[OK] Validado {ONTOLOGIA_OWL_PATH.relative_to(ROOT_DIR)} (RDF/XML): {len(g_ont_xml)} triplas")
+
     combined_graph = rdflib.Graph()
-    for path in (ONTOLOGIA_PATH, SKOS_PATH, DADOS_TTL_PATH):
+    for path in (ONTOLOGIA_TTL_PATH, SKOS_PATH, DADOS_TTL_PATH):
         g_part = rdflib.Graph().parse(str(path), format="turtle")
         print(f"[OK] Validado {path.relative_to(ROOT_DIR)}: {len(g_part)} triplas")
         combined_graph += g_part

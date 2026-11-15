@@ -1,0 +1,506 @@
+@prefix acad:    <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#> .
+@prefix pes:     <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix schema:  <https://schema.org/> .
+@prefix bibo:    <http://purl.org/ontology/bibo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+#################################################################
+#  Cabeçalho da Ontologia
+#################################################################
+
+<https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl>
+    a owl:Ontology ;
+    rdfs:label "Ontologia de Perfis Acadêmicos Universitários (UFRRJ)"@pt ;
+    rdfs:comment "Ontologia de aplicação em OWL 2 para representação semântica e publicação em Linked Open Data de perfis acadêmicos de docentes e discentes."@pt ;
+    dcterms:title "Ontologia de Perfis Acadêmicos Universitários (acad)"@pt ;
+    dcterms:creator "Davidson Wasserman e Dupla (UFRRJ)"@pt ;
+    dcterms:created "2026-11-15" ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    owl:versionInfo "0.1.0" .
+
+#################################################################
+#  CLASSES PRINCIPAIS E ALINHAMENTOS
+#################################################################
+
+acad:Pessoa a owl:Class ;
+    rdfs:subClassOf foaf:Person , schema:Person ;
+    rdfs:label "Pessoa"@pt ;
+    rdfs:comment "Indivíduo vinculado à comunidade acadêmica universitária."@pt .
+
+acad:Docente a owl:Class ;
+    rdfs:subClassOf acad:Pessoa ;
+    rdfs:label "Docente"@pt ;
+    rdfs:comment "Professor ou pesquisador integrante do corpo docente de um departamento acadêmico."@pt ;
+    rdfs:subClassOf
+        [ a owl:Restriction ;
+          owl:onProperty acad:lotadoEm ;
+          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+          owl:onClass acad:Departamento ] .
+
+acad:Discente a owl:Class ;
+    rdfs:subClassOf acad:Pessoa ;
+    rdfs:label "Discente"@pt ;
+    rdfs:comment "Estudante formalmente matriculado em um curso de graduação ou pós-graduação."@pt ;
+    rdfs:subClassOf
+        [ a owl:Restriction ;
+          owl:onProperty acad:matriculadoEm ;
+          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+          owl:onClass acad:Curso ] .
+
+acad:DiscenteGraduacao a owl:Class ;
+    rdfs:subClassOf acad:Discente ;
+    rdfs:label "Discente de Graduação"@pt ;
+    rdfs:comment "Discente matriculado em curso superior de graduação."@pt .
+
+acad:DiscentePosGraduacao a owl:Class ;
+    rdfs:subClassOf acad:Discente ;
+    rdfs:label "Discente de Pós-Graduação"@pt ;
+    rdfs:comment "Discente matriculado em programa de pós-graduação."@pt .
+
+acad:OrganizacaoAcademica a owl:Class ;
+    rdfs:subClassOf foaf:Organization , schema:Organization ;
+    rdfs:label "Organização Acadêmica"@pt ;
+    rdfs:comment "Entidade organizacional no contexto universitário."@pt .
+
+acad:InstituicaoEnsino a owl:Class ;
+    rdfs:subClassOf acad:OrganizacaoAcademica , schema:CollegeOrUniversity ;
+    rdfs:label "Instituição de Ensino"@pt ;
+    rdfs:comment "Universidade ou instituição de ensino superior."@pt .
+
+acad:UnidadeAcademica a owl:Class ;
+    rdfs:subClassOf acad:OrganizacaoAcademica ;
+    rdfs:label "Unidade Acadêmica"@pt ;
+    rdfs:comment "Instituto, centro ou faculdade que congrega departamentos e cursos."@pt .
+
+acad:Departamento a owl:Class ;
+    rdfs:subClassOf acad:OrganizacaoAcademica ;
+    rdfs:label "Departamento"@pt ;
+    rdfs:comment "Subunidade acadêmico-administrativa onde docentes são lotados."@pt .
+
+acad:GrupoPesquisa a owl:Class ;
+    rdfs:subClassOf acad:OrganizacaoAcademica ;
+    rdfs:label "Grupo de Pesquisa"@pt ;
+    rdfs:comment "Coletivo de docentes e discentes organizado em torno de linhas de investigação científica."@pt .
+
+acad:Curso a owl:Class ;
+    rdfs:subClassOf schema:EducationalOccupationalProgram ;
+    rdfs:label "Curso"@pt ;
+    rdfs:comment "Curso de graduação ou programa de pós-graduação oferecido por uma unidade acadêmica."@pt .
+
+acad:AreaConhecimento a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label "Área de Conhecimento"@pt ;
+    rdfs:comment "Tema, linha de pesquisa ou área de atuação/interesse científico."@pt .
+
+acad:Disciplina a owl:Class ;
+    rdfs:subClassOf schema:Course ;
+    rdfs:label "Disciplina"@pt ;
+    rdfs:comment "Componente curricular ministrado por docentes."@pt .
+
+acad:ProjetoPesquisa a owl:Class ;
+    rdfs:subClassOf foaf:Project , schema:ResearchProject ;
+    rdfs:label "Projeto de Pesquisa"@pt ;
+    rdfs:comment "Iniciativa formal de pesquisa ou extensão com participantes docentes e discentes."@pt ;
+    rdfs:subClassOf
+        [ a owl:Restriction ;
+          owl:onProperty acad:temParticipante ;
+          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+          owl:onClass acad:Pessoa ] .
+
+acad:Publicacao a owl:Class ;
+    rdfs:subClassOf bibo:AcademicArticle , schema:ScholarlyArticle ;
+    rdfs:label "Publicação"@pt ;
+    rdfs:comment "Produção bibliográfica, artigo científico, trabalho acadêmico ou protótipo publicado."@pt ;
+    rdfs:subClassOf
+        [ a owl:Restriction ;
+          owl:onProperty acad:temAutor ;
+          owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+          owl:onClass acad:Pessoa ] ,
+        [ a owl:Restriction ;
+          owl:onProperty acad:tituloPublicacao ;
+          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+          owl:onDataRange xsd:string ] ,
+        [ a owl:Restriction ;
+          owl:onProperty acad:anoPublicacao ;
+          owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+          owl:onDataRange xsd:integer ] .
+
+acad:FormacaoAcademica a owl:Class ;
+    rdfs:label "Formação Acadêmica"@pt ;
+    rdfs:comment "Registro de titulação concluída ou em andamento por uma pessoa."@pt .
+
+acad:RedeAcademica a owl:Class ;
+    rdfs:label "Perfil em Rede Acadêmica ou Social"@pt ;
+    rdfs:comment "Registro de conta/perfil externo (ORCID, Lattes, LinkedIn, ResearchGate, etc.)."@pt .
+
+#################################################################
+#  CLASSES DEFINIDAS (para inferência automática via OWL Reasoner)
+#################################################################
+
+acad:PesquisadorEmProjeto a owl:Class ;
+    rdfs:subClassOf acad:Pessoa ;
+    rdfs:label "Pesquisador em Projeto"@pt ;
+    rdfs:comment "Pessoa inferida automaticamente por participar de pelo menos um Projeto de Pesquisa."@pt ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            acad:Pessoa
+            [ a owl:Restriction ;
+              owl:onProperty acad:participaDeProjeto ;
+              owl:someValuesFrom acad:ProjetoPesquisa ]
+        )
+    ] .
+
+acad:AutorAcademico a owl:Class ;
+    rdfs:subClassOf acad:Pessoa ;
+    rdfs:label "Autor Acadêmico"@pt ;
+    rdfs:comment "Pessoa inferida automaticamente por figurar como autora em pelo menos uma publicação."@pt ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            acad:Pessoa
+            [ a owl:Restriction ;
+              owl:onProperty acad:autorDe ;
+              owl:someValuesFrom acad:Publicacao ]
+        )
+    ] .
+
+#################################################################
+#  DISJUNÇÕES DE CLASSES
+#################################################################
+# Nota de modelagem: acad:Docente e acad:Discente NÃO são declaradas disjuntas,
+# pois na realidade universitária um docente pode cursar doutorado/pós-doutorado
+# e um discente de pós-graduação pode atuar em atividades docentes.
+
+[] a owl:AllDisjointClasses ;
+   owl:members (
+       acad:Pessoa
+       acad:OrganizacaoAcademica
+       acad:Curso
+       acad:AreaConhecimento
+       acad:Disciplina
+       acad:ProjetoPesquisa
+       acad:Publicacao
+       acad:FormacaoAcademica
+       acad:RedeAcademica
+   ) .
+
+[] a owl:AllDisjointClasses ;
+   owl:members (
+       acad:InstituicaoEnsino
+       acad:UnidadeAcademica
+       acad:Departamento
+       acad:GrupoPesquisa
+   ) .
+
+#################################################################
+#  PROPRIEDADES DE OBJETO (Object Properties)
+#################################################################
+
+acad:lotadoEm a owl:ObjectProperty ;
+    rdfs:label "lotado em"@pt ;
+    rdfs:comment "Relaciona um docente ao departamento acadêmico ao qual está formalmente lotado."@pt ;
+    rdfs:domain acad:Docente ;
+    rdfs:range acad:Departamento ;
+    owl:inverseOf acad:temDocenteLotado .
+
+acad:temDocenteLotado a owl:ObjectProperty ;
+    rdfs:label "tem docente lotado"@pt ;
+    rdfs:domain acad:Departamento ;
+    rdfs:range acad:Docente .
+
+acad:matriculadoEm a owl:ObjectProperty ;
+    rdfs:label "matriculado em"@pt ;
+    rdfs:comment "Relaciona um discente ao curso no qual possui matrícula ativa."@pt ;
+    rdfs:domain acad:Discente ;
+    rdfs:range acad:Curso ;
+    owl:inverseOf acad:temDiscenteMatriculado .
+
+acad:temDiscenteMatriculado a owl:ObjectProperty ;
+    rdfs:label "tem discente matriculado"@pt ;
+    rdfs:domain acad:Curso ;
+    rdfs:range acad:Discente .
+
+acad:parteDeUnidade a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:label "parte de unidade acadêmica"@pt ;
+    rdfs:comment "Liga um departamento à sua unidade acadêmica superior (ex.: instituto)."@pt ;
+    rdfs:domain acad:Departamento ;
+    rdfs:range acad:UnidadeAcademica ;
+    owl:inverseOf acad:possuiDepartamento .
+
+acad:possuiDepartamento a owl:ObjectProperty ;
+    rdfs:label "possui departamento"@pt ;
+    rdfs:domain acad:UnidadeAcademica ;
+    rdfs:range acad:Departamento .
+
+acad:oferecidoPorUnidade a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:label "oferecido por unidade acadêmica"@pt ;
+    rdfs:comment "Liga um curso à unidade acadêmica responsável por sua oferta."@pt ;
+    rdfs:domain acad:Curso ;
+    rdfs:range acad:UnidadeAcademica ;
+    owl:inverseOf acad:ofereceCurso .
+
+acad:ofereceCurso a owl:ObjectProperty ;
+    rdfs:label "oferece curso"@pt ;
+    rdfs:domain acad:UnidadeAcademica ;
+    rdfs:range acad:Curso .
+
+acad:pertenceAInstituicao a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:label "pertence à instituição"@pt ;
+    rdfs:domain acad:OrganizacaoAcademica ;
+    rdfs:range acad:InstituicaoEnsino .
+
+acad:vinculadoAUnidade a owl:ObjectProperty ;
+    rdfs:label "vinculado à unidade acadêmica"@pt ;
+    rdfs:comment "Relacionamento direto ou inferido por cadeia de propriedades entre uma pessoa (docente ou discente) e uma unidade acadêmica."@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:UnidadeAcademica ;
+    owl:inverseOf acad:possuiPessoaVinculada .
+
+acad:possuiPessoaVinculada a owl:ObjectProperty ;
+    rdfs:label "possui pessoa vinculada"@pt ;
+    rdfs:domain acad:UnidadeAcademica ;
+    rdfs:range acad:Pessoa .
+
+acad:atuaEmArea a owl:ObjectProperty ;
+    rdfs:label "atua na área de pesquisa"@pt ;
+    rdfs:comment "Associa um docente às suas áreas principais de pesquisa e atuação científica."@pt ;
+    rdfs:domain acad:Docente ;
+    rdfs:range acad:AreaConhecimento .
+
+acad:temInteresseEm a owl:ObjectProperty ;
+    rdfs:label "tem interesse em"@pt ;
+    rdfs:comment "Associa qualquer pessoa (docente ou discente) a áreas de interesse acadêmico."@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:AreaConhecimento .
+
+acad:leciona a owl:ObjectProperty ;
+    rdfs:label "leciona"@pt ;
+    rdfs:comment "Associa um docente às disciplinas que ministra."@pt ;
+    rdfs:domain acad:Docente ;
+    rdfs:range acad:Disciplina ;
+    owl:inverseOf acad:lecionadaPor .
+
+acad:lecionadaPor a owl:ObjectProperty ;
+    rdfs:label "lecionada por"@pt ;
+    rdfs:domain acad:Disciplina ;
+    rdfs:range acad:Docente .
+
+acad:participaDeProjeto a owl:ObjectProperty ;
+    rdfs:label "participa de projeto"@pt ;
+    rdfs:comment "Associa uma pessoa (docente ou discente) a um projeto de pesquisa ou extensão."@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:ProjetoPesquisa ;
+    owl:inverseOf acad:temParticipante .
+
+acad:temParticipante a owl:ObjectProperty ;
+    rdfs:label "tem participante"@pt ;
+    rdfs:domain acad:ProjetoPesquisa ;
+    rdfs:range acad:Pessoa .
+
+acad:coordenadoPor a owl:ObjectProperty ;
+    rdfs:label "coordenado por"@pt ;
+    rdfs:domain acad:ProjetoPesquisa ;
+    rdfs:range acad:Docente ;
+    owl:inverseOf acad:coordenaProjeto .
+
+acad:coordenaProjeto a owl:ObjectProperty ;
+    rdfs:label "coordena projeto"@pt ;
+    rdfs:subPropertyOf acad:participaDeProjeto ;
+    rdfs:domain acad:Docente ;
+    rdfs:range acad:ProjetoPesquisa .
+
+acad:membroDeGrupo a owl:ObjectProperty ;
+    rdfs:label "membro de grupo de pesquisa"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:GrupoPesquisa ;
+    owl:inverseOf acad:temMembroGrupo .
+
+acad:temMembroGrupo a owl:ObjectProperty ;
+    rdfs:label "tem membro"@pt ;
+    rdfs:domain acad:GrupoPesquisa ;
+    rdfs:range acad:Pessoa .
+
+acad:temAutor a owl:ObjectProperty ;
+    rdfs:label "tem autor"@pt ;
+    rdfs:comment "Relaciona uma publicação aos seus autores ou coautores."@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range acad:Pessoa ;
+    owl:inverseOf acad:autorDe .
+
+acad:autorDe a owl:ObjectProperty ;
+    rdfs:label "é autor de"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:Publicacao .
+
+acad:possuiFormacao a owl:ObjectProperty ;
+    rdfs:label "possui formação acadêmica"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:FormacaoAcademica .
+
+acad:realizadaEmInstituicao a owl:ObjectProperty ;
+    rdfs:label "realizada na instituição"@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range acad:InstituicaoEnsino .
+
+acad:possuiClassificacaoSKOS a owl:ObjectProperty ;
+    rdfs:label "possui classificação SKOS"@pt ;
+    rdfs:comment "Vincula a pessoa aos conceitos da taxonomia facetada controlada (pes:EsquemaPessoas)."@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range skos:Concept .
+
+acad:possuiPerfilRede a owl:ObjectProperty ;
+    rdfs:label "possui perfil em rede externa"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:RedeAcademica .
+
+#################################################################
+#  PROPRIEDADES DE DADOS (Datatype Properties)
+#################################################################
+
+acad:nome a owl:DatatypeProperty ;
+    rdfs:subPropertyOf foaf:name ;
+    rdfs:label "nome completo"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:string .
+
+acad:email a owl:DatatypeProperty ;
+    rdfs:label "e-mail institucional"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:string .
+
+acad:cargoOuFuncao a owl:DatatypeProperty ;
+    rdfs:label "cargo ou papel principal"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:string .
+
+acad:apresentacao a owl:DatatypeProperty ;
+    rdfs:label "texto de apresentação"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:string .
+
+acad:paginaPessoal a owl:DatatypeProperty ;
+    rdfs:label "página pessoal"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:anyURI .
+
+acad:orcid a owl:DatatypeProperty ;
+    rdfs:label "ORCID"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:anyURI .
+
+acad:lattes a owl:DatatypeProperty ;
+    rdfs:label "Currículo Lattes"@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:anyURI .
+
+acad:anoIngresso a owl:DatatypeProperty ;
+    rdfs:label "ano de ingresso"@pt ;
+    rdfs:domain acad:Discente ;
+    rdfs:range xsd:integer .
+
+acad:periodoAtual a owl:DatatypeProperty ;
+    rdfs:label "período atual"@pt ;
+    rdfs:domain acad:Discente ;
+    rdfs:range xsd:string .
+
+acad:nomeOrganizacao a owl:DatatypeProperty ;
+    rdfs:label "nome da organização"@pt ;
+    rdfs:domain acad:OrganizacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:sigla a owl:DatatypeProperty ;
+    rdfs:label "sigla"@pt ;
+    rdfs:domain acad:OrganizacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:nomeCurso a owl:DatatypeProperty ;
+    rdfs:label "nome do curso"@pt ;
+    rdfs:domain acad:Curso ;
+    rdfs:range xsd:string .
+
+acad:modalidadeCurso a owl:DatatypeProperty ;
+    rdfs:label "modalidade do curso"@pt ;
+    rdfs:domain acad:Curso ;
+    rdfs:range xsd:string .
+
+acad:nomeArea a owl:DatatypeProperty ;
+    rdfs:label "nome da área"@pt ;
+    rdfs:domain acad:AreaConhecimento ;
+    rdfs:range xsd:string .
+
+acad:nomeDisciplina a owl:DatatypeProperty ;
+    rdfs:label "nome da disciplina"@pt ;
+    rdfs:domain acad:Disciplina ;
+    rdfs:range xsd:string .
+
+acad:codigoDisciplina a owl:DatatypeProperty ;
+    rdfs:label "código da disciplina"@pt ;
+    rdfs:domain acad:Disciplina ;
+    rdfs:range xsd:string .
+
+acad:tituloProjeto a owl:DatatypeProperty ;
+    rdfs:label "título do projeto"@pt ;
+    rdfs:domain acad:ProjetoPesquisa ;
+    rdfs:range xsd:string .
+
+acad:descricaoProjeto a owl:DatatypeProperty ;
+    rdfs:label "descrição do projeto"@pt ;
+    rdfs:domain acad:ProjetoPesquisa ;
+    rdfs:range xsd:string .
+
+acad:tituloPublicacao a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:label "título da publicação"@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range xsd:string .
+
+acad:citacaoBibliografica a owl:DatatypeProperty ;
+    rdfs:label "citação bibliográfica"@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range xsd:string .
+
+acad:anoPublicacao a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:label "ano de publicação"@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range xsd:integer .
+
+acad:doi a owl:DatatypeProperty ;
+    rdfs:label "DOI"@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range xsd:string .
+
+acad:grauFormacao a owl:DatatypeProperty ;
+    rdfs:label "grau de formação"@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:cursoFormacao a owl:DatatypeProperty ;
+    rdfs:label "curso ou área de formação"@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:anoConclusao a owl:DatatypeProperty ;
+    rdfs:label "ano de conclusão"@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range xsd:integer .
+
+acad:descricaoFormacao a owl:DatatypeProperty ;
+    rdfs:label "descrição da formação"@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:nomeRede a owl:DatatypeProperty ;
+    rdfs:label "nome do serviço/rede"@pt ;
+    rdfs:domain acad:RedeAcademica ;
+    rdfs:range xsd:string .
+
+acad:urlRede a owl:DatatypeProperty ;
+    rdfs:label "URL do perfil na rede"@pt ;
+    rdfs:domain acad:RedeAcademica ;
+    rdfs:range xsd:anyURI .
