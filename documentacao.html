@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Documentação da Ontologia, Vocabulários e Decisões de Modelagem — Diretório Semântico de Perfis Acadêmicos — UFRRJ.">
+  <title>Documentação &amp; Diagrama | Diretório Semântico de Perfis Acadêmicos — UFRRJ</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-title">Diretório Semântico de Perfis Acadêmicos — UFRRJ</a>
+      <p class="site-subtitle">Universidade Federal Rural do Rio de Janeiro · Instituto de Ciências Exatas (ICEx)</p>
+      <nav class="top-nav" aria-label="Navegação principal">
+        <a href="index.html">Diretório de Perfis</a> <a href="documentacao.html">Documentação &amp; Diagrama (atual)</a> <a href="artefatos.html">Ontologia, RDF &amp; SPARQL</a>
+        <a href="ontologia/dados.ttl">Dados RDF (bruto)</a>
+        <a href="ontologia/ontologia.ttl">Ontologia (bruto)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <p class="eyebrow">Documentação Técnica e Modelagem Semântica</p>
+      <h1>Diagrama, Ontologia e Vocabulários</h1>
+      <p>
+        Esta página reúne de forma visual a arquitetura semântica do portal. Os arquivos originais em Markdown também estão disponíveis no repositório GitHub para consulta detalhada.
+      </p>
+      <p>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/proposta/descricao.md" target="_blank" rel="noopener noreferrer">Proposta (descricao.md) ↗</a>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/proposta/decisoes-modelagem.md" target="_blank" rel="noopener noreferrer">Decisões e IA (decisoes-modelagem.md) ↗</a>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/documentacao/dicionario-dados.md" target="_blank" rel="noopener noreferrer">Dicionário de Dados ↗</a>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/documentacao/vocabularios.md" target="_blank" rel="noopener noreferrer">Vocabulários ↗</a>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/documentacao/ontologia.md" target="_blank" rel="noopener noreferrer">Ontologia (ontologia.md) ↗</a>
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>1. Diagrama Conceitual e da Ontologia (<code>acad:</code>)</h2>
+      <p class="note">Triângulos vazados indicam herança (<code>rdfs:subClassOf</code>); setas sólidas indicam propriedades de objeto (<code>owl:ObjectProperty</code>).</p>
+      <div class="diagram-wrap">
+        <img src="documentacao/diagrama.svg" alt="Diagrama da Ontologia de Perfis Acadêmicos (acad:)">
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Vocabulários Reutilizados e Taxonomia SKOS (<code>pes:</code>)</h2>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr><th>Vocabulário</th><th>Prefixo</th><th>Uso e Alinhamento no Projeto</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>FOAF</strong></td><td><code>foaf:</code></td><td>Base de agentes, organizações e projetos (<code>acad:Pessoa ⊑ foaf:Person</code>, <code>acad:nome ⊑ foaf:name</code>, <code>foaf:mbox</code>).</td></tr>
+            <tr><td><strong>Schema.org</strong></td><td><code>schema:</code></td><td>Interoperabilidade web e JSON-LD embutido nas páginas (<code>Person</code>, <code>CollegeOrUniversity</code>, <code>ScholarlyArticle</code>, <code>knowsAbout</code>).</td></tr>
+            <tr><td><strong>W3C SKOS</strong></td><td><code>skos:</code></td><td>Taxonomia facetada de pessoas (<code>pes:Vinculo</code>, <code>pes:Atuacao</code>, <code>pes:Condicao</code>) e ligação de áreas via <code>skos:exactMatch</code> / <code>skos:closeMatch</code>.</td></tr>
+            <tr><td><strong>BIBO</strong></td><td><code>bibo:</code></td><td>Alinhamento bibliográfico (<code>acad:Publicacao ⊑ bibo:AcademicArticle</code>, <code>bibo:doi</code>).</td></tr>
+            <tr><td><strong>DC Terms</strong></td><td><code>dcterms:</code></td><td>Metadados de proveniência, fonte, data de atualização e licença (CC BY 4.0).</td></tr>
+            <tr><td><strong>VIVO (Referência)</strong></td><td><code>vivo:</code></td><td>Referência conceitual analisada na pesquisa; optamos por ontologia de aplicação própria mais enxuta em vez de importar o núcleo BFO/IAO completo.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3. Decisões Críticas de Modelagem e Política LOD</h2>
+      <ul class="clean-list">
+        <li><strong>Hash URIs no GitHub Pages:</strong> Como o GitHub Pages é estático (sem HTTP 303), usamos Hash URIs apontando para os documentos publicados (<code>.../ontologia/dados.ttl#Recurso</code>) com <code>&lt;link rel="alternate" type="text/turtle"&gt;</code> no HTML.</li>
+        <li><strong>Política criteriosa para <code>owl:sameAs</code>:</strong> <code>owl:sameAs</code> é usado exclusivamente para identidade estrita na <code>recurso:UFRRJ</code> (Wikidata <code>Q7894375</code> e DBpedia). Áreas usam <code>skos:exactMatch</code>, cursos usam <code>skos:closeMatch</code> e perfis demonstrativos usam <code>rdfs:seeAlso</code> para ORCID/Lattes/OpenAlex.</li>
+        <li><strong>Não-disjunção entre Docente e Discente:</strong> <code>acad:Docente</code> e <code>acad:Discente</code> não foram declaradas disjuntas porque um docente pode estar matriculado em curso de pós-graduação.</li>
+        <li><strong>Compatibilidade com Protégé / HermiT:</strong> Restrições de cardinalidade OWL utilizam <code>xsd:integer</code> (em vez de <code>xsd:gYear</code>) para evitar erros no raciocinador HermiT.</li>
+        <li><strong>Classes Definidas (Inferência OWL):</strong> <code>acad:PesquisadorEmProjeto</code> e <code>acad:AutorAcademico</code> são inferidas automaticamente via <code>owl:equivalentClass</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>4. Dicionário Resumido de Classes e Principais Propriedades</h2>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr><th>Classe / Propriedade</th><th>Domínio → Alcance / Restrição</th><th>Descrição</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>acad:Docente</code></td><td><code>lotadoEm min 1 Departamento</code></td><td>Professor/pesquisador vinculado a departamento acadêmico.</td></tr>
+            <tr><td><code>acad:Discente</code></td><td><code>matriculadoEm min 1 Curso</code></td><td>Estudante matriculado em graduação ou pós-graduação.</td></tr>
+            <tr><td><code>acad:Publicacao</code></td><td><code>temAutor min 1 Pessoa</code>; <code>titulo</code> e <code>ano</code> (<code>1</code>)</td><td>Artigo/produção acadêmica permitindo consulta de coautorias.</td></tr>
+            <tr><td><code>acad:lotadoEm</code> / <code>acad:parteDeUnidade</code></td><td><code>Docente → Departamento → UnidadeAcademica</code></td><td>Hierarquia institucional docente até o ICEx.</td></tr>
+            <tr><td><code>acad:matriculadoEm</code> / <code>acad:oferecidoPorUnidade</code></td><td><code>Discente → Curso → UnidadeAcademica</code></td><td>Hierarquia institucional discente até o ICEx.</td></tr>
+            <tr><td><code>acad:participaDeProjeto</code></td><td><code>Pessoa → ProjetoPesquisa</code></td><td>Liga docentes e discentes a projetos de pesquisa em comum.</td></tr>
+            <tr><td><code>acad:possuiClassificacaoSKOS</code></td><td><code>Pessoa → skos:Concept</code></td><td>Associa o perfil aos conceitos facetados de <code>pes:</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    Trabalho de Web Semântica e Linked Open Data — Departamento de Computação / ICEx / UFRRJ · Atualizado em 2026-11-15.
+  </footer>
+</body>
+</html>

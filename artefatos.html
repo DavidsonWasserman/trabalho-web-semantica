@@ -1,0 +1,2022 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Visualizador de Ontologia OWL/Turtle, Taxonomia SKOS, Dados RDF e Consultas SPARQL — Diretório Semântico de Perfis Acadêmicos — UFRRJ.">
+  <title>Ontologia, RDF &amp; SPARQL | Diretório Semântico de Perfis Acadêmicos — UFRRJ</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-title">Diretório Semântico de Perfis Acadêmicos — UFRRJ</a>
+      <p class="site-subtitle">Universidade Federal Rural do Rio de Janeiro · Instituto de Ciências Exatas (ICEx)</p>
+      <nav class="top-nav" aria-label="Navegação principal">
+        <a href="index.html">Diretório de Perfis</a> <a href="documentacao.html">Documentação &amp; Diagrama</a> <a href="artefatos.html">Ontologia, RDF &amp; SPARQL (atual)</a>
+        <a href="ontologia/dados.ttl">Dados RDF (bruto)</a>
+        <a href="ontologia/ontologia.ttl">Ontologia (bruto)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <p class="eyebrow">Artefatos Legíveis por Máquina &amp; Evidências SPARQL</p>
+      <h1>Ontologia OWL, SKOS, Dados RDF e Consultas</h1>
+      <p>
+        Arquivos <code>.ttl</code> e <code>.owl</code> são serializações formais de grafos semânticos (texto/XML). Abaixo você pode inspecionar o conteúdo completo diretamente no navegador com formatação legível ou acessar os arquivos originais para uso em ferramentas como Protégé e <code>rdflib</code>.
+      </p>
+      <p>
+        <a class="btn-outline" href="#ontologia-ttl">Ontologia (Turtle)</a>
+        <a class="btn-outline" href="#ontologia-owl">Ontologia (RDF/XML)</a>
+        <a class="btn-outline" href="#skos-ttl">Taxonomia SKOS</a>
+        <a class="btn-outline" href="#dados-ttl">Dados RDF</a>
+        <a class="btn-outline" href="#consultas-sparql">6 Consultas SPARQL</a>
+      </p>
+    </section>
+
+    <section class="card" id="ontologia-ttl">
+      <h2>1. Ontologia de Aplicação — Serialização Turtle (<code>ontologia/ontologia.ttl</code>)</h2>
+      <p>
+        <a class="btn-outline" href="ontologia/ontologia.ttl">Abrir arquivo bruto (.ttl)</a>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/ontologia/ontologia.ttl" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+      </p>
+      <pre class="code-box">@prefix acad:    &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#&gt; .
+@prefix pes:     &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl#&gt; .
+@prefix foaf:    &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix schema:  &lt;https://schema.org/&gt; .
+@prefix bibo:    &lt;http://purl.org/ontology/bibo/&gt; .
+@prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
+@prefix skos:    &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+@prefix owl:     &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix xsd:     &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+#################################################################
+#  Cabeçalho da Ontologia
+#################################################################
+
+&lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl&gt;
+    a owl:Ontology ;
+    rdfs:label &quot;Ontologia de Perfis Acadêmicos Universitários (UFRRJ)&quot;@pt ;
+    rdfs:comment &quot;Ontologia de aplicação em OWL 2 para representação semântica e publicação em Linked Open Data de perfis acadêmicos de docentes e discentes.&quot;@pt ;
+    dcterms:title &quot;Ontologia de Perfis Acadêmicos Universitários (acad)&quot;@pt ;
+    dcterms:creator &quot;Davidson Wasserman e Dupla (UFRRJ)&quot;@pt ;
+    dcterms:created &quot;2026-11-15&quot; ;
+    dcterms:license &lt;https://creativecommons.org/licenses/by/4.0/&gt; ;
+    owl:versionInfo &quot;0.1.0&quot; .
+
+#################################################################
+#  CLASSES PRINCIPAIS E ALINHAMENTOS
+#################################################################
+
+acad:Pessoa a owl:Class ;
+    rdfs:subClassOf foaf:Person , schema:Person ;
+    rdfs:label &quot;Pessoa&quot;@pt ;
+    rdfs:comment &quot;Indivíduo vinculado à comunidade acadêmica universitária.&quot;@pt .
+
+acad:Docente a owl:Class ;
+    rdfs:subClassOf acad:Pessoa ;
+    rdfs:label &quot;Docente&quot;@pt ;
+    rdfs:comment &quot;Professor ou pesquisador integrante do corpo docente de um departamento acadêmico.&quot;@pt ;
+    rdfs:subClassOf
+        [ a owl:Restriction ;
+          owl:onProperty acad:lotadoEm ;
+          owl:minQualifiedCardinality &quot;1&quot;^^xsd:nonNegativeInteger ;
+          owl:onClass acad:Departamento ] .
+
+acad:Discente a owl:Class ;
+    rdfs:subClassOf acad:Pessoa ;
+    rdfs:label &quot;Discente&quot;@pt ;
+    rdfs:comment &quot;Estudante formalmente matriculado em um curso de graduação ou pós-graduação.&quot;@pt ;
+    rdfs:subClassOf
+        [ a owl:Restriction ;
+          owl:onProperty acad:matriculadoEm ;
+          owl:minQualifiedCardinality &quot;1&quot;^^xsd:nonNegativeInteger ;
+          owl:onClass acad:Curso ] .
+
+acad:DiscenteGraduacao a owl:Class ;
+    rdfs:subClassOf acad:Discente ;
+    rdfs:label &quot;Discente de Graduação&quot;@pt ;
+    rdfs:comment &quot;Discente matriculado em curso superior de graduação.&quot;@pt .
+
+acad:DiscentePosGraduacao a owl:Class ;
+    rdfs:subClassOf acad:Discente ;
+    rdfs:label &quot;Discente de Pós-Graduação&quot;@pt ;
+    rdfs:comment &quot;Discente matriculado em programa de pós-graduação.&quot;@pt .
+
+acad:OrganizacaoAcademica a owl:Class ;
+    rdfs:subClassOf foaf:Organization , schema:Organization ;
+    rdfs:label &quot;Organização Acadêmica&quot;@pt ;
+    rdfs:comment &quot;Entidade organizacional no contexto universitário.&quot;@pt .
+
+acad:InstituicaoEnsino a owl:Class ;
+    rdfs:subClassOf acad:OrganizacaoAcademica , schema:CollegeOrUniversity ;
+    rdfs:label &quot;Instituição de Ensino&quot;@pt ;
+    rdfs:comment &quot;Universidade ou instituição de ensino superior.&quot;@pt .
+
+acad:UnidadeAcademica a owl:Class ;
+    rdfs:subClassOf acad:OrganizacaoAcademica ;
+    rdfs:label &quot;Unidade Acadêmica&quot;@pt ;
+    rdfs:comment &quot;Instituto, centro ou faculdade que congrega departamentos e cursos.&quot;@pt .
+
+acad:Departamento a owl:Class ;
+    rdfs:subClassOf acad:OrganizacaoAcademica ;
+    rdfs:label &quot;Departamento&quot;@pt ;
+    rdfs:comment &quot;Subunidade acadêmico-administrativa onde docentes são lotados.&quot;@pt .
+
+acad:GrupoPesquisa a owl:Class ;
+    rdfs:subClassOf acad:OrganizacaoAcademica ;
+    rdfs:label &quot;Grupo de Pesquisa&quot;@pt ;
+    rdfs:comment &quot;Coletivo de docentes e discentes organizado em torno de linhas de investigação científica.&quot;@pt .
+
+acad:Curso a owl:Class ;
+    rdfs:subClassOf schema:EducationalOccupationalProgram ;
+    rdfs:label &quot;Curso&quot;@pt ;
+    rdfs:comment &quot;Curso de graduação ou programa de pós-graduação oferecido por uma unidade acadêmica.&quot;@pt .
+
+acad:AreaConhecimento a owl:Class ;
+    rdfs:subClassOf skos:Concept ;
+    rdfs:label &quot;Área de Conhecimento&quot;@pt ;
+    rdfs:comment &quot;Tema, linha de pesquisa ou área de atuação/interesse científico.&quot;@pt .
+
+acad:Disciplina a owl:Class ;
+    rdfs:subClassOf schema:Course ;
+    rdfs:label &quot;Disciplina&quot;@pt ;
+    rdfs:comment &quot;Componente curricular ministrado por docentes.&quot;@pt .
+
+acad:ProjetoPesquisa a owl:Class ;
+    rdfs:subClassOf foaf:Project , schema:ResearchProject ;
+    rdfs:label &quot;Projeto de Pesquisa&quot;@pt ;
+    rdfs:comment &quot;Iniciativa formal de pesquisa ou extensão com participantes docentes e discentes.&quot;@pt ;
+    rdfs:subClassOf
+        [ a owl:Restriction ;
+          owl:onProperty acad:temParticipante ;
+          owl:minQualifiedCardinality &quot;1&quot;^^xsd:nonNegativeInteger ;
+          owl:onClass acad:Pessoa ] .
+
+acad:Publicacao a owl:Class ;
+    rdfs:subClassOf bibo:AcademicArticle , schema:ScholarlyArticle ;
+    rdfs:label &quot;Publicação&quot;@pt ;
+    rdfs:comment &quot;Produção bibliográfica, artigo científico, trabalho acadêmico ou protótipo publicado.&quot;@pt ;
+    rdfs:subClassOf
+        [ a owl:Restriction ;
+          owl:onProperty acad:temAutor ;
+          owl:minQualifiedCardinality &quot;1&quot;^^xsd:nonNegativeInteger ;
+          owl:onClass acad:Pessoa ] ,
+        [ a owl:Restriction ;
+          owl:onProperty acad:tituloPublicacao ;
+          owl:qualifiedCardinality &quot;1&quot;^^xsd:nonNegativeInteger ;
+          owl:onDataRange xsd:string ] ,
+        [ a owl:Restriction ;
+          owl:onProperty acad:anoPublicacao ;
+          owl:qualifiedCardinality &quot;1&quot;^^xsd:nonNegativeInteger ;
+          owl:onDataRange xsd:integer ] .
+
+acad:FormacaoAcademica a owl:Class ;
+    rdfs:label &quot;Formação Acadêmica&quot;@pt ;
+    rdfs:comment &quot;Registro de titulação concluída ou em andamento por uma pessoa.&quot;@pt .
+
+acad:RedeAcademica a owl:Class ;
+    rdfs:label &quot;Perfil em Rede Acadêmica ou Social&quot;@pt ;
+    rdfs:comment &quot;Registro de conta/perfil externo (ORCID, Lattes, LinkedIn, ResearchGate, etc.).&quot;@pt .
+
+#################################################################
+#  CLASSES DEFINIDAS (para inferência automática via OWL Reasoner)
+#################################################################
+
+acad:PesquisadorEmProjeto a owl:Class ;
+    rdfs:subClassOf acad:Pessoa ;
+    rdfs:label &quot;Pesquisador em Projeto&quot;@pt ;
+    rdfs:comment &quot;Pessoa inferida automaticamente por participar de pelo menos um Projeto de Pesquisa.&quot;@pt ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            acad:Pessoa
+            [ a owl:Restriction ;
+              owl:onProperty acad:participaDeProjeto ;
+              owl:someValuesFrom acad:ProjetoPesquisa ]
+        )
+    ] .
+
+acad:AutorAcademico a owl:Class ;
+    rdfs:subClassOf acad:Pessoa ;
+    rdfs:label &quot;Autor Acadêmico&quot;@pt ;
+    rdfs:comment &quot;Pessoa inferida automaticamente por figurar como autora em pelo menos uma publicação.&quot;@pt ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:intersectionOf (
+            acad:Pessoa
+            [ a owl:Restriction ;
+              owl:onProperty acad:autorDe ;
+              owl:someValuesFrom acad:Publicacao ]
+        )
+    ] .
+
+#################################################################
+#  DISJUNÇÕES DE CLASSES
+#################################################################
+# Nota de modelagem: acad:Docente e acad:Discente NÃO são declaradas disjuntas,
+# pois na realidade universitária um docente pode cursar doutorado/pós-doutorado
+# e um discente de pós-graduação pode atuar em atividades docentes.
+
+[] a owl:AllDisjointClasses ;
+   owl:members (
+       acad:Pessoa
+       acad:OrganizacaoAcademica
+       acad:Curso
+       acad:AreaConhecimento
+       acad:Disciplina
+       acad:ProjetoPesquisa
+       acad:Publicacao
+       acad:FormacaoAcademica
+       acad:RedeAcademica
+   ) .
+
+[] a owl:AllDisjointClasses ;
+   owl:members (
+       acad:InstituicaoEnsino
+       acad:UnidadeAcademica
+       acad:Departamento
+       acad:GrupoPesquisa
+   ) .
+
+#################################################################
+#  PROPRIEDADES DE OBJETO (Object Properties)
+#################################################################
+
+acad:lotadoEm a owl:ObjectProperty ;
+    rdfs:label &quot;lotado em&quot;@pt ;
+    rdfs:comment &quot;Relaciona um docente ao departamento acadêmico ao qual está formalmente lotado.&quot;@pt ;
+    rdfs:domain acad:Docente ;
+    rdfs:range acad:Departamento ;
+    owl:inverseOf acad:temDocenteLotado .
+
+acad:temDocenteLotado a owl:ObjectProperty ;
+    rdfs:label &quot;tem docente lotado&quot;@pt ;
+    rdfs:domain acad:Departamento ;
+    rdfs:range acad:Docente .
+
+acad:matriculadoEm a owl:ObjectProperty ;
+    rdfs:label &quot;matriculado em&quot;@pt ;
+    rdfs:comment &quot;Relaciona um discente ao curso no qual possui matrícula ativa.&quot;@pt ;
+    rdfs:domain acad:Discente ;
+    rdfs:range acad:Curso ;
+    owl:inverseOf acad:temDiscenteMatriculado .
+
+acad:temDiscenteMatriculado a owl:ObjectProperty ;
+    rdfs:label &quot;tem discente matriculado&quot;@pt ;
+    rdfs:domain acad:Curso ;
+    rdfs:range acad:Discente .
+
+acad:parteDeUnidade a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:label &quot;parte de unidade acadêmica&quot;@pt ;
+    rdfs:comment &quot;Liga um departamento à sua unidade acadêmica superior (ex.: instituto).&quot;@pt ;
+    rdfs:domain acad:Departamento ;
+    rdfs:range acad:UnidadeAcademica ;
+    owl:inverseOf acad:possuiDepartamento .
+
+acad:possuiDepartamento a owl:ObjectProperty ;
+    rdfs:label &quot;possui departamento&quot;@pt ;
+    rdfs:domain acad:UnidadeAcademica ;
+    rdfs:range acad:Departamento .
+
+acad:oferecidoPorUnidade a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:label &quot;oferecido por unidade acadêmica&quot;@pt ;
+    rdfs:comment &quot;Liga um curso à unidade acadêmica responsável por sua oferta.&quot;@pt ;
+    rdfs:domain acad:Curso ;
+    rdfs:range acad:UnidadeAcademica ;
+    owl:inverseOf acad:ofereceCurso .
+
+acad:ofereceCurso a owl:ObjectProperty ;
+    rdfs:label &quot;oferece curso&quot;@pt ;
+    rdfs:domain acad:UnidadeAcademica ;
+    rdfs:range acad:Curso .
+
+acad:pertenceAInstituicao a owl:ObjectProperty , owl:FunctionalProperty ;
+    rdfs:label &quot;pertence à instituição&quot;@pt ;
+    rdfs:domain acad:OrganizacaoAcademica ;
+    rdfs:range acad:InstituicaoEnsino .
+
+acad:vinculadoAUnidade a owl:ObjectProperty ;
+    rdfs:label &quot;vinculado à unidade acadêmica&quot;@pt ;
+    rdfs:comment &quot;Relacionamento direto ou inferido por cadeia de propriedades entre uma pessoa (docente ou discente) e uma unidade acadêmica.&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:UnidadeAcademica ;
+    owl:inverseOf acad:possuiPessoaVinculada .
+
+acad:possuiPessoaVinculada a owl:ObjectProperty ;
+    rdfs:label &quot;possui pessoa vinculada&quot;@pt ;
+    rdfs:domain acad:UnidadeAcademica ;
+    rdfs:range acad:Pessoa .
+
+acad:atuaEmArea a owl:ObjectProperty ;
+    rdfs:label &quot;atua na área de pesquisa&quot;@pt ;
+    rdfs:comment &quot;Associa um docente às suas áreas principais de pesquisa e atuação científica.&quot;@pt ;
+    rdfs:domain acad:Docente ;
+    rdfs:range acad:AreaConhecimento .
+
+acad:temInteresseEm a owl:ObjectProperty ;
+    rdfs:label &quot;tem interesse em&quot;@pt ;
+    rdfs:comment &quot;Associa qualquer pessoa (docente ou discente) a áreas de interesse acadêmico.&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:AreaConhecimento .
+
+acad:leciona a owl:ObjectProperty ;
+    rdfs:label &quot;leciona&quot;@pt ;
+    rdfs:comment &quot;Associa um docente às disciplinas que ministra.&quot;@pt ;
+    rdfs:domain acad:Docente ;
+    rdfs:range acad:Disciplina ;
+    owl:inverseOf acad:lecionadaPor .
+
+acad:lecionadaPor a owl:ObjectProperty ;
+    rdfs:label &quot;lecionada por&quot;@pt ;
+    rdfs:domain acad:Disciplina ;
+    rdfs:range acad:Docente .
+
+acad:participaDeProjeto a owl:ObjectProperty ;
+    rdfs:label &quot;participa de projeto&quot;@pt ;
+    rdfs:comment &quot;Associa uma pessoa (docente ou discente) a um projeto de pesquisa ou extensão.&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:ProjetoPesquisa ;
+    owl:inverseOf acad:temParticipante .
+
+acad:temParticipante a owl:ObjectProperty ;
+    rdfs:label &quot;tem participante&quot;@pt ;
+    rdfs:domain acad:ProjetoPesquisa ;
+    rdfs:range acad:Pessoa .
+
+acad:coordenadoPor a owl:ObjectProperty ;
+    rdfs:label &quot;coordenado por&quot;@pt ;
+    rdfs:domain acad:ProjetoPesquisa ;
+    rdfs:range acad:Docente ;
+    owl:inverseOf acad:coordenaProjeto .
+
+acad:coordenaProjeto a owl:ObjectProperty ;
+    rdfs:label &quot;coordena projeto&quot;@pt ;
+    rdfs:subPropertyOf acad:participaDeProjeto ;
+    rdfs:domain acad:Docente ;
+    rdfs:range acad:ProjetoPesquisa .
+
+acad:membroDeGrupo a owl:ObjectProperty ;
+    rdfs:label &quot;membro de grupo de pesquisa&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:GrupoPesquisa ;
+    owl:inverseOf acad:temMembroGrupo .
+
+acad:temMembroGrupo a owl:ObjectProperty ;
+    rdfs:label &quot;tem membro&quot;@pt ;
+    rdfs:domain acad:GrupoPesquisa ;
+    rdfs:range acad:Pessoa .
+
+acad:temAutor a owl:ObjectProperty ;
+    rdfs:label &quot;tem autor&quot;@pt ;
+    rdfs:comment &quot;Relaciona uma publicação aos seus autores ou coautores.&quot;@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range acad:Pessoa ;
+    owl:inverseOf acad:autorDe .
+
+acad:autorDe a owl:ObjectProperty ;
+    rdfs:label &quot;é autor de&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:Publicacao .
+
+acad:possuiFormacao a owl:ObjectProperty ;
+    rdfs:label &quot;possui formação acadêmica&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:FormacaoAcademica .
+
+acad:realizadaEmInstituicao a owl:ObjectProperty ;
+    rdfs:label &quot;realizada na instituição&quot;@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range acad:InstituicaoEnsino .
+
+acad:possuiClassificacaoSKOS a owl:ObjectProperty ;
+    rdfs:label &quot;possui classificação SKOS&quot;@pt ;
+    rdfs:comment &quot;Vincula a pessoa aos conceitos da taxonomia facetada controlada (pes:EsquemaPessoas).&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range skos:Concept .
+
+acad:possuiPerfilRede a owl:ObjectProperty ;
+    rdfs:label &quot;possui perfil em rede externa&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range acad:RedeAcademica .
+
+#################################################################
+#  PROPRIEDADES DE DADOS (Datatype Properties)
+#################################################################
+
+acad:nome a owl:DatatypeProperty ;
+    rdfs:subPropertyOf foaf:name ;
+    rdfs:label &quot;nome completo&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:string .
+
+acad:email a owl:DatatypeProperty ;
+    rdfs:label &quot;e-mail institucional&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:string .
+
+acad:cargoOuFuncao a owl:DatatypeProperty ;
+    rdfs:label &quot;cargo ou papel principal&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:string .
+
+acad:apresentacao a owl:DatatypeProperty ;
+    rdfs:label &quot;texto de apresentação&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:string .
+
+acad:paginaPessoal a owl:DatatypeProperty ;
+    rdfs:label &quot;página pessoal&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:anyURI .
+
+acad:orcid a owl:DatatypeProperty ;
+    rdfs:label &quot;ORCID&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:anyURI .
+
+acad:lattes a owl:DatatypeProperty ;
+    rdfs:label &quot;Currículo Lattes&quot;@pt ;
+    rdfs:domain acad:Pessoa ;
+    rdfs:range xsd:anyURI .
+
+acad:anoIngresso a owl:DatatypeProperty ;
+    rdfs:label &quot;ano de ingresso&quot;@pt ;
+    rdfs:domain acad:Discente ;
+    rdfs:range xsd:integer .
+
+acad:periodoAtual a owl:DatatypeProperty ;
+    rdfs:label &quot;período atual&quot;@pt ;
+    rdfs:domain acad:Discente ;
+    rdfs:range xsd:string .
+
+acad:nomeOrganizacao a owl:DatatypeProperty ;
+    rdfs:label &quot;nome da organização&quot;@pt ;
+    rdfs:domain acad:OrganizacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:sigla a owl:DatatypeProperty ;
+    rdfs:label &quot;sigla&quot;@pt ;
+    rdfs:domain acad:OrganizacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:nomeCurso a owl:DatatypeProperty ;
+    rdfs:label &quot;nome do curso&quot;@pt ;
+    rdfs:domain acad:Curso ;
+    rdfs:range xsd:string .
+
+acad:modalidadeCurso a owl:DatatypeProperty ;
+    rdfs:label &quot;modalidade do curso&quot;@pt ;
+    rdfs:domain acad:Curso ;
+    rdfs:range xsd:string .
+
+acad:nomeArea a owl:DatatypeProperty ;
+    rdfs:label &quot;nome da área&quot;@pt ;
+    rdfs:domain acad:AreaConhecimento ;
+    rdfs:range xsd:string .
+
+acad:nomeDisciplina a owl:DatatypeProperty ;
+    rdfs:label &quot;nome da disciplina&quot;@pt ;
+    rdfs:domain acad:Disciplina ;
+    rdfs:range xsd:string .
+
+acad:codigoDisciplina a owl:DatatypeProperty ;
+    rdfs:label &quot;código da disciplina&quot;@pt ;
+    rdfs:domain acad:Disciplina ;
+    rdfs:range xsd:string .
+
+acad:tituloProjeto a owl:DatatypeProperty ;
+    rdfs:label &quot;título do projeto&quot;@pt ;
+    rdfs:domain acad:ProjetoPesquisa ;
+    rdfs:range xsd:string .
+
+acad:descricaoProjeto a owl:DatatypeProperty ;
+    rdfs:label &quot;descrição do projeto&quot;@pt ;
+    rdfs:domain acad:ProjetoPesquisa ;
+    rdfs:range xsd:string .
+
+acad:tituloPublicacao a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:label &quot;título da publicação&quot;@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range xsd:string .
+
+acad:citacaoBibliografica a owl:DatatypeProperty ;
+    rdfs:label &quot;citação bibliográfica&quot;@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range xsd:string .
+
+acad:anoPublicacao a owl:DatatypeProperty , owl:FunctionalProperty ;
+    rdfs:label &quot;ano de publicação&quot;@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range xsd:integer .
+
+acad:doi a owl:DatatypeProperty ;
+    rdfs:label &quot;DOI&quot;@pt ;
+    rdfs:domain acad:Publicacao ;
+    rdfs:range xsd:string .
+
+acad:grauFormacao a owl:DatatypeProperty ;
+    rdfs:label &quot;grau de formação&quot;@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:cursoFormacao a owl:DatatypeProperty ;
+    rdfs:label &quot;curso ou área de formação&quot;@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:anoConclusao a owl:DatatypeProperty ;
+    rdfs:label &quot;ano de conclusão&quot;@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range xsd:integer .
+
+acad:descricaoFormacao a owl:DatatypeProperty ;
+    rdfs:label &quot;descrição da formação&quot;@pt ;
+    rdfs:domain acad:FormacaoAcademica ;
+    rdfs:range xsd:string .
+
+acad:nomeRede a owl:DatatypeProperty ;
+    rdfs:label &quot;nome do serviço/rede&quot;@pt ;
+    rdfs:domain acad:RedeAcademica ;
+    rdfs:range xsd:string .
+
+acad:urlRede a owl:DatatypeProperty ;
+    rdfs:label &quot;URL do perfil na rede&quot;@pt ;
+    rdfs:domain acad:RedeAcademica ;
+    rdfs:range xsd:anyURI .
+</pre>
+    </section>
+
+    <section class="card" id="ontologia-owl">
+      <h2>2. Ontologia de Aplicação — Serialização RDF/XML (<code>ontologia/ontologia.owl</code>)</h2>
+      <p class="note">Gerado automaticamente a partir de <code>ontologia.ttl</code> em formato RDF/XML padrão.</p>
+      <p>
+        <a class="btn-outline" href="ontologia/ontologia.owl">Abrir arquivo bruto (.owl)</a>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/ontologia/ontologia.owl" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+      </p>
+      <pre class="code-box">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;rdf:RDF
+   xmlns:dcterms=&quot;http://purl.org/dc/terms/&quot;
+   xmlns:owl=&quot;http://www.w3.org/2002/07/owl#&quot;
+   xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+   xmlns:rdfs=&quot;http://www.w3.org/2000/01/rdf-schema#&quot;
+&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temDocenteLotado&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;tem docente lotado&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Departamento&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Docente&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b20&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Disciplina&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b21&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#AreaConhecimento&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;http://www.w3.org/2004/02/skos/core#Concept&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Área de Conhecimento&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Tema, linha de pesquisa ou área de atuação/interesse científico.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Discente&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b2&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Discente&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Estudante formalmente matriculado em um curso de graduação ou pós-graduação.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b6&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Restriction&quot;/&gt;
+    &lt;owl:onProperty rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#anoPublicacao&quot;/&gt;
+    &lt;owl:qualifiedCardinality rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#nonNegativeInteger&quot;&gt;1&lt;/owl:qualifiedCardinality&gt;
+    &lt;owl:onDataRange rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#integer&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b12&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Restriction&quot;/&gt;
+    &lt;owl:onProperty rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#autorDe&quot;/&gt;
+    &lt;owl:someValuesFrom rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Publicacao&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#possuiPessoaVinculada&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;possui pessoa vinculada&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#UnidadeAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b9&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b10&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Departamento&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#OrganizacaoAcademica&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Departamento&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Subunidade acadêmico-administrativa onde docentes são lotados.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Ontology&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Ontologia de Perfis Acadêmicos Universitários (UFRRJ)&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Ontologia de aplicação em OWL 2 para representação semântica e publicação em Linked Open Data de perfis acadêmicos de docentes e discentes.&lt;/rdfs:comment&gt;
+    &lt;dcterms:title xml:lang=&quot;pt&quot;&gt;Ontologia de Perfis Acadêmicos Universitários (acad)&lt;/dcterms:title&gt;
+    &lt;dcterms:creator xml:lang=&quot;pt&quot;&gt;Davidson Wasserman e Dupla (UFRRJ)&lt;/dcterms:creator&gt;
+    &lt;dcterms:created&gt;2026-11-15&lt;/dcterms:created&gt;
+    &lt;dcterms:license rdf:resource=&quot;https://creativecommons.org/licenses/by/4.0/&quot;/&gt;
+    &lt;owl:versionInfo&gt;0.1.0&lt;/owl:versionInfo&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#nomeOrganizacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;nome da organização&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#OrganizacaoAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b7&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;owl:intersectionOf rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b9&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#membroDeGrupo&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;membro de grupo de pesquisa&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#GrupoPesquisa&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temMembroGrupo&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#pertenceAInstituicao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#FunctionalProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;pertence à instituição&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#OrganizacaoAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#InstituicaoEnsino&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#oferecidoPorUnidade&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#FunctionalProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;oferecido por unidade acadêmica&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Liga um curso à unidade acadêmica responsável por sua oferta.&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Curso&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#UnidadeAcademica&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ofereceCurso&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#possuiDepartamento&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;possui departamento&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#UnidadeAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Departamento&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Publicacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;http://purl.org/ontology/bibo/AcademicArticle&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://schema.org/ScholarlyArticle&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b4&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b5&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b6&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Publicação&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Produção bibliográfica, artigo científico, trabalho acadêmico ou protótipo publicado.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b5&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Restriction&quot;/&gt;
+    &lt;owl:onProperty rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#tituloPublicacao&quot;/&gt;
+    &lt;owl:qualifiedCardinality rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#nonNegativeInteger&quot;&gt;1&lt;/owl:qualifiedCardinality&gt;
+    &lt;owl:onDataRange rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Disciplina&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://schema.org/Course&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Disciplina&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Componente curricular ministrado por docentes.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#cursoFormacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;curso ou área de formação&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#FormacaoAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b8&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Restriction&quot;/&gt;
+    &lt;owl:onProperty rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#participaDeProjeto&quot;/&gt;
+    &lt;owl:someValuesFrom rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ProjetoPesquisa&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#coordenaProjeto&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;coordena projeto&lt;/rdfs:label&gt;
+    &lt;rdfs:subPropertyOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#participaDeProjeto&quot;/&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Docente&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ProjetoPesquisa&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#cargoOuFuncao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;cargo ou papel principal&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#anoConclusao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;ano de conclusão&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#FormacaoAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#integer&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b3&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Restriction&quot;/&gt;
+    &lt;owl:onProperty rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temParticipante&quot;/&gt;
+    &lt;owl:minQualifiedCardinality rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#nonNegativeInteger&quot;&gt;1&lt;/owl:minQualifiedCardinality&gt;
+    &lt;owl:onClass rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#autorDe&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;é autor de&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Publicacao&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#paginaPessoal&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;página pessoal&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#anyURI&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#anoIngresso&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;ano de ingresso&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Discente&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#integer&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#GrupoPesquisa&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#OrganizacaoAcademica&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Grupo de Pesquisa&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Coletivo de docentes e discentes organizado em torno de linhas de investigação científica.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#tituloPublicacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#FunctionalProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;título da publicação&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Publicacao&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b1&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Restriction&quot;/&gt;
+    &lt;owl:onProperty rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#lotadoEm&quot;/&gt;
+    &lt;owl:minQualifiedCardinality rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#nonNegativeInteger&quot;&gt;1&lt;/owl:minQualifiedCardinality&gt;
+    &lt;owl:onClass rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Departamento&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#InstituicaoEnsino&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#OrganizacaoAcademica&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://schema.org/CollegeOrUniversity&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Instituição de Ensino&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Universidade ou instituição de ensino superior.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b10&quot;&gt;
+    &lt;rdf:first rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b8&quot;/&gt;
+    &lt;rdf:rest rdf:resource=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#nil&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#apresentacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;texto de apresentação&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b2&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Restriction&quot;/&gt;
+    &lt;owl:onProperty rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#matriculadoEm&quot;/&gt;
+    &lt;owl:minQualifiedCardinality rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#nonNegativeInteger&quot;&gt;1&lt;/owl:minQualifiedCardinality&gt;
+    &lt;owl:onClass rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Curso&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b21&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ProjetoPesquisa&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b22&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temInteresseEm&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;tem interesse em&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Associa qualquer pessoa (docente ou discente) a áreas de interesse acadêmico.&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#AreaConhecimento&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#anoPublicacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#FunctionalProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;ano de publicação&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Publicacao&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#integer&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#coordenadoPor&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;coordenado por&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ProjetoPesquisa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Docente&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#coordenaProjeto&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#descricaoProjeto&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;descrição do projeto&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ProjetoPesquisa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#nomeArea&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;nome da área&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#AreaConhecimento&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#leciona&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;leciona&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Associa um docente às disciplinas que ministra.&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Docente&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Disciplina&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#lecionadaPor&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b29&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#GrupoPesquisa&quot;/&gt;
+    &lt;rdf:rest rdf:resource=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#nil&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#doi&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;DOI&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Publicacao&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#citacaoBibliografica&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;citação bibliográfica&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Publicacao&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b24&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#RedeAcademica&quot;/&gt;
+    &lt;rdf:rest rdf:resource=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#nil&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ofereceCurso&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;oferece curso&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#UnidadeAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Curso&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temAutor&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;tem autor&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Relaciona uma publicação aos seus autores ou coautores.&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Publicacao&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#autorDe&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#possuiFormacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;possui formação acadêmica&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#FormacaoAcademica&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#descricaoFormacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;descrição da formação&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#FormacaoAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#grauFormacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;grau de formação&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#FormacaoAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#periodoAtual&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;período atual&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Discente&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#AutorAcademico&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Autor Acadêmico&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Pessoa inferida automaticamente por figurar como autora em pelo menos uma publicação.&lt;/rdfs:comment&gt;
+    &lt;owl:equivalentClass rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b11&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ProjetoPesquisa&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;http://xmlns.com/foaf/0.1/Project&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://schema.org/ResearchProject&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b3&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Projeto de Pesquisa&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Iniciativa formal de pesquisa ou extensão com participantes docentes e discentes.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b4&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Restriction&quot;/&gt;
+    &lt;owl:onProperty rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temAutor&quot;/&gt;
+    &lt;owl:minQualifiedCardinality rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#nonNegativeInteger&quot;&gt;1&lt;/owl:minQualifiedCardinality&gt;
+    &lt;owl:onClass rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#parteDeUnidade&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#FunctionalProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;parte de unidade acadêmica&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Liga um departamento à sua unidade acadêmica superior (ex.: instituto).&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Departamento&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#UnidadeAcademica&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#possuiDepartamento&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temParticipante&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;tem participante&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ProjetoPesquisa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#vinculadoAUnidade&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;vinculado à unidade acadêmica&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Relacionamento direto ou inferido por cadeia de propriedades entre uma pessoa (docente ou discente) e uma unidade acadêmica.&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#UnidadeAcademica&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#possuiPessoaVinculada&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;http://xmlns.com/foaf/0.1/Person&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://schema.org/Person&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Pessoa&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Indivíduo vinculado à comunidade acadêmica universitária.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#nomeRede&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;nome do serviço/rede&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#RedeAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#FormacaoAcademica&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Formação Acadêmica&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Registro de titulação concluída ou em andamento por uma pessoa.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Docente&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b1&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Docente&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Professor ou pesquisador integrante do corpo docente de um departamento acadêmico.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b18&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Curso&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b19&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#RedeAcademica&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Perfil em Rede Acadêmica ou Social&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Registro de conta/perfil externo (ORCID, Lattes, LinkedIn, ResearchGate, etc.).&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#participaDeProjeto&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;participa de projeto&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Associa uma pessoa (docente ou discente) a um projeto de pesquisa ou extensão.&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ProjetoPesquisa&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temParticipante&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#OrganizacaoAcademica&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;http://xmlns.com/foaf/0.1/Organization&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://schema.org/Organization&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Organização Acadêmica&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Entidade organizacional no contexto universitário.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b25&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#AllDisjointClasses&quot;/&gt;
+    &lt;owl:members rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b26&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#nome&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:subPropertyOf rdf:resource=&quot;http://xmlns.com/foaf/0.1/name&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;nome completo&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#DiscenteGraduacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Discente&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Discente de Graduação&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Discente matriculado em curso superior de graduação.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b17&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#OrganizacaoAcademica&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b18&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#sigla&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;sigla&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#OrganizacaoAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b13&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b14&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#realizadaEmInstituicao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;realizada na instituição&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#FormacaoAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#InstituicaoEnsino&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#UnidadeAcademica&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#OrganizacaoAcademica&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Unidade Acadêmica&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Instituto, centro ou faculdade que congrega departamentos e cursos.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#lecionadaPor&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;lecionada por&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Disciplina&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Docente&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#DiscentePosGraduacao&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Discente&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Discente de Pós-Graduação&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Discente matriculado em programa de pós-graduação.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b27&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#UnidadeAcademica&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b28&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b22&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Publicacao&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b23&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#nomeCurso&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;nome do curso&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Curso&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#atuaEmArea&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;atua na área de pesquisa&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Associa um docente às suas áreas principais de pesquisa e atuação científica.&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Docente&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#AreaConhecimento&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Curso&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://schema.org/EducationalOccupationalProgram&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Curso&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Curso de graduação ou programa de pós-graduação oferecido por uma unidade acadêmica.&lt;/rdfs:comment&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temDiscenteMatriculado&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;tem discente matriculado&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Curso&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Discente&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#orcid&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;ORCID&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#anyURI&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b11&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;owl:intersectionOf rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b13&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#urlRede&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;URL do perfil na rede&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#RedeAcademica&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#anyURI&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#lattes&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Currículo Lattes&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#anyURI&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b15&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#AllDisjointClasses&quot;/&gt;
+    &lt;owl:members rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b16&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#modalidadeCurso&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;modalidade do curso&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Curso&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#PesquisadorEmProjeto&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#Class&quot;/&gt;
+    &lt;rdfs:subClassOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;Pesquisador em Projeto&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Pessoa inferida automaticamente por participar de pelo menos um Projeto de Pesquisa.&lt;/rdfs:comment&gt;
+    &lt;owl:equivalentClass rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b7&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#email&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;e-mail institucional&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#tituloProjeto&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;título do projeto&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#ProjetoPesquisa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#possuiPerfilRede&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;possui perfil em rede externa&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#RedeAcademica&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#nomeDisciplina&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;nome da disciplina&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Disciplina&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b23&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#FormacaoAcademica&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b24&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b16&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b17&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#lotadoEm&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;lotado em&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Relaciona um docente ao departamento acadêmico ao qual está formalmente lotado.&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Docente&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Departamento&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temDocenteLotado&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#possuiClassificacaoSKOS&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;possui classificação SKOS&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Vincula a pessoa aos conceitos da taxonomia facetada controlada (pes:EsquemaPessoas).&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2004/02/skos/core#Concept&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b26&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#InstituicaoEnsino&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b27&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#matriculadoEm&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;matriculado em&lt;/rdfs:label&gt;
+    &lt;rdfs:comment xml:lang=&quot;pt&quot;&gt;Relaciona um discente ao curso no qual possui matrícula ativa.&lt;/rdfs:comment&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Discente&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Curso&quot;/&gt;
+    &lt;owl:inverseOf rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temDiscenteMatriculado&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b19&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#AreaConhecimento&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b20&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#temMembroGrupo&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#ObjectProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;tem membro&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#GrupoPesquisa&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Pessoa&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b28&quot;&gt;
+    &lt;rdf:first rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Departamento&quot;/&gt;
+    &lt;rdf:rest rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b29&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:about=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#codigoDisciplina&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://www.w3.org/2002/07/owl#DatatypeProperty&quot;/&gt;
+    &lt;rdfs:label xml:lang=&quot;pt&quot;&gt;código da disciplina&lt;/rdfs:label&gt;
+    &lt;rdfs:domain rdf:resource=&quot;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#Disciplina&quot;/&gt;
+    &lt;rdfs:range rdf:resource=&quot;http://www.w3.org/2001/XMLSchema#string&quot;/&gt;
+  &lt;/rdf:Description&gt;
+  &lt;rdf:Description rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b14&quot;&gt;
+    &lt;rdf:first rdf:nodeID=&quot;n5d5594816cfd431782050f3214b07130b12&quot;/&gt;
+    &lt;rdf:rest rdf:resource=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#nil&quot;/&gt;
+  &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+</pre>
+    </section>
+
+    <section class="card" id="skos-ttl">
+      <h2>3. Taxonomia Facetada e Vocabulário Controlado SKOS (<code>ontologia/taxonomia_pessoas.ttl</code>)</h2>
+      <p>
+        <a class="btn-outline" href="ontologia/taxonomia_pessoas.ttl">Abrir arquivo bruto (.ttl)</a>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/ontologia/taxonomia_pessoas.ttl" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+      </p>
+      <pre class="code-box">@prefix skos:    &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+@prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
+@prefix schema:  &lt;https://schema.org/&gt; .
+@prefix foaf:    &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix xsd:     &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix owl:     &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix pes:     &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl#&gt; .
+
+# ==============================================================================
+# Esquema de Conceitos / Tesauro (W3C SKOS)
+# ==============================================================================
+&lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl&gt;
+    a owl:Ontology ;
+    dcterms:title &quot;Vocabulário Controlado e Taxonomia Facetada de Perfis Acadêmicos (UFRRJ)&quot;@pt ;
+    dcterms:creator &quot;Davidson Wasserman e Dupla (Disciplina de Web Semântica - UFRRJ)&quot;@pt ;
+    dcterms:license &lt;https://creativecommons.org/licenses/by/4.0/&gt; ;
+    dcterms:modified &quot;2026-11-15&quot;^^xsd:date .
+
+pes:EsquemaPessoas a skos:ConceptScheme ;
+    dcterms:title &quot;Taxonomia e Tesauro de Pessoas da Universidade&quot;@pt ;
+    dcterms:description &quot;Classificação facetada e vocabulário controlado para representação de vínculos, atuações e condições de pessoas na universidade.&quot;@pt ;
+    dcterms:created &quot;2026-10-14&quot;^^xsd:date ;
+    dcterms:modified &quot;2026-11-15&quot;^^xsd:date ;
+    dcterms:license &lt;https://creativecommons.org/licenses/by/4.0/&gt; ;
+    skos:hasTopConcept pes:Vinculo, pes:Atuacao, pes:Condicao .
+
+# ==============================================================================
+# Facetas (Top Concepts)
+# ==============================================================================
+pes:Vinculo a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:topConceptOf pes:EsquemaPessoas ;
+    skos:prefLabel &quot;Vínculo institucional&quot;@pt ;
+    skos:definition &quot;Relação jurídica ou formal primária da pessoa com a universidade.&quot;@pt ;
+    skos:scopeNote &quot;Não confundir vínculo formal com atividades transitórias (ex: pesquisa ou gestão).&quot;@pt .
+
+pes:Atuacao a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:topConceptOf pes:EsquemaPessoas ;
+    skos:prefLabel &quot;Atuação&quot;@pt ;
+    skos:definition &quot;Papéis funcionais, acadêmicos ou profissionais desempenhados pela pessoa.&quot;@pt .
+
+pes:Condicao a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:topConceptOf pes:EsquemaPessoas ;
+    skos:prefLabel &quot;Condição&quot;@pt ;
+    skos:definition &quot;Condição de fomento, apoio ou modalidade de participação em atividades acadêmicas.&quot;@pt .
+
+# ==============================================================================
+# Faceta 1: Vínculo Institucional
+# ==============================================================================
+pes:Docente a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel &quot;Docente&quot;@pt ;
+    skos:altLabel &quot;Professor&quot;@pt, &quot;Corpo docente&quot;@pt ;
+    skos:definition &quot;Servidor integrante do corpo docente com atribuições de ensino, pesquisa e extensão.&quot;@pt ;
+    skos:scopeNote &quot;Termo padronizado: &#x27;Docente&#x27;. Evitar termos informais ou reduções.&quot;@pt ;
+    skos:closeMatch schema:Person ;
+    skos:related pes:Pesquisador, pes:Orientador .
+
+pes:Discente a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:narrower pes:Graduando, pes:Especializando, pes:Mestrando, pes:Doutorando ;
+    skos:prefLabel &quot;Discente&quot;@pt ;
+    skos:altLabel &quot;Aluno&quot;@pt, &quot;Estudante&quot;@pt ;
+    skos:definition &quot;Indivíduo formalmente matriculado em curso ou programa regular da universidade.&quot;@pt ;
+    skos:scopeNote &quot;Termo padrão adotado: &#x27;Discente&#x27;. Termos como &#x27;aluno&#x27; e &#x27;estudante&#x27; são aceitos como variantes sinônimas para busca, mas não como rótulo principal.&quot;@pt ;
+    skos:closeMatch schema:Student ;
+    skos:related pes:Bolsista, pes:Extensionista .
+
+pes:Graduando a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Discente ;
+    skos:prefLabel &quot;Discente de graduação&quot;@pt ;
+    skos:altLabel &quot;Graduando&quot;@pt, &quot;Aluno de graduação&quot;@pt ;
+    skos:definition &quot;Discente matriculado em curso de graduação (bacharelado, licenciatura ou tecnologia).&quot;@pt .
+
+pes:Especializando a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Discente ;
+    skos:prefLabel &quot;Discente de especialização&quot;@pt ;
+    skos:altLabel &quot;Especializando&quot;@pt, &quot;Pós-graduando lato sensu&quot;@pt ;
+    skos:definition &quot;Discente matriculado em curso de pós-graduação lato sensu.&quot;@pt .
+
+pes:Mestrando a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Discente ;
+    skos:prefLabel &quot;Discente de mestrado&quot;@pt ;
+    skos:altLabel &quot;Mestrando&quot;@pt ;
+    skos:definition &quot;Discente matriculado em programa de pós-graduação stricto sensu em nível de mestrado.&quot;@pt ;
+    skos:related pes:Pesquisador .
+
+pes:Doutorando a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Discente ;
+    skos:prefLabel &quot;Discente de doutorado&quot;@pt ;
+    skos:altLabel &quot;Doutorando&quot;@pt ;
+    skos:definition &quot;Discente matriculado em programa de pós-graduação stricto sensu em nível de doutorado.&quot;@pt ;
+    skos:related pes:Pesquisador .
+
+pes:TecnicoAdministrativo a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel &quot;Servidor técnico-administrativo&quot;@pt ;
+    skos:altLabel &quot;Técnico-administrativo&quot;@pt, &quot;TAE&quot;@pt, &quot;Técnico universitário&quot;@pt ;
+    skos:definition &quot;Servidor público que presta apoio técnico e administrativo às atividades-meio e finalísticas.&quot;@pt ;
+    skos:scopeNote &quot;Termo oficial padronizado: &#x27;Servidor técnico-administrativo&#x27;. Evitar o uso isolado de &#x27;Funcionário&#x27; por ser ambíguo com celetistas/terceirizados.&quot;@pt ;
+    skos:related pes:Gestor .
+
+pes:Terceirizado a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel &quot;Funcionário terceirizado&quot;@pt ;
+    skos:altLabel &quot;Terceirizado&quot;@pt, &quot;Prestador de serviços terceirizados&quot;@pt ;
+    skos:definition &quot;Profissional contratado por empresa prestadora de serviços contínuos à universidade.&quot;@pt .
+
+pes:ColaboradorExterno a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel &quot;Colaborador externo&quot;@pt ;
+    skos:altLabel &quot;Pesquisador visitante&quot;@pt, &quot;Professor convidado&quot;@pt ;
+    skos:definition &quot;Profissional ou acadêmico sem vínculo funcional estatutário atuando em projetos específicos ou convênios.&quot;@pt .
+
+pes:Egresso a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Vinculo ;
+    skos:prefLabel &quot;Egresso&quot;@pt ;
+    skos:altLabel &quot;Ex-aluno&quot;@pt, &quot;Alumni&quot;@pt ;
+    skos:definition &quot;Pessoa diplomada ou que concluiu integralmente seu ciclo de formação na instituição.&quot;@pt ;
+    skos:scopeNote &quot;Termo padronizado: &#x27;Egresso&#x27;. O termo em inglês &#x27;Alumni&#x27; é tratado como sinônimo para fins de busca e SEO internacional.&quot;@pt ;
+    skos:closeMatch schema:alumniOf .
+
+# ==============================================================================
+# Faceta 2: Atuação
+# ==============================================================================
+pes:Pesquisador a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel &quot;Pesquisador&quot;@pt ;
+    skos:altLabel &quot;Cientista&quot;@pt, &quot;Investigador&quot;@pt ;
+    skos:definition &quot;Pessoa que atua formalmente na concepção e execução de projetos de pesquisa científica ou tecnológica.&quot;@pt ;
+    skos:related pes:Docente, pes:Mestrando, pes:Doutorando, pes:Bolsista .
+
+pes:Extensionista a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel &quot;Extensionista&quot;@pt ;
+    skos:definition &quot;Pessoa que atua no planejamento e execução de ações de extensão universitária voltadas à sociedade.&quot;@pt ;
+    skos:related pes:Docente, pes:Discente .
+
+pes:Orientador a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel &quot;Orientador&quot;@pt ;
+    skos:altLabel &quot;Tutor acadêmico&quot;@pt ;
+    skos:definition &quot;Docente ou pesquisador credenciado responsável pelo direcionamento científico ou acadêmico de discentes.&quot;@pt ;
+    skos:related pes:Docente .
+
+pes:Gestor a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel &quot;Gestor&quot;@pt ;
+    skos:altLabel &quot;Coordenador&quot;@pt, &quot;Diretor&quot;@pt, &quot;Chefe de departamento&quot;@pt ;
+    skos:definition &quot;Pessoa investida em função de confiança, chefia, coordenação de curso ou direção acadêmica/administrativa.&quot;@pt ;
+    skos:related pes:Docente, pes:TecnicoAdministrativo .
+
+pes:Empreendedor a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel &quot;Empreendedor&quot;@pt ;
+    skos:altLabel &quot;Fundador de startup acadêmica&quot;@pt ;
+    skos:definition &quot;Pessoa vinculada à universidade envolvida na geração de negócios inovadores, empresas juniores ou spin-offs.&quot;@pt .
+
+pes:ProfissionalAutonomo a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Atuacao ;
+    skos:prefLabel &quot;Profissional autônomo&quot;@pt ;
+    skos:altLabel &quot;Consultor autônomo&quot;@pt ;
+    skos:definition &quot;Pessoa com relação técnica com a universidade prestando consultorias ou assessorias individualizadas.&quot;@pt .
+
+# ==============================================================================
+# Faceta 3: Condição
+# ==============================================================================
+pes:Bolsista a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Condicao ;
+    skos:prefLabel &quot;Bolsista&quot;@pt ;
+    skos:altLabel &quot;Beneficiário de bolsa&quot;@pt ;
+    skos:definition &quot;Pessoa que recebe benefício financeiro institucional ou de agências de fomento para desenvolver atividades acadêmicas.&quot;@pt ;
+    skos:related pes:Discente, pes:Pesquisador .
+
+pes:Voluntario a skos:Concept ;
+    skos:inScheme pes:EsquemaPessoas ;
+    skos:broader pes:Condicao ;
+    skos:prefLabel &quot;Voluntário&quot;@pt ;
+    skos:altLabel &quot;Colaborador voluntário&quot;@pt ;
+    skos:definition &quot;Pessoa participante de programa de extensão, pesquisa ou monitoria sem percepção de bolsa financeira.&quot;@pt .
+</pre>
+    </section>
+
+    <section class="card" id="dados-ttl">
+      <h2>4. Grafo de Dados dos Perfis e Links LOD (<code>ontologia/dados.ttl</code>)</h2>
+      <p>
+        <a class="btn-outline" href="ontologia/dados.ttl">Abrir arquivo bruto (.ttl)</a>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/ontologia/dados.ttl" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+      </p>
+      <pre class="code-box">@prefix acad:    &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#&gt; .
+@prefix pes:     &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl#&gt; .
+@prefix recurso: &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/dados.ttl#&gt; .
+@prefix foaf:    &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix schema:  &lt;https://schema.org/&gt; .
+@prefix bibo:    &lt;http://purl.org/ontology/bibo/&gt; .
+@prefix dcterms: &lt;http://purl.org/dc/terms/&gt; .
+@prefix skos:    &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+@prefix owl:     &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix xsd:     &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+#################################################################
+#  Metadados do Conjunto de Dados (Linked Open Data)
+#################################################################
+
+&lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/dados.ttl&gt;
+    a owl:Ontology ;
+    owl:imports &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl&gt; , &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl&gt; ;
+    dcterms:title &quot;Diretório Semântico de Perfis Acadêmicos — UFRRJ&quot;@pt ;
+    dcterms:description &quot;Grafo RDF de perfis acadêmicos de docentes e discentes da UFRRJ com ligações LOD externas.&quot;@pt ;
+    dcterms:source &quot;Perfis demonstrativos baseados nos modelos da disciplina Web Semântica e Linked Open Data (DCC/ICEx/UFRRJ) + dados acadêmicos fictícios complementares.&quot;@pt ;
+    dcterms:license &lt;https://creativecommons.org/licenses/by/4.0/&gt; ;
+    dcterms:modified &quot;2026-11-15&quot;^^xsd:date .
+
+#################################################################
+#  Instituições, Unidades Acadêmicas, Departamentos e Cursos
+#################################################################
+
+recurso:UFRRJ a owl:NamedIndividual , acad:InstituicaoEnsino , schema:CollegeOrUniversity ;
+    acad:nomeOrganizacao &quot;Universidade Federal Rural do Rio de Janeiro&quot; ;
+    schema:name &quot;Universidade Federal Rural do Rio de Janeiro&quot; ;
+    acad:sigla &quot;UFRRJ&quot; ;
+    schema:url &lt;https://portal.ufrrj.br/&gt; ;
+    owl:sameAs &lt;http://www.wikidata.org/entity/Q7894375&gt; , &lt;http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro&gt; ;
+    rdfs:seeAlso &lt;https://pt.wikipedia.org/wiki/Universidade_Federal_Rural_do_Rio_de_Janeiro&gt; .
+
+recurso:ICEx a owl:NamedIndividual , acad:UnidadeAcademica ;
+    acad:nomeOrganizacao &quot;Instituto de Ciências Exatas&quot; ;
+    acad:sigla &quot;ICEx&quot; ;
+    acad:pertenceAInstituicao recurso:UFRRJ ;
+    rdfs:seeAlso &lt;https://portal.ufrrj.br/instituto-de-ciencias-exatas/&gt; .
+
+recurso:DeptoComputacao a owl:NamedIndividual , acad:Departamento ;
+    acad:nomeOrganizacao &quot;Departamento de Computação&quot; ;
+    acad:sigla &quot;DComp/ICEx&quot; ;
+    acad:parteDeUnidade recurso:ICEx ;
+    acad:pertenceAInstituicao recurso:UFRRJ ;
+    rdfs:seeAlso &lt;https://dcc.ufrrj.br/&gt; .
+
+recurso:CursoSistemasInformacao a owl:NamedIndividual , acad:Curso ;
+    acad:nomeCurso &quot;Bacharelado em Sistemas de Informação&quot; ;
+    acad:modalidadeCurso &quot;Graduação — Bacharelado&quot; ;
+    acad:oferecidoPorUnidade recurso:ICEx ;
+    skos:closeMatch &lt;http://www.wikidata.org/entity/Q16387&gt; .
+
+recurso:CursoCienciaComputacao a owl:NamedIndividual , acad:Curso ;
+    acad:nomeCurso &quot;Bacharelado em Ciência da Computação&quot; ;
+    acad:modalidadeCurso &quot;Graduação — Bacharelado&quot; ;
+    acad:oferecidoPorUnidade recurso:ICEx ;
+    skos:closeMatch &lt;http://www.wikidata.org/entity/Q21198&gt; .
+
+#################################################################
+#  Áreas de Conhecimento (com links LOD Wikidata / DBpedia)
+#################################################################
+
+recurso:AreaWebSemantica a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea &quot;Web Semântica&quot; ;
+    skos:prefLabel &quot;Web Semântica&quot;@pt ;
+    skos:exactMatch &lt;http://www.wikidata.org/entity/Q54837&gt; , &lt;http://dbpedia.org/resource/Semantic_Web&gt; .
+
+recurso:AreaEngenhariaConhecimento a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea &quot;Engenharia de Conhecimento&quot; ;
+    skos:prefLabel &quot;Engenharia de Conhecimento&quot;@pt ;
+    skos:exactMatch &lt;http://www.wikidata.org/entity/Q1166070&gt; , &lt;http://dbpedia.org/resource/Knowledge_engineering&gt; .
+
+recurso:AreaDadosAbertos a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea &quot;Dados Abertos&quot; ;
+    skos:prefLabel &quot;Dados Abertos&quot;@pt ;
+    skos:exactMatch &lt;http://www.wikidata.org/entity/Q309901&gt; , &lt;http://dbpedia.org/resource/Open_data&gt; .
+
+recurso:AreaLinkedOpenData a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea &quot;Linked Open Data&quot; ;
+    skos:prefLabel &quot;Linked Open Data&quot;@pt ;
+    skos:exactMatch &lt;http://www.wikidata.org/entity/Q18692990&gt; , &lt;http://dbpedia.org/resource/Linked_data&gt; .
+
+recurso:AreaInteligenciaArtificial a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea &quot;Inteligência Artificial&quot; ;
+    skos:prefLabel &quot;Inteligência Artificial&quot;@pt ;
+    skos:exactMatch &lt;http://www.wikidata.org/entity/Q11660&gt; , &lt;http://dbpedia.org/resource/Artificial_intelligence&gt; .
+
+recurso:AreaDesenvolvimentoWeb a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea &quot;Desenvolvimento Web&quot; ;
+    skos:prefLabel &quot;Desenvolvimento Web&quot;@pt ;
+    skos:exactMatch &lt;http://www.wikidata.org/entity/Q386275&gt; .
+
+recurso:AreaBancoDeDados a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
+    acad:nomeArea &quot;Banco de Dados&quot; ;
+    skos:prefLabel &quot;Banco de Dados&quot;@pt ;
+    skos:exactMatch &lt;http://www.wikidata.org/entity/Q8513&gt; , &lt;http://dbpedia.org/resource/Database&gt; .
+
+#################################################################
+#  Disciplinas, Projetos de Pesquisa e Grupos de Pesquisa
+#################################################################
+
+recurso:DiscWebSemantica a owl:NamedIndividual , acad:Disciplina ;
+    acad:nomeDisciplina &quot;Web Semântica&quot; ;
+    acad:codigoDisciplina &quot;IC801&quot; .
+
+recurso:DiscBancoDados a owl:NamedIndividual , acad:Disciplina ;
+    acad:nomeDisciplina &quot;Banco de Dados&quot; ;
+    acad:codigoDisciplina &quot;IC402&quot; .
+
+recurso:DiscEngSoftware a owl:NamedIndividual , acad:Disciplina ;
+    acad:nomeDisciplina &quot;Engenharia de Software&quot; ;
+    acad:codigoDisciplina &quot;IC501&quot; .
+
+recurso:DiscInteligenciaArtificial a owl:NamedIndividual , acad:Disciplina ;
+    acad:nomeDisciplina &quot;Inteligência Artificial&quot; ;
+    acad:codigoDisciplina &quot;IC603&quot; .
+
+recurso:ProjDadosAbertosUFRRJ a owl:NamedIndividual , acad:ProjetoPesquisa ;
+    acad:tituloProjeto &quot;Projeto Exemplo de Dados Abertos&quot; ;
+    acad:descricaoProjeto &quot;Integração e publicação de dados acadêmicos em Linked Open Data e ontologias OWL.&quot; ;
+    acad:coordenadoPor recurso:DocenteAnaSilva ;
+    rdfs:seeAlso &lt;https://dados.gov.br/&gt; .
+
+recurso:ProjGrafosConhecimentoIA a owl:NamedIndividual , acad:ProjetoPesquisa ;
+    acad:tituloProjeto &quot;Grafos de Conhecimento e IA Explicável no Ensino Superior&quot; ;
+    acad:descricaoProjeto &quot;Aplicação de ontologias e modelos de linguagem para consulta e recomendação acadêmica.&quot; ;
+    acad:coordenadoPor recurso:DocenteCarlosMendes .
+
+recurso:GrupoSistemasInteligentes a owl:NamedIndividual , acad:GrupoPesquisa ;
+    acad:nomeOrganizacao &quot;Grupo de Pesquisa em Sistemas Inteligentes&quot; ;
+    acad:pertenceAInstituicao recurso:UFRRJ .
+
+recurso:GrupoDadosWeb a owl:NamedIndividual , acad:GrupoPesquisa ;
+    acad:nomeOrganizacao &quot;Núcleo de Estudos em Dados Abertos e Engenharia Web&quot; ;
+    acad:pertenceAInstituicao recurso:UFRRJ .
+
+#################################################################
+#  Publicações e Trabalhos Acadêmicos (Coautorias)
+#################################################################
+
+recurso:PubDadosConectados2024 a owl:NamedIndividual , acad:Publicacao ;
+    acad:tituloPublicacao &quot;Exemplo de publicação sobre dados conectados no ensino superior&quot; ;
+    acad:citacaoBibliografica &quot;Silva, A. E.; Mendes, C. E.; Pereira, J. E. (2024). Exemplo de publicação sobre dados conectados no ensino superior.&quot; ;
+    acad:anoPublicacao 2024 ;
+    acad:doi &quot;10.1000/ufrrj.lod.2024.001&quot; ;
+    bibo:doi &quot;10.1000/ufrrj.lod.2024.001&quot; ;
+    acad:temAutor recurso:DocenteAnaSilva , recurso:DocenteCarlosMendes , recurso:DiscenteJoaoPereira ;
+    rdfs:seeAlso &lt;https://openalex.org/W2741809807&gt; .
+
+recurso:PubRepresentacaoConhecimento2022 a owl:NamedIndividual , acad:Publicacao ;
+    acad:tituloPublicacao &quot;Exemplo de estudo em representação do conhecimento e ontologias OWL&quot; ;
+    acad:citacaoBibliografica &quot;Silva, A. E.; Mendes, C. E. (2022). Exemplo de estudo em representação do conhecimento e ontologias OWL.&quot; ;
+    acad:anoPublicacao 2022 ;
+    acad:doi &quot;10.1000/ufrrj.owl.2022.015&quot; ;
+    bibo:doi &quot;10.1000/ufrrj.owl.2022.015&quot; ;
+    acad:temAutor recurso:DocenteAnaSilva , recurso:DocenteCarlosMendes .
+
+recurso:PubGrafosAprendizado2025 a owl:NamedIndividual , acad:Publicacao ;
+    acad:tituloPublicacao &quot;Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica&quot; ;
+    acad:citacaoBibliografica &quot;Mendes, C. E.; Souza, M. C.; Silva, A. E. (2025). Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica.&quot; ;
+    acad:anoPublicacao 2025 ;
+    acad:doi &quot;10.1000/ufrrj.kg.2025.008&quot; ;
+    bibo:doi &quot;10.1000/ufrrj.kg.2025.008&quot; ;
+    acad:temAutor recurso:DocenteCarlosMendes , recurso:DiscenteMarianaSouza , recurso:DocenteAnaSilva .
+
+recurso:PubPrototipoDados2025 a owl:NamedIndividual , acad:Publicacao ;
+    acad:tituloPublicacao &quot;Protótipo de aplicação para organização semântica de dados acadêmicos&quot; ;
+    acad:citacaoBibliografica &quot;Pereira, J. E.; Silva, A. E. (2025). Protótipo de aplicação para organização semântica de dados acadêmicos (Evento Universitário).&quot; ;
+    acad:anoPublicacao 2025 ;
+    acad:doi &quot;10.1000/ufrrj.web.2025.003&quot; ;
+    bibo:doi &quot;10.1000/ufrrj.web.2025.003&quot; ;
+    acad:temAutor recurso:DiscenteJoaoPereira , recurso:DocenteAnaSilva .
+
+#################################################################
+#  Perfis de Docentes e Discentes + Formações + Redes Externas
+#################################################################
+
+recurso:DocenteAnaSilva a owl:NamedIndividual , acad:Docente , acad:Pessoa ;
+    acad:nome &quot;Profa. Dra. Ana Exemplo da Silva&quot; ;
+    foaf:name &quot;Profa. Dra. Ana Exemplo da Silva&quot; ;
+    acad:cargoOuFuncao &quot;Professora Associada&quot; ;
+    acad:email &quot;ana.silva@example.ufrrj.br&quot; ;
+    foaf:mbox &lt;mailto:ana.silva@example.ufrrj.br&gt; ;
+    acad:apresentacao &quot;Sou professora da área de Computação, com formação em Sistemas de Informação, mestrado em Informática e doutorado em Ciência da Computação. Minha trajetória acadêmica inclui atividades de ensino, pesquisa e orientação de estudantes em temas relacionados à Web Semântica, à Engenharia de Conhecimento e aos Dados Abertos. Tenho experiência em projetos de modelagem e integração de dados, desenvolvimento de aplicações e representação de conhecimento. Atualmente, meus interesses de trabalho envolvem a publicação e o interligamento de dados acadêmicos, a construção de soluções baseadas em conhecimento e o uso de tecnologias da Web para ampliar o acesso à informação científica.&quot; ;
+    acad:paginaPessoal &quot;https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/ana-silva.html&quot;^^xsd:anyURI ;
+    foaf:homepage &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/ana-silva.html&gt; ;
+    acad:orcid &quot;https://orcid.org/0000-0002-1825-0097&quot;^^xsd:anyURI ;
+    acad:lattes &quot;http://lattes.cnpq.br/1234567890123456&quot;^^xsd:anyURI ;
+    rdfs:seeAlso &lt;https://orcid.org/0000-0002-1825-0097&gt; , &lt;http://lattes.cnpq.br/1234567890123456&gt; ;
+    acad:vinculadoAUnidade recurso:ICEx ;
+    acad:lotadoEm recurso:DeptoComputacao ;
+    acad:atuaEmArea recurso:AreaWebSemantica , recurso:AreaEngenhariaConhecimento , recurso:AreaDadosAbertos ;
+    acad:leciona recurso:DiscWebSemantica , recurso:DiscBancoDados , recurso:DiscEngSoftware ;
+    acad:temInteresseEm recurso:AreaWebSemantica , recurso:AreaEngenhariaConhecimento , recurso:AreaDadosAbertos , recurso:AreaLinkedOpenData ;
+    acad:participaDeProjeto recurso:ProjDadosAbertosUFRRJ ;
+    acad:membroDeGrupo recurso:GrupoSistemasInteligentes , recurso:GrupoDadosWeb ;
+    acad:possuiClassificacaoSKOS pes:Docente , pes:Pesquisador , pes:Orientador ;
+    acad:possuiFormacao recurso:FormAnaDoutorado , recurso:FormAnaMestrado , recurso:FormAnaGraduacao ;
+    acad:possuiPerfilRede recurso:RedeAnaLinkedIn , recurso:RedeAnaWebOfScience , recurso:RedeAnaResearchGate , recurso:RedeAnaORCID , recurso:RedeAnaLattes .
+
+recurso:FormAnaDoutorado a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao &quot;Doutorado&quot; ;
+    acad:cursoFormacao &quot;Ciência da Computação&quot; ;
+    acad:anoConclusao 2018 ;
+    acad:descricaoFormacao &quot;Doutorado em Ciência da Computação — Universidade Federal Rural do Rio de Janeiro (2018).&quot; ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:FormAnaMestrado a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao &quot;Mestrado&quot; ;
+    acad:cursoFormacao &quot;Informática&quot; ;
+    acad:anoConclusao 2012 ;
+    acad:descricaoFormacao &quot;Mestrado em Informática — Universidade Federal Rural do Rio de Janeiro (2012).&quot; ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:FormAnaGraduacao a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao &quot;Graduação&quot; ;
+    acad:cursoFormacao &quot;Sistemas de Informação&quot; ;
+    acad:anoConclusao 2009 ;
+    acad:descricaoFormacao &quot;Graduação em Sistemas de Informação — Universidade Federal Rural do Rio de Janeiro (2009).&quot; ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:RedeAnaLinkedIn a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;LinkedIn&quot; ;
+    acad:urlRede &quot;https://www.linkedin.com/&quot;^^xsd:anyURI .
+
+recurso:RedeAnaWebOfScience a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;Publons / Web of Science&quot; ;
+    acad:urlRede &quot;https://www.webofscience.com/&quot;^^xsd:anyURI .
+
+recurso:RedeAnaResearchGate a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;ResearchGate&quot; ;
+    acad:urlRede &quot;https://www.researchgate.net/&quot;^^xsd:anyURI .
+
+recurso:RedeAnaORCID a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;ORCID&quot; ;
+    acad:urlRede &quot;https://orcid.org/0000-0002-1825-0097&quot;^^xsd:anyURI .
+
+recurso:RedeAnaLattes a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;Currículo Lattes&quot; ;
+    acad:urlRede &quot;http://lattes.cnpq.br/1234567890123456&quot;^^xsd:anyURI .
+
+recurso:DocenteCarlosMendes a owl:NamedIndividual , acad:Docente , acad:Pessoa ;
+    acad:nome &quot;Prof. Dr. Carlos Eduardo Mendes&quot; ;
+    foaf:name &quot;Prof. Dr. Carlos Eduardo Mendes&quot; ;
+    acad:cargoOuFuncao &quot;Professor Adjunto&quot; ;
+    acad:email &quot;carlos.mendes@example.ufrrj.br&quot; ;
+    foaf:mbox &lt;mailto:carlos.mendes@example.ufrrj.br&gt; ;
+    acad:apresentacao &quot;Sou professor adjunto do Departamento de Computação da UFRRJ, atuando com foco em Inteligência Artificial, Bancos de Dados e Dados Abertos Conectados. Coordeno projetos de iniciação científica voltados à integração entre grafos de conhecimento RDF/OWL e arquiteturas modernas de recuperação de informação, em colaboração estreita com docentes e discentes do Instituto de Ciências Exatas.&quot; ;
+    acad:paginaPessoal &quot;https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/carlos-mendes.html&quot;^^xsd:anyURI ;
+    foaf:homepage &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/carlos-mendes.html&gt; ;
+    acad:orcid &quot;https://orcid.org/0000-0003-2190-4412&quot;^^xsd:anyURI ;
+    acad:lattes &quot;http://lattes.cnpq.br/2345678901234567&quot;^^xsd:anyURI ;
+    rdfs:seeAlso &lt;https://orcid.org/0000-0003-2190-4412&gt; , &lt;http://lattes.cnpq.br/2345678901234567&gt; ;
+    acad:vinculadoAUnidade recurso:ICEx ;
+    acad:lotadoEm recurso:DeptoComputacao ;
+    acad:atuaEmArea recurso:AreaInteligenciaArtificial , recurso:AreaBancoDeDados , recurso:AreaDadosAbertos , recurso:AreaLinkedOpenData ;
+    acad:leciona recurso:DiscBancoDados , recurso:DiscInteligenciaArtificial ;
+    acad:temInteresseEm recurso:AreaInteligenciaArtificial , recurso:AreaBancoDeDados , recurso:AreaDadosAbertos , recurso:AreaLinkedOpenData ;
+    acad:participaDeProjeto recurso:ProjDadosAbertosUFRRJ , recurso:ProjGrafosConhecimentoIA ;
+    acad:membroDeGrupo recurso:GrupoSistemasInteligentes ;
+    acad:possuiClassificacaoSKOS pes:Docente , pes:Pesquisador , pes:Orientador ;
+    acad:possuiFormacao recurso:FormCarlosDoutorado , recurso:FormCarlosMestrado ;
+    acad:possuiPerfilRede recurso:RedeCarlosLinkedIn , recurso:RedeCarlosResearchGate , recurso:RedeCarlosORCID , recurso:RedeCarlosLattes .
+
+recurso:FormCarlosDoutorado a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao &quot;Doutorado&quot; ;
+    acad:cursoFormacao &quot;Engenharia de Sistemas e Computação&quot; ;
+    acad:anoConclusao 2020 ;
+    acad:descricaoFormacao &quot;Doutorado em Engenharia de Sistemas e Computação (2020).&quot; ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:FormCarlosMestrado a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao &quot;Mestrado&quot; ;
+    acad:cursoFormacao &quot;Ciência da Computação&quot; ;
+    acad:anoConclusao 2015 ;
+    acad:descricaoFormacao &quot;Mestrado em Ciência da Computação (2015).&quot; ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:RedeCarlosLinkedIn a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;LinkedIn&quot; ;
+    acad:urlRede &quot;https://www.linkedin.com/&quot;^^xsd:anyURI .
+
+recurso:RedeCarlosResearchGate a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;ResearchGate&quot; ;
+    acad:urlRede &quot;https://www.researchgate.net/&quot;^^xsd:anyURI .
+
+recurso:RedeCarlosORCID a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;ORCID&quot; ;
+    acad:urlRede &quot;https://orcid.org/0000-0003-2190-4412&quot;^^xsd:anyURI .
+
+recurso:RedeCarlosLattes a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;Currículo Lattes&quot; ;
+    acad:urlRede &quot;http://lattes.cnpq.br/2345678901234567&quot;^^xsd:anyURI .
+
+recurso:DiscenteJoaoPereira a owl:NamedIndividual , acad:DiscenteGraduacao , acad:Discente , acad:Pessoa ;
+    acad:nome &quot;João Exemplo Pereira&quot; ;
+    foaf:name &quot;João Exemplo Pereira&quot; ;
+    acad:cargoOuFuncao &quot;Discente de Sistemas de Informação&quot; ;
+    acad:email &quot;joao.pereira@example.ufrrj.br&quot; ;
+    foaf:mbox &lt;mailto:joao.pereira@example.ufrrj.br&gt; ;
+    acad:apresentacao &quot;Sou estudante de Sistemas de Informação e tenho interesse em desenvolvimento de aplicações web, tecnologias para organização e compartilhamento de dados e inteligência artificial. Durante a graduação, venho buscando oportunidades para relacionar os conhecimentos das disciplinas a projetos práticos, trabalhos em grupo e atividades acadêmicas. Tenho experiência introdutória com programação e bancos de dados e pretendo aprofundar minha formação em engenharia de software e ciência de dados.&quot; ;
+    acad:paginaPessoal &quot;https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/joao-pereira.html&quot;^^xsd:anyURI ;
+    foaf:homepage &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/joao-pereira.html&gt; ;
+    acad:orcid &quot;https://orcid.org/0009-0001-3344-5566&quot;^^xsd:anyURI ;
+    acad:lattes &quot;http://lattes.cnpq.br/9876543210987654&quot;^^xsd:anyURI ;
+    rdfs:seeAlso &lt;https://orcid.org/0009-0001-3344-5566&gt; , &lt;http://lattes.cnpq.br/9876543210987654&gt; ;
+    acad:vinculadoAUnidade recurso:ICEx ;
+    acad:matriculadoEm recurso:CursoSistemasInformacao ;
+    acad:anoIngresso 2024 ;
+    acad:periodoAtual &quot;5º período&quot; ;
+    acad:temInteresseEm recurso:AreaDesenvolvimentoWeb , recurso:AreaDadosAbertos , recurso:AreaInteligenciaArtificial ;
+    acad:participaDeProjeto recurso:ProjDadosAbertosUFRRJ ;
+    acad:membroDeGrupo recurso:GrupoDadosWeb ;
+    acad:possuiClassificacaoSKOS pes:Discente , pes:Graduando , pes:Extensionista ;
+    acad:possuiFormacao recurso:FormJoaoGraduacao ;
+    acad:possuiPerfilRede recurso:RedeJoaoLinkedIn , recurso:RedeJoaoORCID , recurso:RedeJoaoLattes .
+
+recurso:FormJoaoGraduacao a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao &quot;Graduação (em andamento)&quot; ;
+    acad:cursoFormacao &quot;Bacharelado em Sistemas de Informação&quot; ;
+    acad:anoConclusao 2027 ;
+    acad:descricaoFormacao &quot;Bacharelado em Sistemas de Informação — Universidade Federal Rural do Rio de Janeiro (Ingresso: 2024 · 5º período).&quot; ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:RedeJoaoLinkedIn a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;LinkedIn&quot; ;
+    acad:urlRede &quot;https://www.linkedin.com/&quot;^^xsd:anyURI .
+
+recurso:RedeJoaoORCID a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;ORCID&quot; ;
+    acad:urlRede &quot;https://orcid.org/0009-0001-3344-5566&quot;^^xsd:anyURI .
+
+recurso:RedeJoaoLattes a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;Currículo Lattes&quot; ;
+    acad:urlRede &quot;http://lattes.cnpq.br/9876543210987654&quot;^^xsd:anyURI .
+
+recurso:DiscenteMarianaSouza a owl:NamedIndividual , acad:DiscenteGraduacao , acad:Discente , acad:Pessoa ;
+    acad:nome &quot;Mariana Costa Souza&quot; ;
+    foaf:name &quot;Mariana Costa Souza&quot; ;
+    acad:cargoOuFuncao &quot;Discente de Ciência da Computação&quot; ;
+    acad:email &quot;mariana.souza@example.ufrrj.br&quot; ;
+    foaf:mbox &lt;mailto:mariana.souza@example.ufrrj.br&gt; ;
+    acad:apresentacao &quot;Sou graduanda em Ciência da Computação na UFRRJ e bolsista de Iniciação Científica (PIBIC/CNPq) junto ao Grupo de Pesquisa em Sistemas Inteligentes. Meu foco atual envolve ontologias OWL, consultas federadas SPARQL sobre bases de Linked Open Data (Wikidata/DBpedia) e métodos híbridos combinando grafos de conhecimento e inteligência artificial.&quot; ;
+    acad:paginaPessoal &quot;https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/mariana-souza.html&quot;^^xsd:anyURI ;
+    foaf:homepage &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/exemplos/perfis/mariana-souza.html&gt; ;
+    acad:orcid &quot;https://orcid.org/0009-0004-7788-9900&quot;^^xsd:anyURI ;
+    acad:lattes &quot;http://lattes.cnpq.br/5566778899001122&quot;^^xsd:anyURI ;
+    rdfs:seeAlso &lt;https://orcid.org/0009-0004-7788-9900&gt; , &lt;http://lattes.cnpq.br/5566778899001122&gt; ;
+    acad:vinculadoAUnidade recurso:ICEx ;
+    acad:matriculadoEm recurso:CursoCienciaComputacao ;
+    acad:anoIngresso 2023 ;
+    acad:periodoAtual &quot;7º período&quot; ;
+    acad:temInteresseEm recurso:AreaWebSemantica , recurso:AreaLinkedOpenData , recurso:AreaInteligenciaArtificial ;
+    acad:participaDeProjeto recurso:ProjDadosAbertosUFRRJ , recurso:ProjGrafosConhecimentoIA ;
+    acad:membroDeGrupo recurso:GrupoSistemasInteligentes ;
+    acad:possuiClassificacaoSKOS pes:Discente , pes:Graduando , pes:Pesquisador , pes:Bolsista ;
+    acad:possuiFormacao recurso:FormMarianaGraduacao ;
+    acad:possuiPerfilRede recurso:RedeMarianaLinkedIn , recurso:RedeMarianaORCID , recurso:RedeMarianaLattes .
+
+recurso:FormMarianaGraduacao a owl:NamedIndividual , acad:FormacaoAcademica ;
+    acad:grauFormacao &quot;Graduação (em andamento)&quot; ;
+    acad:cursoFormacao &quot;Bacharelado em Ciência da Computação&quot; ;
+    acad:anoConclusao 2026 ;
+    acad:descricaoFormacao &quot;Bacharelado em Ciência da Computação — Universidade Federal Rural do Rio de Janeiro (Ingresso: 2023 · 7º período).&quot; ;
+    acad:realizadaEmInstituicao recurso:UFRRJ .
+
+recurso:RedeMarianaLinkedIn a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;LinkedIn&quot; ;
+    acad:urlRede &quot;https://www.linkedin.com/&quot;^^xsd:anyURI .
+
+recurso:RedeMarianaORCID a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;ORCID&quot; ;
+    acad:urlRede &quot;https://orcid.org/0009-0004-7788-9900&quot;^^xsd:anyURI .
+
+recurso:RedeMarianaLattes a owl:NamedIndividual , acad:RedeAcademica ;
+    acad:nomeRede &quot;Currículo Lattes&quot; ;
+    acad:urlRede &quot;http://lattes.cnpq.br/5566778899001122&quot;^^xsd:anyURI .
+</pre>
+    </section>
+
+    <section class="card" id="consultas-sparql">
+      <h2>5. As 6 Consultas SPARQL e Resultados Validados</h2>
+      <p>
+        <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/consultas/resultados/resultados_sparql.md" target="_blank" rel="noopener noreferrer">Ver relatório Markdown no GitHub ↗</a>
+      </p>
+      
+        <div class="sparql-item">
+          <h3>1. Quais são os docentes cadastrados e seus respectivos departamentos ou unidades acadêmicas?</h3>
+          <p class="note">Utiliza as classes <code>acad:Docente</code>, <code>acad:Departamento</code> e <code>acad:UnidadeAcademica</code> conectadas pelas propriedades de objeto <code>acad:lotadoEm</code> e <code>acad:parteDeUnidade</code>, além das propriedades de dados <code>acad:nome</code>, <code>acad:cargoOuFuncao</code>, <code>acad:nomeOrganizacao</code> e <code>acad:sigla</code>.</p>
+          <p>
+            <a class="btn-outline" href="consultas/consulta01.rq">Arquivo bruto (consulta01.rq)</a>
+            <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/consultas/consulta01.rq" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+          </p>
+          <pre class="code-box"># Consulta 01 — Quais são os docentes cadastrados e seus respectivos departamentos ou unidades acadêmicas?
+# Explora a hierarquia institucional: Docente -&gt; Departamento -&gt; Unidade Acadêmica.
+
+PREFIX acad: &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#&gt;
+PREFIX rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+
+SELECT ?docente ?nomeDocente ?cargo ?nomeDepartamento ?nomeUnidade ?siglaUnidade
+WHERE {
+  ?docente a acad:Docente ;
+           acad:nome ?nomeDocente ;
+           acad:lotadoEm ?departamento .
+  OPTIONAL { ?docente acad:cargoOuFuncao ?cargo . }
+  ?departamento acad:nomeOrganizacao ?nomeDepartamento ;
+                acad:parteDeUnidade ?unidade .
+  ?unidade acad:nomeOrganizacao ?nomeUnidade ;
+           acad:sigla ?siglaUnidade .
+}
+ORDER BY ?nomeDocente</pre>
+          <p class="note"><strong>Resultado obtido (2 registro(s)):</strong></p>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>docente</th><th>nomeDocente</th><th>cargo</th><th>nomeDepartamento</th><th>nomeUnidade</th><th>siglaUnidade</th></tr></thead>
+              <tbody><tr><td><code>recurso:DocenteCarlosMendes</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Professor Adjunto</code></td><td><code>Departamento de Computação</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr><tr><td><code>recurso:DocenteAnaSilva</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Professora Associada</code></td><td><code>Departamento de Computação</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="sparql-item">
+          <h3>2. Quais discentes pertencem a determinado curso?</h3>
+          <p class="note">Relaciona <code>acad:Discente</code> a <code>acad:Curso</code> por meio de <code>acad:matriculadoEm</code>, navegando até <code>acad:UnidadeAcademica</code> via <code>acad:oferecidoPorUnidade</code> e filtrando por curso (<code>acad:nomeCurso</code> contendo &#x27;sistemas de informação&#x27;).</p>
+          <p>
+            <a class="btn-outline" href="consultas/consulta02.rq">Arquivo bruto (consulta02.rq)</a>
+            <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/consultas/consulta02.rq" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+          </p>
+          <pre class="code-box"># Consulta 02 — Quais discentes pertencem a determinado curso?
+# Recupera discentes matriculados em um curso específico (ex.: Bacharelado em Sistemas de Informação),
+# demonstrando também o vínculo do curso com a Unidade Acadêmica (ICEx).
+
+PREFIX acad: &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#&gt;
+
+SELECT ?discente ?nomeDiscente ?nomeCurso ?anoIngresso ?periodoAtual ?nomeUnidade
+WHERE {
+  ?discente a acad:Discente ;
+            acad:nome ?nomeDiscente ;
+            acad:matriculadoEm ?curso .
+  ?curso acad:nomeCurso ?nomeCurso ;
+         acad:oferecidoPorUnidade ?unidade .
+  ?unidade acad:nomeOrganizacao ?nomeUnidade .
+  OPTIONAL { ?discente acad:anoIngresso ?anoIngresso . }
+  OPTIONAL { ?discente acad:periodoAtual ?periodoAtual . }
+  FILTER(CONTAINS(LCASE(?nomeCurso), &quot;sistemas de informação&quot;))
+}
+ORDER BY ?nomeDiscente</pre>
+          <p class="note"><strong>Resultado obtido (1 registro(s)):</strong></p>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>discente</th><th>nomeDiscente</th><th>nomeCurso</th><th>anoIngresso</th><th>periodoAtual</th><th>nomeUnidade</th></tr></thead>
+              <tbody><tr><td><code>recurso:DiscenteJoaoPereira</code></td><td><code>João Exemplo Pereira</code></td><td><code>Bacharelado em Sistemas de Informação</code></td><td><code>2024</code></td><td><code>5º período</code></td><td><code>Instituto de Ciências Exatas</code></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="sparql-item">
+          <h3>3. Quais docentes atuam em determinada área de pesquisa?</h3>
+          <p class="note">Conecta <code>acad:Docente</code> à classe <code>acad:AreaConhecimento</code> (subclasse de <code>skos:Concept</code>) via <code>acad:atuaEmArea</code>, filtrando pela área &#x27;Dados Abertos&#x27; e recuperando as referências externas LOD (Wikidata e DBpedia) ligadas por <code>skos:exactMatch</code>.</p>
+          <p>
+            <a class="btn-outline" href="consultas/consulta03.rq">Arquivo bruto (consulta03.rq)</a>
+            <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/consultas/consulta03.rq" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+          </p>
+          <pre class="code-box"># Consulta 03 — Quais docentes atuam em determinada área de pesquisa?
+# Filtra docentes que atuam na área &quot;Dados Abertos&quot; e recupera a ligação externa LOD (Wikidata/DBpedia).
+
+PREFIX acad: &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#&gt;
+PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+
+SELECT ?docente ?nomeDocente ?nomeArea ?linkExternoLOD
+WHERE {
+  ?docente a acad:Docente ;
+           acad:nome ?nomeDocente ;
+           acad:atuaEmArea ?area .
+  ?area acad:nomeArea ?nomeArea .
+  OPTIONAL { ?area skos:exactMatch ?linkExternoLOD . }
+  FILTER(LCASE(?nomeArea) = &quot;dados abertos&quot;)
+}
+ORDER BY ?nomeDocente ?linkExternoLOD</pre>
+          <p class="note"><strong>Resultado obtido (4 registro(s)):</strong></p>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>docente</th><th>nomeDocente</th><th>nomeArea</th><th>linkExternoLOD</th></tr></thead>
+              <tbody><tr><td><code>recurso:DocenteCarlosMendes</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Dados Abertos</code></td><td><code>dbr:Open_data</code></td></tr><tr><td><code>recurso:DocenteCarlosMendes</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Dados Abertos</code></td><td><code>wd:Q309901</code></td></tr><tr><td><code>recurso:DocenteAnaSilva</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Dados Abertos</code></td><td><code>dbr:Open_data</code></td></tr><tr><td><code>recurso:DocenteAnaSilva</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Dados Abertos</code></td><td><code>wd:Q309901</code></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="sparql-item">
+          <h3>4. Quais docentes e discentes participam de um mesmo projeto de pesquisa?</h3>
+          <p class="note">Consulta multi-entidade que cruza três classes distintas (<code>acad:ProjetoPesquisa</code>, <code>acad:Docente</code> e <code>acad:Discente</code>) através da propriedade <code>acad:participaDeProjeto</code>, recuperando ainda o curso do discente via <code>acad:matriculadoEm</code>.</p>
+          <p>
+            <a class="btn-outline" href="consultas/consulta04.rq">Arquivo bruto (consulta04.rq)</a>
+            <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/consultas/consulta04.rq" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+          </p>
+          <pre class="code-box"># Consulta 04 — Quais docentes e discentes participam de um mesmo projeto de pesquisa?
+# Consulta multi-entidade conectando três tipos distintos (Docente, Discente e ProjetoPesquisa).
+
+PREFIX acad: &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#&gt;
+
+SELECT ?tituloProjeto ?nomeDocente ?nomeDiscente ?nomeCursoDiscente
+WHERE {
+  ?projeto a acad:ProjetoPesquisa ;
+           acad:tituloProjeto ?tituloProjeto .
+  ?docente a acad:Docente ;
+           acad:nome ?nomeDocente ;
+           acad:participaDeProjeto ?projeto .
+  ?discente a acad:Discente ;
+            acad:nome ?nomeDiscente ;
+            acad:participaDeProjeto ?projeto ;
+            acad:matriculadoEm ?curso .
+  ?curso acad:nomeCurso ?nomeCursoDiscente .
+}
+ORDER BY ?tituloProjeto ?nomeDocente ?nomeDiscente</pre>
+          <p class="note"><strong>Resultado obtido (5 registro(s)):</strong></p>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>tituloProjeto</th><th>nomeDocente</th><th>nomeDiscente</th><th>nomeCursoDiscente</th></tr></thead>
+              <tbody><tr><td><code>Grafos de Conhecimento e IA Explicável no Ensino Superior</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Mariana Costa Souza</code></td><td><code>Bacharelado em Ciência da Computação</code></td></tr><tr><td><code>Projeto Exemplo de Dados Abertos</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>João Exemplo Pereira</code></td><td><code>Bacharelado em Sistemas de Informação</code></td></tr><tr><td><code>Projeto Exemplo de Dados Abertos</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Mariana Costa Souza</code></td><td><code>Bacharelado em Ciência da Computação</code></td></tr><tr><td><code>Projeto Exemplo de Dados Abertos</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>João Exemplo Pereira</code></td><td><code>Bacharelado em Sistemas de Informação</code></td></tr><tr><td><code>Projeto Exemplo de Dados Abertos</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Mariana Costa Souza</code></td><td><code>Bacharelado em Ciência da Computação</code></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="sparql-item">
+          <h3>5. Quais publicações estão associadas a determinado docente e quem são seus coautores, quando essa informação estiver representada?</h3>
+          <p class="note">Utiliza <code>acad:Publicacao</code> e <code>acad:temAutor</code> ligando tanto o docente alvo (Profa. Dra. Ana Exemplo da Silva) quanto os demais autores (<code>?coautor != ?docente</code>), retornando metadados bibliográficos (<code>acad:tituloPublicacao</code>, <code>acad:anoPublicacao</code>, <code>acad:doi</code>) e o papel de cada coautor.</p>
+          <p>
+            <a class="btn-outline" href="consultas/consulta05.rq">Arquivo bruto (consulta05.rq)</a>
+            <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/consultas/consulta05.rq" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+          </p>
+          <pre class="code-box"># Consulta 05 — Quais publicações estão associadas a determinado docente e quem são seus coautores?
+# Explora a relação de autoria entre Publicacao, o docente alvo (Profa. Dra. Ana Exemplo da Silva)
+# e seus respectivos coautores (docentes ou discentes).
+
+PREFIX acad: &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#&gt;
+
+SELECT ?tituloPublicacao ?anoPublicacao ?doi ?nomeDocente ?nomeCoautor ?papelCoautor
+WHERE {
+  ?docente a acad:Docente ;
+           acad:nome ?nomeDocente .
+  FILTER(CONTAINS(LCASE(?nomeDocente), &quot;ana exemplo da silva&quot;))
+
+  ?publicacao a acad:Publicacao ;
+              acad:tituloPublicacao ?tituloPublicacao ;
+              acad:anoPublicacao ?anoPublicacao ;
+              acad:temAutor ?docente ;
+              acad:temAutor ?coautor .
+
+  ?coautor acad:nome ?nomeCoautor .
+  OPTIONAL { ?coautor acad:cargoOuFuncao ?papelCoautor . }
+  OPTIONAL { ?publicacao acad:doi ?doi . }
+
+  FILTER(?coautor != ?docente)
+}
+ORDER BY DESC(?anoPublicacao) ?tituloPublicacao ?nomeCoautor</pre>
+          <p class="note"><strong>Resultado obtido (6 registro(s)):</strong></p>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>tituloPublicacao</th><th>anoPublicacao</th><th>doi</th><th>nomeDocente</th><th>nomeCoautor</th><th>papelCoautor</th></tr></thead>
+              <tbody><tr><td><code>Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica</code></td><td><code>2025</code></td><td><code>10.1000/ufrrj.kg.2025.008</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Mariana Costa Souza</code></td><td><code>Discente de Ciência da Computação</code></td></tr><tr><td><code>Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica</code></td><td><code>2025</code></td><td><code>10.1000/ufrrj.kg.2025.008</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Professor Adjunto</code></td></tr><tr><td><code>Protótipo de aplicação para organização semântica de dados acadêmicos</code></td><td><code>2025</code></td><td><code>10.1000/ufrrj.web.2025.003</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>João Exemplo Pereira</code></td><td><code>Discente de Sistemas de Informação</code></td></tr><tr><td><code>Exemplo de publicação sobre dados conectados no ensino superior</code></td><td><code>2024</code></td><td><code>10.1000/ufrrj.lod.2024.001</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>João Exemplo Pereira</code></td><td><code>Discente de Sistemas de Informação</code></td></tr><tr><td><code>Exemplo de publicação sobre dados conectados no ensino superior</code></td><td><code>2024</code></td><td><code>10.1000/ufrrj.lod.2024.001</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Professor Adjunto</code></td></tr><tr><td><code>Exemplo de estudo em representação do conhecimento e ontologias OWL</code></td><td><code>2022</code></td><td><code>10.1000/ufrrj.owl.2022.015</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Professor Adjunto</code></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="sparql-item">
+          <h3>6. Quais pessoas estão vinculadas a uma unidade acadêmica específica, independentemente de serem docentes ou discentes?</h3>
+          <p class="note">Demonstra Property Paths SPARQL 1.1 (<code>(acad:lotadoEm/acad:parteDeUnidade)|(acad:matriculadoEm/acad:oferecidoPorUnidade)</code>) sobre a superclasse <code>acad:Pessoa</code>, unificando docentes e discentes vinculados ao Instituto de Ciências Exatas (ICEx).</p>
+          <p>
+            <a class="btn-outline" href="consultas/consulta06.rq">Arquivo bruto (consulta06.rq)</a>
+            <a class="btn-outline" href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/consultas/consulta06.rq" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+          </p>
+          <pre class="code-box"># Consulta 06 — Quais pessoas estão vinculadas a uma unidade acadêmica específica,
+# independentemente de serem docentes ou discentes?
+# Usa Property Paths combinando (lotadoEm/parteDeUnidade) para docentes e
+# (matriculadoEm/oferecidoPorUnidade) para discentes, unificados pela superclasse acad:Pessoa.
+
+PREFIX acad: &lt;https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/ontologia.owl#&gt;
+
+SELECT DISTINCT ?pessoa ?nomePessoa ?tipoVinculo ?cargo ?nomeUnidade ?siglaUnidade
+WHERE {
+  ?unidade a acad:UnidadeAcademica ;
+           acad:nomeOrganizacao ?nomeUnidade ;
+           acad:sigla ?siglaUnidade .
+  FILTER(?siglaUnidade = &quot;ICEx&quot;)
+
+  ?pessoa (acad:lotadoEm/acad:parteDeUnidade)|(acad:matriculadoEm/acad:oferecidoPorUnidade) ?unidade ;
+          acad:nome ?nomePessoa ;
+          a ?tipoVinculo .
+
+  OPTIONAL { ?pessoa acad:cargoOuFuncao ?cargo . }
+  FILTER(?tipoVinculo IN (acad:Docente, acad:Discente))
+}
+ORDER BY ?tipoVinculo ?nomePessoa</pre>
+          <p class="note"><strong>Resultado obtido (4 registro(s)):</strong></p>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr><th>pessoa</th><th>nomePessoa</th><th>tipoVinculo</th><th>cargo</th><th>nomeUnidade</th><th>siglaUnidade</th></tr></thead>
+              <tbody><tr><td><code>recurso:DiscenteJoaoPereira</code></td><td><code>João Exemplo Pereira</code></td><td><code>acad:Discente</code></td><td><code>Discente de Sistemas de Informação</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr><tr><td><code>recurso:DiscenteMarianaSouza</code></td><td><code>Mariana Costa Souza</code></td><td><code>acad:Discente</code></td><td><code>Discente de Ciência da Computação</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr><tr><td><code>recurso:DocenteCarlosMendes</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>acad:Docente</code></td><td><code>Professor Adjunto</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr><tr><td><code>recurso:DocenteAnaSilva</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>acad:Docente</code></td><td><code>Professora Associada</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    Trabalho de Web Semântica e Linked Open Data — Departamento de Computação / ICEx / UFRRJ · Atualizado em 2026-11-15.
+  </footer>
+</body>
+</html>

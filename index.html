@@ -13,13 +13,10 @@
     <div class="header-inner">
       <a href="index.html" class="site-title">Diretório Semântico de Perfis Acadêmicos — UFRRJ</a>
       <p class="site-subtitle">Universidade Federal Rural do Rio de Janeiro · Instituto de Ciências Exatas (ICEx)</p>
-      <nav class="top-nav" aria-label="Recursos semânticos">
-        <a href="ontologia/ontologia.ttl">Ontologia (Turtle)</a>
-        <a href="ontologia/ontologia.owl">Ontologia (RDF/XML)</a>
-        <a href="ontologia/taxonomia_pessoas.ttl">Taxonomia SKOS</a>
-        <a href="ontologia/dados.ttl">Dados RDF (Turtle)</a>
-        <a href="consultas/resultados/resultados_sparql.md">Resultados SPARQL</a>
-        <a href="documentacao/ontologia.md">Documentação</a>
+      <nav class="top-nav" aria-label="Navegação principal">
+        <a href="index.html">Diretório de Perfis (atual)</a> <a href="documentacao.html">Documentação &amp; Diagrama</a> <a href="artefatos.html">Ontologia, RDF &amp; SPARQL</a>
+        <a href="ontologia/dados.ttl">Dados RDF (bruto)</a>
+        <a href="ontologia/ontologia.ttl">Ontologia (bruto)</a>
       </nav>
     </div>
   </header>
@@ -37,6 +34,10 @@
         Total no grafo unificado validado com <code>rdflib</code>: <strong>1013 triplas RDF</strong> ·
         Licença: <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">Creative Commons Atribuição 4.0 Internacional (CC BY 4.0)</a> ·
         Atualizado em 2026-11-15.
+      </p>
+      <p>
+        <a class="btn-outline" href="documentacao.html">Ver Diagrama &amp; Documentação</a>
+        <a class="btn-outline" href="artefatos.html">Inspecionar Ontologia, RDF &amp; SPARQL</a>
       </p>
     </section>
 
@@ -109,10 +110,11 @@
     <section class="card">
       <h2>Artefatos Semânticos e Linked Open Data</h2>
       <ul class="clean-list">
+        <li><strong>Visualizador de Artefatos (Código Formatado):</strong> <a href="artefatos.html"><code>artefatos.html</code></a> · <a href="documentacao.html"><code>documentacao.html</code></a></li>
         <li><strong>Ontologia de Aplicação (OWL 2):</strong> <a href="ontologia/ontologia.ttl"><code>ontologia/ontologia.ttl</code> (Turtle)</a> · <a href="ontologia/ontologia.owl"><code>ontologia/ontologia.owl</code> (RDF/XML)</a></li>
         <li><strong>Taxonomia Facetada e Vocabulário Controlado (SKOS):</strong> <a href="ontologia/taxonomia_pessoas.ttl"><code>ontologia/taxonomia_pessoas.ttl</code></a></li>
         <li><strong>Grafo de Dados e Perfis (RDF / Turtle):</strong> <a href="ontologia/dados.ttl"><code>ontologia/dados.ttl</code></a></li>
-        <li><strong>Consultas SPARQL (Perguntas de Competência 01 a 06):</strong> <a href="consultas/resultados/resultados_sparql.md"><code>consultas/resultados/resultados_sparql.md</code></a></li>
+        <li><strong>Consultas SPARQL (Perguntas de Competência 01 a 06):</strong> <a href="artefatos.html#consultas-sparql">Ver queries e resultados</a> · <a href="https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main/consultas/resultados/resultados_sparql.md" target="_blank" rel="noopener noreferrer">Markdown no GitHub ↗</a></li>
         <li><strong>Links Externos LOD:</strong> UFRRJ (<a href="http://www.wikidata.org/entity/Q7894375" target="_blank" rel="noopener noreferrer">Wikidata Q7894375</a>, <a href="http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro" target="_blank" rel="noopener noreferrer">DBpedia</a>), áreas de conhecimento via <code>skos:exactMatch</code> e ORCID/Lattes.</li>
       </ul>
     </section>
@@ -122,66 +124,66 @@
       <p class="note">Resultados gerados em tempo de build pelo script <code>codigo-fonte/build.py</code> diretamente sobre os arquivos OWL/RDF do repositório.</p>
       
         <div class="sparql-item">
-          <p><strong>1. Quais são os docentes cadastrados e seus respectivos departamentos ou unidades acadêmicas?</strong> (<a href="consultas/consulta01.rq">consulta01.rq</a> — 2 resultado(s))</p>
-          <p class="note">Utiliza as classes `acad:Docente`, `acad:Departamento` e `acad:UnidadeAcademica` conectadas pelas propriedades de objeto `acad:lotadoEm` e `acad:parteDeUnidade`, além das propriedades de dados `acad:nome`, `acad:cargoOuFuncao`, `acad:nomeOrganizacao` e `acad:sigla`.</p>
+          <p><strong>1. Quais são os docentes cadastrados e seus respectivos departamentos ou unidades acadêmicas?</strong> (<a href="artefatos.html#consultas-sparql">ver query completa</a> · <a href="consultas/consulta01.rq">consulta01.rq</a> — 2 resultado(s))</p>
+          <p class="note">Utiliza as classes <code>acad:Docente</code>, <code>acad:Departamento</code> e <code>acad:UnidadeAcademica</code> conectadas pelas propriedades de objeto <code>acad:lotadoEm</code> e <code>acad:parteDeUnidade</code>, além das propriedades de dados <code>acad:nome</code>, <code>acad:cargoOuFuncao</code>, <code>acad:nomeOrganizacao</code> e <code>acad:sigla</code>.</p>
           <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;font-size:.86rem;margin-top:.4rem;">
-              <thead><tr style="background:var(--soft);text-align:left;"><th>docente</th><th>nomeDocente</th><th>cargo</th><th>nomeDepartamento</th><th>nomeUnidade</th><th>siglaUnidade</th></tr></thead>
+            <table class="data-table">
+              <thead><tr><th>docente</th><th>nomeDocente</th><th>cargo</th><th>nomeDepartamento</th><th>nomeUnidade</th><th>siglaUnidade</th></tr></thead>
               <tbody><tr><td><code>recurso:DocenteCarlosMendes</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Professor Adjunto</code></td><td><code>Departamento de Computação</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr><tr><td><code>recurso:DocenteAnaSilva</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Professora Associada</code></td><td><code>Departamento de Computação</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr></tbody>
             </table>
           </div>
         </div>
         
         <div class="sparql-item">
-          <p><strong>2. Quais discentes pertencem a determinado curso?</strong> (<a href="consultas/consulta02.rq">consulta02.rq</a> — 1 resultado(s))</p>
-          <p class="note">Relaciona `acad:Discente` a `acad:Curso` por meio de `acad:matriculadoEm`, navegando até `acad:UnidadeAcademica` via `acad:oferecidoPorUnidade` e filtrando por curso (`acad:nomeCurso` contendo &#x27;sistemas de informação&#x27;).</p>
+          <p><strong>2. Quais discentes pertencem a determinado curso?</strong> (<a href="artefatos.html#consultas-sparql">ver query completa</a> · <a href="consultas/consulta02.rq">consulta02.rq</a> — 1 resultado(s))</p>
+          <p class="note">Relaciona <code>acad:Discente</code> a <code>acad:Curso</code> por meio de <code>acad:matriculadoEm</code>, navegando até <code>acad:UnidadeAcademica</code> via <code>acad:oferecidoPorUnidade</code> e filtrando por curso (<code>acad:nomeCurso</code> contendo &#x27;sistemas de informação&#x27;).</p>
           <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;font-size:.86rem;margin-top:.4rem;">
-              <thead><tr style="background:var(--soft);text-align:left;"><th>discente</th><th>nomeDiscente</th><th>nomeCurso</th><th>anoIngresso</th><th>periodoAtual</th><th>nomeUnidade</th></tr></thead>
+            <table class="data-table">
+              <thead><tr><th>discente</th><th>nomeDiscente</th><th>nomeCurso</th><th>anoIngresso</th><th>periodoAtual</th><th>nomeUnidade</th></tr></thead>
               <tbody><tr><td><code>recurso:DiscenteJoaoPereira</code></td><td><code>João Exemplo Pereira</code></td><td><code>Bacharelado em Sistemas de Informação</code></td><td><code>2024</code></td><td><code>5º período</code></td><td><code>Instituto de Ciências Exatas</code></td></tr></tbody>
             </table>
           </div>
         </div>
         
         <div class="sparql-item">
-          <p><strong>3. Quais docentes atuam em determinada área de pesquisa?</strong> (<a href="consultas/consulta03.rq">consulta03.rq</a> — 4 resultado(s))</p>
-          <p class="note">Conecta `acad:Docente` à classe `acad:AreaConhecimento` (subclasse de `skos:Concept`) via `acad:atuaEmArea`, filtrando pela área &#x27;Dados Abertos&#x27; e recuperando as referências externas LOD (Wikidata e DBpedia) ligadas por `skos:exactMatch`.</p>
+          <p><strong>3. Quais docentes atuam em determinada área de pesquisa?</strong> (<a href="artefatos.html#consultas-sparql">ver query completa</a> · <a href="consultas/consulta03.rq">consulta03.rq</a> — 4 resultado(s))</p>
+          <p class="note">Conecta <code>acad:Docente</code> à classe <code>acad:AreaConhecimento</code> (subclasse de <code>skos:Concept</code>) via <code>acad:atuaEmArea</code>, filtrando pela área &#x27;Dados Abertos&#x27; e recuperando as referências externas LOD (Wikidata e DBpedia) ligadas por <code>skos:exactMatch</code>.</p>
           <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;font-size:.86rem;margin-top:.4rem;">
-              <thead><tr style="background:var(--soft);text-align:left;"><th>docente</th><th>nomeDocente</th><th>nomeArea</th><th>linkExternoLOD</th></tr></thead>
+            <table class="data-table">
+              <thead><tr><th>docente</th><th>nomeDocente</th><th>nomeArea</th><th>linkExternoLOD</th></tr></thead>
               <tbody><tr><td><code>recurso:DocenteCarlosMendes</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Dados Abertos</code></td><td><code>dbr:Open_data</code></td></tr><tr><td><code>recurso:DocenteCarlosMendes</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Dados Abertos</code></td><td><code>wd:Q309901</code></td></tr><tr><td><code>recurso:DocenteAnaSilva</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Dados Abertos</code></td><td><code>dbr:Open_data</code></td></tr><tr><td><code>recurso:DocenteAnaSilva</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Dados Abertos</code></td><td><code>wd:Q309901</code></td></tr></tbody>
             </table>
           </div>
         </div>
         
         <div class="sparql-item">
-          <p><strong>4. Quais docentes e discentes participam de um mesmo projeto de pesquisa?</strong> (<a href="consultas/consulta04.rq">consulta04.rq</a> — 5 resultado(s))</p>
-          <p class="note">Consulta multi-entidade que cruza três classes distintas (`acad:ProjetoPesquisa`, `acad:Docente` e `acad:Discente`) através da propriedade `acad:participaDeProjeto`, recuperando ainda o curso do discente via `acad:matriculadoEm`.</p>
+          <p><strong>4. Quais docentes e discentes participam de um mesmo projeto de pesquisa?</strong> (<a href="artefatos.html#consultas-sparql">ver query completa</a> · <a href="consultas/consulta04.rq">consulta04.rq</a> — 5 resultado(s))</p>
+          <p class="note">Consulta multi-entidade que cruza três classes distintas (<code>acad:ProjetoPesquisa</code>, <code>acad:Docente</code> e <code>acad:Discente</code>) através da propriedade <code>acad:participaDeProjeto</code>, recuperando ainda o curso do discente via <code>acad:matriculadoEm</code>.</p>
           <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;font-size:.86rem;margin-top:.4rem;">
-              <thead><tr style="background:var(--soft);text-align:left;"><th>tituloProjeto</th><th>nomeDocente</th><th>nomeDiscente</th><th>nomeCursoDiscente</th></tr></thead>
+            <table class="data-table">
+              <thead><tr><th>tituloProjeto</th><th>nomeDocente</th><th>nomeDiscente</th><th>nomeCursoDiscente</th></tr></thead>
               <tbody><tr><td><code>Grafos de Conhecimento e IA Explicável no Ensino Superior</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Mariana Costa Souza</code></td><td><code>Bacharelado em Ciência da Computação</code></td></tr><tr><td><code>Projeto Exemplo de Dados Abertos</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>João Exemplo Pereira</code></td><td><code>Bacharelado em Sistemas de Informação</code></td></tr><tr><td><code>Projeto Exemplo de Dados Abertos</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Mariana Costa Souza</code></td><td><code>Bacharelado em Ciência da Computação</code></td></tr><tr><td><code>Projeto Exemplo de Dados Abertos</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>João Exemplo Pereira</code></td><td><code>Bacharelado em Sistemas de Informação</code></td></tr><tr><td><code>Projeto Exemplo de Dados Abertos</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Mariana Costa Souza</code></td><td><code>Bacharelado em Ciência da Computação</code></td></tr></tbody>
             </table>
           </div>
         </div>
         
         <div class="sparql-item">
-          <p><strong>5. Quais publicações estão associadas a determinado docente e quem são seus coautores, quando essa informação estiver representada?</strong> (<a href="consultas/consulta05.rq">consulta05.rq</a> — 6 resultado(s))</p>
-          <p class="note">Utiliza `acad:Publicacao` e `acad:temAutor` ligando tanto o docente alvo (Profa. Dra. Ana Exemplo da Silva) quanto os demais autores (`?coautor != ?docente`), retornando metadados bibliográficos (`acad:tituloPublicacao`, `acad:anoPublicacao`, `acad:doi`) e o papel de cada coautor.</p>
+          <p><strong>5. Quais publicações estão associadas a determinado docente e quem são seus coautores, quando essa informação estiver representada?</strong> (<a href="artefatos.html#consultas-sparql">ver query completa</a> · <a href="consultas/consulta05.rq">consulta05.rq</a> — 6 resultado(s))</p>
+          <p class="note">Utiliza <code>acad:Publicacao</code> e <code>acad:temAutor</code> ligando tanto o docente alvo (Profa. Dra. Ana Exemplo da Silva) quanto os demais autores (<code>?coautor != ?docente</code>), retornando metadados bibliográficos (<code>acad:tituloPublicacao</code>, <code>acad:anoPublicacao</code>, <code>acad:doi</code>) e o papel de cada coautor.</p>
           <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;font-size:.86rem;margin-top:.4rem;">
-              <thead><tr style="background:var(--soft);text-align:left;"><th>tituloPublicacao</th><th>anoPublicacao</th><th>doi</th><th>nomeDocente</th><th>nomeCoautor</th><th>papelCoautor</th></tr></thead>
+            <table class="data-table">
+              <thead><tr><th>tituloPublicacao</th><th>anoPublicacao</th><th>doi</th><th>nomeDocente</th><th>nomeCoautor</th><th>papelCoautor</th></tr></thead>
               <tbody><tr><td><code>Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica</code></td><td><code>2025</code></td><td><code>10.1000/ufrrj.kg.2025.008</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Mariana Costa Souza</code></td><td><code>Discente de Ciência da Computação</code></td></tr><tr><td><code>Integração de Grafos de Conhecimento e Modelos de Linguagem na Iniciação Científica</code></td><td><code>2025</code></td><td><code>10.1000/ufrrj.kg.2025.008</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Professor Adjunto</code></td></tr><tr><td><code>Protótipo de aplicação para organização semântica de dados acadêmicos</code></td><td><code>2025</code></td><td><code>10.1000/ufrrj.web.2025.003</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>João Exemplo Pereira</code></td><td><code>Discente de Sistemas de Informação</code></td></tr><tr><td><code>Exemplo de publicação sobre dados conectados no ensino superior</code></td><td><code>2024</code></td><td><code>10.1000/ufrrj.lod.2024.001</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>João Exemplo Pereira</code></td><td><code>Discente de Sistemas de Informação</code></td></tr><tr><td><code>Exemplo de publicação sobre dados conectados no ensino superior</code></td><td><code>2024</code></td><td><code>10.1000/ufrrj.lod.2024.001</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Professor Adjunto</code></td></tr><tr><td><code>Exemplo de estudo em representação do conhecimento e ontologias OWL</code></td><td><code>2022</code></td><td><code>10.1000/ufrrj.owl.2022.015</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>Professor Adjunto</code></td></tr></tbody>
             </table>
           </div>
         </div>
         
         <div class="sparql-item">
-          <p><strong>6. Quais pessoas estão vinculadas a uma unidade acadêmica específica, independentemente de serem docentes ou discentes?</strong> (<a href="consultas/consulta06.rq">consulta06.rq</a> — 4 resultado(s))</p>
-          <p class="note">Demonstra Property Paths SPARQL 1.1 (`(acad:lotadoEm/acad:parteDeUnidade)|(acad:matriculadoEm/acad:oferecidoPorUnidade)`) sobre a superclasse `acad:Pessoa`, unificando docentes e discentes vinculados ao Instituto de Ciências Exatas (ICEx).</p>
+          <p><strong>6. Quais pessoas estão vinculadas a uma unidade acadêmica específica, independentemente de serem docentes ou discentes?</strong> (<a href="artefatos.html#consultas-sparql">ver query completa</a> · <a href="consultas/consulta06.rq">consulta06.rq</a> — 4 resultado(s))</p>
+          <p class="note">Demonstra Property Paths SPARQL 1.1 (<code>(acad:lotadoEm/acad:parteDeUnidade)|(acad:matriculadoEm/acad:oferecidoPorUnidade)</code>) sobre a superclasse <code>acad:Pessoa</code>, unificando docentes e discentes vinculados ao Instituto de Ciências Exatas (ICEx).</p>
           <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;font-size:.86rem;margin-top:.4rem;">
-              <thead><tr style="background:var(--soft);text-align:left;"><th>pessoa</th><th>nomePessoa</th><th>tipoVinculo</th><th>cargo</th><th>nomeUnidade</th><th>siglaUnidade</th></tr></thead>
+            <table class="data-table">
+              <thead><tr><th>pessoa</th><th>nomePessoa</th><th>tipoVinculo</th><th>cargo</th><th>nomeUnidade</th><th>siglaUnidade</th></tr></thead>
               <tbody><tr><td><code>recurso:DiscenteJoaoPereira</code></td><td><code>João Exemplo Pereira</code></td><td><code>acad:Discente</code></td><td><code>Discente de Sistemas de Informação</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr><tr><td><code>recurso:DiscenteMarianaSouza</code></td><td><code>Mariana Costa Souza</code></td><td><code>acad:Discente</code></td><td><code>Discente de Ciência da Computação</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr><tr><td><code>recurso:DocenteCarlosMendes</code></td><td><code>Prof. Dr. Carlos Eduardo Mendes</code></td><td><code>acad:Docente</code></td><td><code>Professor Adjunto</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr><tr><td><code>recurso:DocenteAnaSilva</code></td><td><code>Profa. Dra. Ana Exemplo da Silva</code></td><td><code>acad:Docente</code></td><td><code>Professora Associada</code></td><td><code>Instituto de Ciências Exatas</code></td><td><code>ICEx</code></td></tr></tbody>
             </table>
           </div>

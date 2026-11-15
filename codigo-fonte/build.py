@@ -31,6 +31,9 @@ PERFIS_DIR = ROOT_DIR / "exemplos" / "perfis"
 CONSULTAS_DIR = ROOT_DIR / "consultas"
 RESULTADOS_MD_PATH = CONSULTAS_DIR / "resultados" / "resultados_sparql.md"
 INDEX_HTML_PATH = ROOT_DIR / "index.html"
+DOCUMENTACAO_HTML_PATH = ROOT_DIR / "documentacao.html"
+ARTEFATOS_HTML_PATH = ROOT_DIR / "artefatos.html"
+REPO_GITHUB_BASE = "https://github.com/DavidsonWasserman/trabalho-web-semantica/blob/main"
 
 
 PERGUNTAS_COMPETENCIA = {
@@ -99,6 +102,18 @@ def ttl_str(value: str) -> str:
 def esc(value: Any) -> str:
     """Escapa texto para HTML."""
     return html.escape(str(value), quote=True)
+
+
+def md_code_to_html(text: str) -> str:
+    """Escapa texto para HTML convertendo trechos entre crases em <code>...</code>."""
+    parts = text.split("`")
+    out: list[str] = []
+    for idx, part in enumerate(parts):
+        if idx % 2 == 1:
+            out.append(f"<code>{esc(part)}</code>")
+        else:
+            out.append(esc(part))
+    return "".join(out)
 
 
 def generate_dados_ttl(data: dict[str, Any]) -> str:
@@ -430,7 +445,8 @@ def render_profile_html(
     for p in data["perfis"]:
         active = " (atual)" if p["id"] == perfil["id"] else ""
         nav_links.append(f'<a href="{p["slug"]}.html">{esc(p["nome"].split(" ")[0])} {esc(p["nome"].split(" ")[-1])}{active}</a>')
-    nav_links.append('<a href="../../ontologia/dados.ttl">Grafo RDF (dados.ttl)</a>')
+    nav_links.append('<a href="../../documentacao.html">Documentação &amp; Diagrama</a>')
+    nav_links.append('<a href="../../artefatos.html">Ontologia, RDF &amp; SPARQL</a>')
 
     # Formação acadêmica
     formacoes_html = "\n".join(
@@ -744,6 +760,247 @@ def generate_resultados_md(sparql_results: list[dict[str, Any]], proj: dict[str,
     return "\n".join(lines)
 
 
+def render_site_header(proj: dict[str, Any], active_page: str) -> str:
+    """Renderiza o cabeçalho padrão das páginas principais do portal."""
+    nav_items = [
+        ("index.html", "Diretório de Perfis"),
+        ("documentacao.html", "Documentação &amp; Diagrama"),
+        ("artefatos.html", "Ontologia, RDF &amp; SPARQL"),
+    ]
+    nav_html = " ".join(
+        f'<a href="{href}">{label}{" (atual)" if href == active_page else ""}</a>'
+        for href, label in nav_items
+    )
+    return f"""  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-title">{esc(proj['titulo'])}</a>
+      <p class="site-subtitle">{esc(proj['subtitulo'])}</p>
+      <nav class="top-nav" aria-label="Navegação principal">
+        {nav_html}
+        <a href="ontologia/dados.ttl">Dados RDF (bruto)</a>
+        <a href="ontologia/ontologia.ttl">Ontologia (bruto)</a>
+      </nav>
+    </div>
+  </header>"""
+
+
+def render_documentacao_html(data: dict[str, Any]) -> str:
+    """Gera `documentacao.html` na raiz com diagrama, vocabulários, dicionário e decisões."""
+    proj = data["projeto"]
+    header = render_site_header(proj, "documentacao.html")
+    return f"""<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Documentação da Ontologia, Vocabulários e Decisões de Modelagem — {esc(proj['titulo'])}.">
+  <title>Documentação &amp; Diagrama | {esc(proj['titulo'])}</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+{header}
+
+  <main>
+    <section class="card">
+      <p class="eyebrow">Documentação Técnica e Modelagem Semântica</p>
+      <h1>Diagrama, Ontologia e Vocabulários</h1>
+      <p>
+        Esta página reúne de forma visual a arquitetura semântica do portal. Os arquivos originais em Markdown também estão disponíveis no repositório GitHub para consulta detalhada.
+      </p>
+      <p>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/proposta/descricao.md" target="_blank" rel="noopener noreferrer">Proposta (descricao.md) ↗</a>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/proposta/decisoes-modelagem.md" target="_blank" rel="noopener noreferrer">Decisões e IA (decisoes-modelagem.md) ↗</a>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/documentacao/dicionario-dados.md" target="_blank" rel="noopener noreferrer">Dicionário de Dados ↗</a>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/documentacao/vocabularios.md" target="_blank" rel="noopener noreferrer">Vocabulários ↗</a>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/documentacao/ontologia.md" target="_blank" rel="noopener noreferrer">Ontologia (ontologia.md) ↗</a>
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>1. Diagrama Conceitual e da Ontologia (<code>acad:</code>)</h2>
+      <p class="note">Triângulos vazados indicam herança (<code>rdfs:subClassOf</code>); setas sólidas indicam propriedades de objeto (<code>owl:ObjectProperty</code>).</p>
+      <div class="diagram-wrap">
+        <img src="documentacao/diagrama.svg" alt="Diagrama da Ontologia de Perfis Acadêmicos (acad:)">
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Vocabulários Reutilizados e Taxonomia SKOS (<code>pes:</code>)</h2>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr><th>Vocabulário</th><th>Prefixo</th><th>Uso e Alinhamento no Projeto</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>FOAF</strong></td><td><code>foaf:</code></td><td>Base de agentes, organizações e projetos (<code>acad:Pessoa ⊑ foaf:Person</code>, <code>acad:nome ⊑ foaf:name</code>, <code>foaf:mbox</code>).</td></tr>
+            <tr><td><strong>Schema.org</strong></td><td><code>schema:</code></td><td>Interoperabilidade web e JSON-LD embutido nas páginas (<code>Person</code>, <code>CollegeOrUniversity</code>, <code>ScholarlyArticle</code>, <code>knowsAbout</code>).</td></tr>
+            <tr><td><strong>W3C SKOS</strong></td><td><code>skos:</code></td><td>Taxonomia facetada de pessoas (<code>pes:Vinculo</code>, <code>pes:Atuacao</code>, <code>pes:Condicao</code>) e ligação de áreas via <code>skos:exactMatch</code> / <code>skos:closeMatch</code>.</td></tr>
+            <tr><td><strong>BIBO</strong></td><td><code>bibo:</code></td><td>Alinhamento bibliográfico (<code>acad:Publicacao ⊑ bibo:AcademicArticle</code>, <code>bibo:doi</code>).</td></tr>
+            <tr><td><strong>DC Terms</strong></td><td><code>dcterms:</code></td><td>Metadados de proveniência, fonte, data de atualização e licença (CC BY 4.0).</td></tr>
+            <tr><td><strong>VIVO (Referência)</strong></td><td><code>vivo:</code></td><td>Referência conceitual analisada na pesquisa; optamos por ontologia de aplicação própria mais enxuta em vez de importar o núcleo BFO/IAO completo.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3. Decisões Críticas de Modelagem e Política LOD</h2>
+      <ul class="clean-list">
+        <li><strong>Hash URIs no GitHub Pages:</strong> Como o GitHub Pages é estático (sem HTTP 303), usamos Hash URIs apontando para os documentos publicados (<code>.../ontologia/dados.ttl#Recurso</code>) com <code>&lt;link rel="alternate" type="text/turtle"&gt;</code> no HTML.</li>
+        <li><strong>Política criteriosa para <code>owl:sameAs</code>:</strong> <code>owl:sameAs</code> é usado exclusivamente para identidade estrita na <code>recurso:UFRRJ</code> (Wikidata <code>Q7894375</code> e DBpedia). Áreas usam <code>skos:exactMatch</code>, cursos usam <code>skos:closeMatch</code> e perfis demonstrativos usam <code>rdfs:seeAlso</code> para ORCID/Lattes/OpenAlex.</li>
+        <li><strong>Não-disjunção entre Docente e Discente:</strong> <code>acad:Docente</code> e <code>acad:Discente</code> não foram declaradas disjuntas porque um docente pode estar matriculado em curso de pós-graduação.</li>
+        <li><strong>Compatibilidade com Protégé / HermiT:</strong> Restrições de cardinalidade OWL utilizam <code>xsd:integer</code> (em vez de <code>xsd:gYear</code>) para evitar erros no raciocinador HermiT.</li>
+        <li><strong>Classes Definidas (Inferência OWL):</strong> <code>acad:PesquisadorEmProjeto</code> e <code>acad:AutorAcademico</code> são inferidas automaticamente via <code>owl:equivalentClass</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>4. Dicionário Resumido de Classes e Principais Propriedades</h2>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr><th>Classe / Propriedade</th><th>Domínio → Alcance / Restrição</th><th>Descrição</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>acad:Docente</code></td><td><code>lotadoEm min 1 Departamento</code></td><td>Professor/pesquisador vinculado a departamento acadêmico.</td></tr>
+            <tr><td><code>acad:Discente</code></td><td><code>matriculadoEm min 1 Curso</code></td><td>Estudante matriculado em graduação ou pós-graduação.</td></tr>
+            <tr><td><code>acad:Publicacao</code></td><td><code>temAutor min 1 Pessoa</code>; <code>titulo</code> e <code>ano</code> (<code>1</code>)</td><td>Artigo/produção acadêmica permitindo consulta de coautorias.</td></tr>
+            <tr><td><code>acad:lotadoEm</code> / <code>acad:parteDeUnidade</code></td><td><code>Docente → Departamento → UnidadeAcademica</code></td><td>Hierarquia institucional docente até o ICEx.</td></tr>
+            <tr><td><code>acad:matriculadoEm</code> / <code>acad:oferecidoPorUnidade</code></td><td><code>Discente → Curso → UnidadeAcademica</code></td><td>Hierarquia institucional discente até o ICEx.</td></tr>
+            <tr><td><code>acad:participaDeProjeto</code></td><td><code>Pessoa → ProjetoPesquisa</code></td><td>Liga docentes e discentes a projetos de pesquisa em comum.</td></tr>
+            <tr><td><code>acad:possuiClassificacaoSKOS</code></td><td><code>Pessoa → skos:Concept</code></td><td>Associa o perfil aos conceitos facetados de <code>pes:</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    Trabalho de Web Semântica e Linked Open Data — Departamento de Computação / ICEx / UFRRJ · Atualizado em {esc(proj['data_atualizacao'])}.
+  </footer>
+</body>
+</html>
+"""
+
+
+def render_artefatos_html(data: dict[str, Any], sparql_results: list[dict[str, Any]]) -> str:
+    """Gera `artefatos.html` exibindo ontologia, SKOS, dados RDF e queries SPARQL formatados."""
+    proj = data["projeto"]
+    header = render_site_header(proj, "artefatos.html")
+
+    ont_ttl_txt = ONTOLOGIA_TTL_PATH.read_text(encoding="utf-8")
+    ont_owl_txt = ONTOLOGIA_OWL_PATH.read_text(encoding="utf-8")
+    skos_txt = SKOS_PATH.read_text(encoding="utf-8")
+    dados_ttl_txt = DADOS_TTL_PATH.read_text(encoding="utf-8")
+
+    sparql_sections: list[str] = []
+    for item in sparql_results:
+        headers = "".join(f"<th>{esc(v)}</th>" for v in item["vars"])
+        body_rows = ""
+        for r in item["rows"]:
+            tds = "".join(f"<td><code>{esc(compact_uri(c, proj))}</code></td>" for c in r)
+            body_rows += f"<tr>{tds}</tr>"
+        sparql_sections.append(f"""
+        <div class="sparql-item">
+          <h3>{item['numero']}. {esc(item['pergunta'])}</h3>
+          <p class="note">{md_code_to_html(item['explicacao'])}</p>
+          <p>
+            <a class="btn-outline" href="consultas/{esc(item['arquivo'])}">Arquivo bruto ({esc(item['arquivo'])})</a>
+            <a class="btn-outline" href="{REPO_GITHUB_BASE}/consultas/{esc(item['arquivo'])}" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+          </p>
+          <pre class="code-box">{esc(item['sparql'])}</pre>
+          <p class="note"><strong>Resultado obtido ({len(item['rows'])} registro(s)):</strong></p>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead><tr>{headers}</tr></thead>
+              <tbody>{body_rows}</tbody>
+            </table>
+          </div>
+        </div>
+        """)
+
+    return f"""<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Visualizador de Ontologia OWL/Turtle, Taxonomia SKOS, Dados RDF e Consultas SPARQL — {esc(proj['titulo'])}.">
+  <title>Ontologia, RDF &amp; SPARQL | {esc(proj['titulo'])}</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+{header}
+
+  <main>
+    <section class="card">
+      <p class="eyebrow">Artefatos Legíveis por Máquina &amp; Evidências SPARQL</p>
+      <h1>Ontologia OWL, SKOS, Dados RDF e Consultas</h1>
+      <p>
+        Arquivos <code>.ttl</code> e <code>.owl</code> são serializações formais de grafos semânticos (texto/XML). Abaixo você pode inspecionar o conteúdo completo diretamente no navegador com formatação legível ou acessar os arquivos originais para uso em ferramentas como Protégé e <code>rdflib</code>.
+      </p>
+      <p>
+        <a class="btn-outline" href="#ontologia-ttl">Ontologia (Turtle)</a>
+        <a class="btn-outline" href="#ontologia-owl">Ontologia (RDF/XML)</a>
+        <a class="btn-outline" href="#skos-ttl">Taxonomia SKOS</a>
+        <a class="btn-outline" href="#dados-ttl">Dados RDF</a>
+        <a class="btn-outline" href="#consultas-sparql">6 Consultas SPARQL</a>
+      </p>
+    </section>
+
+    <section class="card" id="ontologia-ttl">
+      <h2>1. Ontologia de Aplicação — Serialização Turtle (<code>ontologia/ontologia.ttl</code>)</h2>
+      <p>
+        <a class="btn-outline" href="ontologia/ontologia.ttl">Abrir arquivo bruto (.ttl)</a>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/ontologia/ontologia.ttl" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+      </p>
+      <pre class="code-box">{esc(ont_ttl_txt)}</pre>
+    </section>
+
+    <section class="card" id="ontologia-owl">
+      <h2>2. Ontologia de Aplicação — Serialização RDF/XML (<code>ontologia/ontologia.owl</code>)</h2>
+      <p class="note">Gerado automaticamente a partir de <code>ontologia.ttl</code> em formato RDF/XML padrão.</p>
+      <p>
+        <a class="btn-outline" href="ontologia/ontologia.owl">Abrir arquivo bruto (.owl)</a>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/ontologia/ontologia.owl" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+      </p>
+      <pre class="code-box">{esc(ont_owl_txt)}</pre>
+    </section>
+
+    <section class="card" id="skos-ttl">
+      <h2>3. Taxonomia Facetada e Vocabulário Controlado SKOS (<code>ontologia/taxonomia_pessoas.ttl</code>)</h2>
+      <p>
+        <a class="btn-outline" href="ontologia/taxonomia_pessoas.ttl">Abrir arquivo bruto (.ttl)</a>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/ontologia/taxonomia_pessoas.ttl" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+      </p>
+      <pre class="code-box">{esc(skos_txt)}</pre>
+    </section>
+
+    <section class="card" id="dados-ttl">
+      <h2>4. Grafo de Dados dos Perfis e Links LOD (<code>ontologia/dados.ttl</code>)</h2>
+      <p>
+        <a class="btn-outline" href="ontologia/dados.ttl">Abrir arquivo bruto (.ttl)</a>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/ontologia/dados.ttl" target="_blank" rel="noopener noreferrer">Ver no GitHub ↗</a>
+      </p>
+      <pre class="code-box">{esc(dados_ttl_txt)}</pre>
+    </section>
+
+    <section class="card" id="consultas-sparql">
+      <h2>5. As 6 Consultas SPARQL e Resultados Validados</h2>
+      <p>
+        <a class="btn-outline" href="{REPO_GITHUB_BASE}/consultas/resultados/resultados_sparql.md" target="_blank" rel="noopener noreferrer">Ver relatório Markdown no GitHub ↗</a>
+      </p>
+      {''.join(sparql_sections)}
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    Trabalho de Web Semântica e Linked Open Data — Departamento de Computação / ICEx / UFRRJ · Atualizado em {esc(proj['data_atualizacao'])}.
+  </footer>
+</body>
+</html>
+"""
+
+
 def render_index_html(
     data: dict[str, Any],
     sparql_results: list[dict[str, Any]],
@@ -751,6 +1008,7 @@ def render_index_html(
 ) -> str:
     """Gera o `index.html` público na raiz do repositório."""
     proj = data["projeto"]
+    header = render_site_header(proj, "index.html")
 
     docentes_cards: list[str] = []
     discentes_cards: list[str] = []
@@ -783,11 +1041,11 @@ def render_index_html(
             body_rows += f"<tr>{tds}</tr>"
         sparql_blocks.append(f"""
         <div class="sparql-item">
-          <p><strong>{item['numero']}. {esc(item['pergunta'])}</strong> (<a href="consultas/{esc(item['arquivo'])}">{esc(item['arquivo'])}</a> — {len(item['rows'])} resultado(s))</p>
-          <p class="note">{esc(item['explicacao'])}</p>
+          <p><strong>{item['numero']}. {esc(item['pergunta'])}</strong> (<a href="artefatos.html#consultas-sparql">ver query completa</a> · <a href="consultas/{esc(item['arquivo'])}">{esc(item['arquivo'])}</a> — {len(item['rows'])} resultado(s))</p>
+          <p class="note">{md_code_to_html(item['explicacao'])}</p>
           <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;font-size:.86rem;margin-top:.4rem;">
-              <thead><tr style="background:var(--soft);text-align:left;">{headers}</tr></thead>
+            <table class="data-table">
+              <thead><tr>{headers}</tr></thead>
               <tbody>{body_rows}</tbody>
             </table>
           </div>
@@ -805,20 +1063,7 @@ def render_index_html(
   <link rel="alternate" type="text/turtle" href="ontologia/dados.ttl" title="Dados RDF (Turtle)">
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="site-title">{esc(proj['titulo'])}</a>
-      <p class="site-subtitle">{esc(proj['subtitulo'])}</p>
-      <nav class="top-nav" aria-label="Recursos semânticos">
-        <a href="ontologia/ontologia.ttl">Ontologia (Turtle)</a>
-        <a href="ontologia/ontologia.owl">Ontologia (RDF/XML)</a>
-        <a href="ontologia/taxonomia_pessoas.ttl">Taxonomia SKOS</a>
-        <a href="ontologia/dados.ttl">Dados RDF (Turtle)</a>
-        <a href="consultas/resultados/resultados_sparql.md">Resultados SPARQL</a>
-        <a href="documentacao/ontologia.md">Documentação</a>
-      </nav>
-    </div>
-  </header>
+{header}
 
   <main>
     <section class="card">
@@ -833,6 +1078,10 @@ def render_index_html(
         Total no grafo unificado validado com <code>rdflib</code>: <strong>{triples_count} triplas RDF</strong> ·
         Licença: <a href="{esc(proj['licenca'])}" target="_blank" rel="noopener noreferrer">{esc(proj['licenca_nome'])}</a> ·
         Atualizado em {esc(proj['data_atualizacao'])}.
+      </p>
+      <p>
+        <a class="btn-outline" href="documentacao.html">Ver Diagrama &amp; Documentação</a>
+        <a class="btn-outline" href="artefatos.html">Inspecionar Ontologia, RDF &amp; SPARQL</a>
       </p>
     </section>
 
@@ -853,10 +1102,11 @@ def render_index_html(
     <section class="card">
       <h2>Artefatos Semânticos e Linked Open Data</h2>
       <ul class="clean-list">
+        <li><strong>Visualizador de Artefatos (Código Formatado):</strong> <a href="artefatos.html"><code>artefatos.html</code></a> · <a href="documentacao.html"><code>documentacao.html</code></a></li>
         <li><strong>Ontologia de Aplicação (OWL 2):</strong> <a href="ontologia/ontologia.ttl"><code>ontologia/ontologia.ttl</code> (Turtle)</a> · <a href="ontologia/ontologia.owl"><code>ontologia/ontologia.owl</code> (RDF/XML)</a></li>
         <li><strong>Taxonomia Facetada e Vocabulário Controlado (SKOS):</strong> <a href="ontologia/taxonomia_pessoas.ttl"><code>ontologia/taxonomia_pessoas.ttl</code></a></li>
         <li><strong>Grafo de Dados e Perfis (RDF / Turtle):</strong> <a href="ontologia/dados.ttl"><code>ontologia/dados.ttl</code></a></li>
-        <li><strong>Consultas SPARQL (Perguntas de Competência 01 a 06):</strong> <a href="consultas/resultados/resultados_sparql.md"><code>consultas/resultados/resultados_sparql.md</code></a></li>
+        <li><strong>Consultas SPARQL (Perguntas de Competência 01 a 06):</strong> <a href="artefatos.html#consultas-sparql">Ver queries e resultados</a> · <a href="{REPO_GITHUB_BASE}/consultas/resultados/resultados_sparql.md" target="_blank" rel="noopener noreferrer">Markdown no GitHub ↗</a></li>
         <li><strong>Links Externos LOD:</strong> UFRRJ (<a href="http://www.wikidata.org/entity/Q7894375" target="_blank" rel="noopener noreferrer">Wikidata Q7894375</a>, <a href="http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro" target="_blank" rel="noopener noreferrer">DBpedia</a>), áreas de conhecimento via <code>skos:exactMatch</code> e ORCID/Lattes.</li>
       </ul>
     </section>
@@ -945,6 +1195,18 @@ def main() -> int:
         encoding="utf-8",
     )
     print(f"[OK] Gerado {INDEX_HTML_PATH.relative_to(ROOT_DIR)}")
+
+    DOCUMENTACAO_HTML_PATH.write_text(
+        render_documentacao_html(data),
+        encoding="utf-8",
+    )
+    print(f"[OK] Gerado {DOCUMENTACAO_HTML_PATH.relative_to(ROOT_DIR)}")
+
+    ARTEFATOS_HTML_PATH.write_text(
+        render_artefatos_html(data, sparql_results),
+        encoding="utf-8",
+    )
+    print(f"[OK] Gerado {ARTEFATOS_HTML_PATH.relative_to(ROOT_DIR)}")
     return 0
 
 
