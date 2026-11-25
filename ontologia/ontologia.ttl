@@ -19,7 +19,7 @@
     rdfs:label "Ontologia de Perfis Acadêmicos Universitários (UFRRJ)"@pt ;
     rdfs:comment "Ontologia de aplicação em OWL 2 para representação semântica e publicação em Linked Open Data de perfis acadêmicos de docentes e discentes."@pt ;
     dcterms:title "Ontologia de Perfis Acadêmicos Universitários (acad)"@pt ;
-    dcterms:creator "Davidson Wasserman e Dupla (UFRRJ)"@pt ;
+    dcterms:creator "Davidson Wasserman e Nicolas Duarte (UFRRJ)"@pt ;
     dcterms:created "2026-11-15" ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     owl:versionInfo "0.1.0" .

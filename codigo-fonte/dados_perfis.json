@@ -18,7 +18,7 @@
       "sigla": "UFRRJ",
       "url": "https://portal.ufrrj.br/",
       "same_as": [
-        "http://www.wikidata.org/entity/Q7894375",
+        "http://www.wikidata.org/entity/Q7834196",
         "http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro"
       ],
       "see_also": [
@@ -84,7 +84,7 @@
       "id": "AreaEngenhariaConhecimento",
       "nome": "Engenharia de Conhecimento",
       "exact_match": [
-        "http://www.wikidata.org/entity/Q1166070",
+        "http://www.wikidata.org/entity/Q1540472",
         "http://dbpedia.org/resource/Knowledge_engineering"
       ]
     },

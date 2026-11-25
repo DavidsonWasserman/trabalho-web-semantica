@@ -33,7 +33,7 @@ recurso:UFRRJ a owl:NamedIndividual , acad:InstituicaoEnsino , schema:CollegeOrU
     schema:name "Universidade Federal Rural do Rio de Janeiro" ;
     acad:sigla "UFRRJ" ;
     schema:url <https://portal.ufrrj.br/> ;
-    owl:sameAs <http://www.wikidata.org/entity/Q7894375> , <http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro> ;
+    owl:sameAs <http://www.wikidata.org/entity/Q7834196> , <http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro> ;
     rdfs:seeAlso <https://pt.wikipedia.org/wiki/Universidade_Federal_Rural_do_Rio_de_Janeiro> .
 
 recurso:ICEx a owl:NamedIndividual , acad:UnidadeAcademica ;
@@ -73,7 +73,7 @@ recurso:AreaWebSemantica a owl:NamedIndividual , acad:AreaConhecimento , skos:Co
 recurso:AreaEngenhariaConhecimento a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
     acad:nomeArea "Engenharia de Conhecimento" ;
     skos:prefLabel "Engenharia de Conhecimento"@pt ;
-    skos:exactMatch <http://www.wikidata.org/entity/Q1166070> , <http://dbpedia.org/resource/Knowledge_engineering> .
+    skos:exactMatch <http://www.wikidata.org/entity/Q1540472> , <http://dbpedia.org/resource/Knowledge_engineering> .
 
 recurso:AreaDadosAbertos a owl:NamedIndividual , acad:AreaConhecimento , skos:Concept ;
     acad:nomeArea "Dados Abertos" ;

@@ -4,7 +4,7 @@ Trabalho prático da disciplina **Web Semântica e Linked Open Data** (Departame
 
 - **Repositório Git:** `git@github.com:DavidsonWasserman/trabalho-web-semantica.git`
 - **Endereço Público (GitHub Pages):** https://davidsonwasserman.github.io/trabalho-web-semantica/
-- **Status Atual:** Versão Inicial (`v0.1`) — estrutura completa ponta a ponta preparada para alinhamento em 18/11 e evolução final para entrega em 01/12.
+- **Status Atual:** Versão Inicial (`v0.1`) — estrutura ponta a ponta para o checkpoint de andamento em 25/11 e evolução final para entrega em 01/12.
 
 ---
 
