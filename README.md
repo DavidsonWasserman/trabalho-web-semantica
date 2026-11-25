@@ -12,7 +12,6 @@ Trabalho prático da disciplina **Web Semântica e Linked Open Data** (Departame
 
 - **Davidson Wasserman** — Graduando em Sistemas de Informação (UFRRJ)
 - **Nicolas Duarte** — Graduando em Sistemas de Informação (UFRRJ)
-
 ---
 
 ## Endereços Públicos (URIs e Artefatos)
