@@ -80,7 +80,7 @@
     <rect x="475" y="510" width="230" height="74" rx="10" fill="#ffffff" stroke="#174a6e" stroke-width="1.8"/>
     <rect x="475" y="510" width="230" height="26" rx="10" fill="#eaf2f7"/>
     <text x="590" y="528" text-anchor="middle" font-size="13" font-weight="700" fill="#174a6e">acad:InstituicaoEnsino</text>
-    <text x="487" y="553" font-size="11.5" fill="#202938">UFRRJ (owl:sameAs Wikidata Q7894375)</text>
+    <text x="487" y="553" font-size="11.5" fill="#202938">UFRRJ (owl:sameAs Wikidata Q7834196)</text>
     <text x="487" y="570" font-size="11" fill="#5b6573">⊑ schema:CollegeOrUniversity</text>
   </g>
 

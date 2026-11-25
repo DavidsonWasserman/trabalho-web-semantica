@@ -12,7 +12,7 @@
 <https://davidsonwasserman.github.io/trabalho-web-semantica/ontologia/taxonomia_pessoas.ttl>
     a owl:Ontology ;
     dcterms:title "Vocabulário Controlado e Taxonomia Facetada de Perfis Acadêmicos (UFRRJ)"@pt ;
-    dcterms:creator "Davidson Wasserman e Dupla (Disciplina de Web Semântica - UFRRJ)"@pt ;
+    dcterms:creator "Davidson Wasserman e Nicolas Duarte (Disciplina de Web Semântica - UFRRJ)"@pt ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     dcterms:modified "2026-11-15"^^xsd:date .
 

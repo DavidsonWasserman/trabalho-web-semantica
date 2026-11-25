@@ -847,7 +847,7 @@ def render_documentacao_html(data: dict[str, Any]) -> str:
       <h2>3. Decisões Críticas de Modelagem e Política LOD</h2>
       <ul class="clean-list">
         <li><strong>Hash URIs no GitHub Pages:</strong> Como o GitHub Pages é estático (sem HTTP 303), usamos Hash URIs apontando para os documentos publicados (<code>.../ontologia/dados.ttl#Recurso</code>) com <code>&lt;link rel="alternate" type="text/turtle"&gt;</code> no HTML.</li>
-        <li><strong>Política criteriosa para <code>owl:sameAs</code>:</strong> <code>owl:sameAs</code> é usado exclusivamente para identidade estrita na <code>recurso:UFRRJ</code> (Wikidata <code>Q7894375</code> e DBpedia). Áreas usam <code>skos:exactMatch</code>, cursos usam <code>skos:closeMatch</code> e perfis demonstrativos usam <code>rdfs:seeAlso</code> para ORCID/Lattes/OpenAlex.</li>
+        <li><strong>Política criteriosa para <code>owl:sameAs</code>:</strong> <code>owl:sameAs</code> é usado exclusivamente para identidade estrita na <code>recurso:UFRRJ</code> (Wikidata <code>Q7834196</code> e DBpedia). Áreas usam <code>skos:exactMatch</code>, cursos usam <code>skos:closeMatch</code> e perfis demonstrativos usam <code>rdfs:seeAlso</code> para ORCID/Lattes/OpenAlex.</li>
         <li><strong>Não-disjunção entre Docente e Discente:</strong> <code>acad:Docente</code> e <code>acad:Discente</code> não foram declaradas disjuntas porque um docente pode estar matriculado em curso de pós-graduação.</li>
         <li><strong>Compatibilidade com Protégé / HermiT:</strong> Restrições de cardinalidade OWL utilizam <code>xsd:integer</code> (em vez de <code>xsd:gYear</code>) para evitar erros no raciocinador HermiT.</li>
         <li><strong>Classes Definidas (Inferência OWL):</strong> <code>acad:PesquisadorEmProjeto</code> e <code>acad:AutorAcademico</code> são inferidas automaticamente via <code>owl:equivalentClass</code>.</li>
@@ -1107,7 +1107,7 @@ def render_index_html(
         <li><strong>Taxonomia Facetada e Vocabulário Controlado (SKOS):</strong> <a href="ontologia/taxonomia_pessoas.ttl"><code>ontologia/taxonomia_pessoas.ttl</code></a></li>
         <li><strong>Grafo de Dados e Perfis (RDF / Turtle):</strong> <a href="ontologia/dados.ttl"><code>ontologia/dados.ttl</code></a></li>
         <li><strong>Consultas SPARQL (Perguntas de Competência 01 a 06):</strong> <a href="artefatos.html#consultas-sparql">Ver queries e resultados</a> · <a href="{REPO_GITHUB_BASE}/consultas/resultados/resultados_sparql.md" target="_blank" rel="noopener noreferrer">Markdown no GitHub ↗</a></li>
-        <li><strong>Links Externos LOD:</strong> UFRRJ (<a href="http://www.wikidata.org/entity/Q7894375" target="_blank" rel="noopener noreferrer">Wikidata Q7894375</a>, <a href="http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro" target="_blank" rel="noopener noreferrer">DBpedia</a>), áreas de conhecimento via <code>skos:exactMatch</code> e ORCID/Lattes.</li>
+        <li><strong>Links Externos LOD:</strong> UFRRJ (<a href="http://www.wikidata.org/entity/Q7834196" target="_blank" rel="noopener noreferrer">Wikidata Q7834196</a>, <a href="http://dbpedia.org/resource/Federal_Rural_University_of_Rio_de_Janeiro" target="_blank" rel="noopener noreferrer">DBpedia</a>), áreas de conhecimento via <code>skos:exactMatch</code> e ORCID/Lattes.</li>
       </ul>
     </section>
 

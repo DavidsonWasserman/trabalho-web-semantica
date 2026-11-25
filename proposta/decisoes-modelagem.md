@@ -41,7 +41,7 @@ O trabalho evita o antipadrão comum de usar `owl:sameAs` como sinônimo genéri
 
 | Recurso Interno | Recurso Externo | Propriedade Semântica Utilizada | Justificativa |
 | :--- | :--- | :--- | :--- |
-| `recurso:UFRRJ` | Wikidata `Q7894375` e DBpedia `Federal_Rural_University_of_Rio_de_Janeiro` | `owl:sameAs` | **Identidade estrita:** tratam exatamente da mesma instituição real no mundo (a Universidade Federal Rural do Rio de Janeiro). |
+| `recurso:UFRRJ` | Wikidata `Q7834196` e DBpedia `Federal_Rural_University_of_Rio_de_Janeiro` | `owl:sameAs` | **Identidade estrita:** tratam exatamente da mesma instituição real no mundo (a Universidade Federal Rural do Rio de Janeiro). |
 | `recurso:AreaWebSemantica`, `recurso:AreaDadosAbertos`, `recurso:AreaInteligenciaArtificial`, etc. | Wikidata (`Q54837`, `Q309901`, `Q11660`, ...) e DBpedia (`Semantic_Web`, `Open_data`, ...) | `skos:exactMatch` | Trata-se de equivalência conceitual entre termos de tesauros/conceitos de áreas do conhecimento, não de identidade ontológica entre instâncias físicas. |
 | `recurso:CursoSistemasInformacao`, `recurso:CursoCienciaComputacao` | Wikidata (`Q16387`, `Q21198`) | `skos:closeMatch` | Os currículos brasileiros (ex.: Bacharelado em Sistemas de Informação da UFRRJ) possuem alta proximidade conceitual, mas não equivalência exata com a definição genérica internacional do curso. |
 | Perfis (`DocenteAnaSilva`, etc.) | ORCID, Currículo Lattes | `rdfs:seeAlso` + `acad:orcid` / `acad:lattes` | Como os perfis são demonstrativos/fictícios (e uma página de perfil é uma descrição documental da pessoa), usa-se `rdfs:seeAlso` em RDF em vez de afirmar identidade absoluta via `owl:sameAs` com registros reais. |
